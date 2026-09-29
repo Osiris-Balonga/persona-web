@@ -40,7 +40,8 @@ export default async function Home({ params }: Props) {
           <p className="mt-5 text-xs text-muted-foreground">{t("note")}</p>
         </div>
 
-        <div className="relative mx-auto h-[430px] w-full max-w-[550px] sm:h-[500px] md:h-[475px] lg:h-[530px]" aria-label={t("exampleLabel")}>
+        <figure className="relative mx-auto h-[430px] w-full max-w-[550px] sm:h-[500px] md:h-[475px] lg:h-[530px]">
+          <figcaption className="sr-only">{t("exampleLabel")}</figcaption>
           <div aria-hidden="true" className="absolute left-[7%] top-[13%] h-[78%] w-[76%] bg-[#eaf0ff]" />
           <div aria-hidden="true" className="absolute right-[2%] top-[3%] h-[28%] w-[29%] bg-[#e7fff6]" />
           <div aria-hidden="true" className="absolute left-[3%] top-[25%] w-[43%] -rotate-6 border border-[#e0e5f2] bg-white p-3 shadow-[0_6px_16px_#1d34710f] sm:p-4">
@@ -69,7 +70,7 @@ export default async function Home({ params }: Props) {
             </div>
           </div>
           <span aria-hidden="true" className="absolute bottom-[7%] left-[9%] size-2 rounded-full bg-primary" />
-        </div>
+        </figure>
       </section>
 
       <section className="border-y border-border bg-[#f7f9fe]" aria-label={t("benefitsLabel")}>
