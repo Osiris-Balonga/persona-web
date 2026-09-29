@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { PlaygroundForm } from "@/components/playground-form";
 import { PlaygroundResult } from "@/components/playground-result";
 import { coverageRows } from "@/lib/coverage-data";
+import { config } from "@/lib/config";
 import {
   buildPeopleUrl,
   buildPlaygroundPageUrl,
@@ -20,8 +21,6 @@ import {
   type PlaygroundResponse,
 } from "@/lib/playground-response";
 
-const apiOrigin =
-  process.env.NEXT_PUBLIC_PERSONA_API_URL || "https://persona-dev.onrender.com";
 const requestTimeoutMs = 20000;
 
 export function Playground() {
@@ -34,7 +33,7 @@ export function Playground() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const controller = useRef<AbortController | null>(null);
-  const requestUrl = buildPeopleUrl(apiOrigin, options).toString();
+  const requestUrl = buildPeopleUrl(config.apiOrigin, options).toString();
 
   function changeOptions(nextOptions: PlaygroundOptions) {
     window.history.replaceState(
@@ -53,7 +52,7 @@ export function Playground() {
         currentOptions,
         nationalityContinent,
       );
-      const url = buildPeopleUrl(apiOrigin, currentOptions);
+      const url = buildPeopleUrl(config.apiOrigin, currentOptions);
       if (validation || url.toString().length > 2048) {
         setProblem(validation || "url");
         return;

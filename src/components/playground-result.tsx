@@ -1,10 +1,8 @@
 "use client";
 
 import {
-  Check,
   ChevronLeft,
   ChevronRight,
-  Copy,
   Mail,
   MapPin,
   Phone,
@@ -14,6 +12,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { countryDisplayName } from "@/lib/country-display-name";
+import { CodeBlock } from "@/components/docs/code-block";
 import type {
   PlaygroundPerson,
   PlaygroundResponse,
@@ -178,7 +177,6 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
   const t = useTranslations("Playground");
   const [active, setActive] = useState(0);
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
   const people = response?.results ?? [];
   const index = Math.min(active, Math.max(people.length - 1, 0));
   const current = people[index];
@@ -188,12 +186,6 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
     Math.max(people.length - 5, 0),
   );
   const visible = people.slice(thumbnailStart, thumbnailStart + 5);
-
-  async function copyJson() {
-    await navigator.clipboard.writeText(json);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1800);
-  }
 
   return (
     <section
@@ -343,26 +335,9 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
           <div key={current.id ?? index} className="playground-swap mt-4">
             <Profile person={current} />
           </div>
-          <div className="mt-5 flex items-center justify-between">
-            <span className="border-b-2 border-primary px-1 pb-2 text-xs font-semibold text-primary">
-              JSON
-            </span>
-            <button
-              type="button"
-              onClick={copyJson}
-              className="flex items-center gap-1 pb-2 text-xs text-[var(--persona-copy)] transition-colors duration-200 hover:text-primary"
-            >
-              {copied ? (
-                <Check className="size-3.5" />
-              ) : (
-                <Copy className="size-3.5" />
-              )}
-              {copied ? t("copied") : t("copyJson")}
-            </button>
+          <div className="mt-5">
+            <CodeBlock value={json} language="json" copyLabel={t("copyJson")} copiedLabel={t("copied")} announcement={t("copied")} maxHeight />
           </div>
-          <pre className="max-h-[440px] overflow-auto bg-[var(--persona-soft-surface)] p-4 text-[0.7rem] leading-5 text-[var(--persona-strong-muted)]">
-            {json}
-          </pre>
         </>
       )}
     </section>

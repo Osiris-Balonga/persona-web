@@ -1,5 +1,7 @@
+import { config } from "@/lib/config";
+
 export const docSlugs = [
-  "overview", "people", "parameters", "response", "errors", "coverage", "replay", "limits",
+  "overview", "people", "parameters", "response", "errors", "coverage", "replay", "limits", "ai-usage",
 ] as const;
 
 export type DocSlug = "quickstart" | (typeof docSlugs)[number];
@@ -14,6 +16,7 @@ type Section = {
   bullets?: string[];
   table?: Table;
   note?: string;
+  prompt?: "context" | "table";
 };
 type Page = { title: string; description: string; sections: Section[] };
 type NavigationGroup = { title: string; items: { slug: DocSlug; label: string }[] };
@@ -39,15 +42,16 @@ export const docs: Record<DocLocale, DocsDictionary> = {
     openPlayground: "Essayer /people",
     navigation: [
       { title: "Démarrer", items: [{ slug: "overview", label: "Vue d’ensemble" }, { slug: "quickstart", label: "Première requête" }] },
+      { title: "Utiliser avec l’IA", items: [{ slug: "ai-usage", label: "Prompts à copier" }] },
       { title: "Référence", items: [{ slug: "people", label: "GET /people" }, { slug: "parameters", label: "Paramètres" }, { slug: "response", label: "Réponse" }, { slug: "errors", label: "Erreurs" }] },
-      { title: "Comprendre les données", items: [{ slug: "coverage", label: "Pays et couverture" }, { slug: "replay", label: "Résultats reproductibles" }, { slug: "limits", label: "Limites et sécurité" }] },
+      { title: "Pour aller plus loin", items: [{ slug: "coverage", label: "Pays et couverture" }, { slug: "replay", label: "Résultats reproductibles" }, { slug: "limits", label: "Limites et sécurité" }] },
     ],
     pages: {
       quickstart: {
         title: "Première requête",
         description: "Récupérez des personnes fictives cohérentes depuis l’API publique en une seule requête. Aucune clé API n’est nécessaire.",
         sections: [
-          { id: "request", title: "Faire une requête", paragraphs: ["Envoyez une requête GET à l’endpoint public. Cet exemple fixe la graine et la date de référence pour pouvoir rejouer le résultat."], code: { language: "bash", value: "curl 'https://persona-dev.onrender.com/people?count=1&seed=guide-v2&asOf=2026-09-28'" } },
+          { id: "request", title: "Faire une requête", paragraphs: ["Envoyez une requête GET à l’endpoint public. Cet exemple fixe la graine et la date de référence pour pouvoir rejouer le résultat."], code: { language: "bash", value: `curl '${config.peopleUrl}?count=1&seed=guide-v2&asOf=2026-09-28'` } },
           { id: "response", title: "Lire la réponse", paragraphs: ["La réponse contient un tableau `results` et un objet `meta`. Le nom, la date de naissance et le lieu sont structurés. Cet extrait correspond à la requête ci-dessus avec les versions de données indiquées dans `meta` ; il peut évoluer après une mise à jour."], code: { language: "json", value: `{
   "results": [
     {
@@ -59,7 +63,7 @@ export const docs: Record<DocLocale, DocsDictionary> = {
       "location": { "city": "Caguas", "country": { "code": "PR", "name": "Puerto Rico" } },
       "email": "e.fernandez.3yx00@example.test",
       "phone": "+17875550116",
-      "picture": { "thumbnail": "https://persona-portraits.osirisbalonga.workers.dev/portraits/v1/thumbnail/p_1166.webp" }
+      "picture": { "thumbnail": "${config.examplePortraitUrl}" }
     }
   ],
   "meta": { "count": 1, "asOf": "2026-09-28", "seed": "guide-v2", "dataVersion": "geo-2026-09-26.1", "catalogVersion": "v1", "schemaVersion": "2" }
@@ -80,8 +84,8 @@ export const docs: Record<DocLocale, DocsDictionary> = {
         title: "GET /people",
         description: "Générez un ou plusieurs profils fictifs. Tous les filtres se transmettent dans la query string ; il n’y a ni corps de requête ni authentification.",
         sections: [
-          { id: "endpoint", title: "Endpoint", code: { language: "http", value: "GET https://persona-dev.onrender.com/people" }, paragraphs: ["L’API accepte GET et HEAD. Les navigateurs peuvent effectuer ces requêtes depuis toute origine, sans credentials."] },
-          { id: "example", title: "Exemple ciblé", code: { language: "bash", value: "curl 'https://persona-dev.onrender.com/people?nationality=FR&residenceCountry=CG&city=Brazzaville&ageGroup=adult,senior&count=1&seed=demo&asOf=2026-09-28'" }, paragraphs: ["Ici, la personne a la nationalité française et réside à Brazzaville. La ville dépend du pays de résidence."] },
+          { id: "endpoint", title: "Endpoint", code: { language: "http", value: `GET ${config.peopleUrl}` }, paragraphs: ["L’API accepte GET et HEAD. Les navigateurs peuvent effectuer ces requêtes depuis toute origine, sans credentials."] },
+          { id: "example", title: "Exemple ciblé", code: { language: "bash", value: `curl '${config.peopleUrl}?nationality=FR&residenceCountry=CG&city=Brazzaville&ageGroup=adult,senior&count=1&seed=demo&asOf=2026-09-28'` }, paragraphs: ["Ici, la personne a la nationalité française et réside à Brazzaville. La ville dépend du pays de résidence."] },
           { id: "filters", title: "Comment les filtres interagissent", bullets: ["`continent` limite la nationalité, pas le pays de résidence.", "Si seul `nationality` ou `residenceCountry` est fourni, ce pays est utilisé pour les deux.", "Une nationalité hors du continent demandé provoque une erreur 400.", "`age` et `appearance` ne sont pas des paramètres acceptés."] },
         ],
       },
@@ -104,7 +108,7 @@ export const docs: Record<DocLocale, DocsDictionary> = {
             ["results[].id", "Identifiant synthétique"], ["results[].name", "first, last, full"], ["results[].dob", "date, age, ageGroup"], ["results[].location", "Adresse illustrative, ville, pays, code postal, coordonnées de ville"], ["results[].email / phone", "Coordonnées générées ; phone peut être null"], ["results[].picture", "URLs WebP large, medium, thumbnail ou null"], ["meta", "count, asOf, seed, schemaVersion, dataVersion, catalogVersion"],
           ] } },
           { id: "nullable", title: "Champs parfois absents", paragraphs: ["`picture` vaut `null` si aucun portrait approuvé ne correspond. `phone`, `street`, `state` et `postcode` peuvent aussi valoir `null`. `login` est omis par défaut et n’apparaît qu’avec `fields=login` ou un de ses chemins enfants."], note: "Les coordonnées ont `precision: \"city\" et désignent le point GeoNames de la ville, jamais l’emplacement d’une personne ou d’une rue." },
-          { id: "example", title: "Exemple minimal de lecture", code: { language: "js", value: `const response = await fetch('https://persona-dev.onrender.com/people?count=1');
+          { id: "example", title: "Exemple minimal de lecture", code: { language: "js", value: `const response = await fetch('${config.peopleUrl}?count=1');
 if (!response.ok) throw new Error(\`Persona returned \${response.status}\`);
 const { results, meta } = await response.json();
 console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);` } },
@@ -137,7 +141,7 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
         title: "Résultats reproductibles",
         description: "Une graine explicite et une date de référence stable permettent de retrouver les mêmes profils pour vos tests.",
         sections: [
-          { id: "inputs", title: "Fixer seed et asOf", code: { language: "bash", value: "curl 'https://persona-dev.onrender.com/people?count=3&seed=ma-suite-de-tests&asOf=2026-09-28'" }, paragraphs: ["À filtres et versions inchangés, `seed` et `asOf` reproduisent les personnes générées. Sans `seed`, l’API utilise une nouvelle entropie et `meta.seed` vaut `null`."] },
+          { id: "inputs", title: "Fixer seed et asOf", code: { language: "bash", value: `curl '${config.peopleUrl}?count=3&seed=ma-suite-de-tests&asOf=2026-09-28'` }, paragraphs: ["À filtres et versions inchangés, `seed` et `asOf` reproduisent les personnes générées. Sans `seed`, l’API utilise une nouvelle entropie et `meta.seed` vaut `null`."] },
           { id: "versions", title: "Garder les versions en tête", paragraphs: ["La répétabilité dépend aussi de `dataVersion`, `catalogVersion` et de la version de l’algorithme. `count` et `fields` ne changent pas l’identité ou le choix du portrait d’une personne déjà générée ; `emailDomain` change l’adresse email."], note: "Un résultat n’est pas garanti identique après une mise à jour des données, du catalogue ou de l’algorithme." },
           { id: "cache", title: "Réutiliser une réponse", paragraphs: ["Une requête avec `seed` et `asOf` explicites reçoit un `ETag` et `Cache-Control: private, no-cache`. Envoyez `If-None-Match` avec cet ETag pour obtenir 304 si la réponse n’a pas changé. Les autres réponses utilisent `Cache-Control: no-store`."] },
         ],
@@ -150,18 +154,27 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
           { id: "safety", title: "Utiliser les données avec prudence", paragraphs: ["Les adresses sont illustratives et ne sont pas vérifiées pour la livraison. Les coordonnées géographiques correspondent à une ville. Les portraits peuvent être absents."], note: "Des numéros de secours au format valide peuvent appartenir à de vrais abonnés. Ne passez aucun appel, SMS ou email vers des coordonnées générées, surtout si vous choisissez un domaine email réel." },
         ],
       },
+      "ai-usage": {
+        title: "Créer avec Persona et l’IA",
+        description: "Présentez Persona à votre assistant, puis demandez-lui de créer une interface avec ses profils fictifs.",
+        sections: [
+          { id: "context", title: "Étape 1 · Présenter Persona", paragraphs: ["Copiez ce prompt au début de votre conversation avec l’IA."], prompt: "context" },
+          { id: "table", title: "Étape 2 · Demander à l’IA d’utiliser Persona", paragraphs: ["Puis copiez cette demande. Le pays de l’exemple s’adapte à votre localisation."], prompt: "table" },
+        ],
+      },
     },
   },
   en: {
     label: "Documentation", onThisPage: "On this page", copy: "Copy", copied: "Copied", copiedDescription: "Code copied to clipboard", openPlayground: "Try /people",
     navigation: [
       { title: "Start here", items: [{ slug: "overview", label: "Overview" }, { slug: "quickstart", label: "First request" }] },
+      { title: "Use with AI", items: [{ slug: "ai-usage", label: "Copyable prompts" }] },
       { title: "Reference", items: [{ slug: "people", label: "GET /people" }, { slug: "parameters", label: "Parameters" }, { slug: "response", label: "Response" }, { slug: "errors", label: "Errors" }] },
-      { title: "Understand the data", items: [{ slug: "coverage", label: "Countries and coverage" }, { slug: "replay", label: "Repeatable results" }, { slug: "limits", label: "Limits and safety" }] },
+      { title: "Go further", items: [{ slug: "coverage", label: "Countries and coverage" }, { slug: "replay", label: "Repeatable results" }, { slug: "limits", label: "Limits and safety" }] },
     ],
     pages: {
       quickstart: { title: "First request", description: "Retrieve coherent fictional people from the public API with one request. No API key is required.", sections: [
-        { id: "request", title: "Make a request", paragraphs: ["Send a GET request to the public endpoint. This example fixes the seed and reference date so the result can be replayed."], code: { language: "bash", value: "curl 'https://persona-dev.onrender.com/people?count=1&seed=guide-v2&asOf=2026-09-28'" } },
+        { id: "request", title: "Make a request", paragraphs: ["Send a GET request to the public endpoint. This example fixes the seed and reference date so the result can be replayed."], code: { language: "bash", value: `curl '${config.peopleUrl}?count=1&seed=guide-v2&asOf=2026-09-28'` } },
         { id: "response", title: "Read the response", paragraphs: ["The response contains a `results` array and a `meta` object. Names, birth dates and locations are structured. This excerpt matches the request above with the data versions shown in `meta`; it may change after an update."], code: { language: "json", value: `{
   "results": [
     {
@@ -173,7 +186,7 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
       "location": { "city": "Caguas", "country": { "code": "PR", "name": "Puerto Rico" } },
       "email": "e.fernandez.3yx00@example.test",
       "phone": "+17875550116",
-      "picture": { "thumbnail": "https://persona-portraits.osirisbalonga.workers.dev/portraits/v1/thumbnail/p_1166.webp" }
+      "picture": { "thumbnail": "${config.examplePortraitUrl}" }
     }
   ],
   "meta": { "count": 1, "asOf": "2026-09-28", "seed": "guide-v2", "dataVersion": "geo-2026-09-26.1", "catalogVersion": "v1", "schemaVersion": "2" }
@@ -186,8 +199,8 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
         { id: "care", title: "Keep in mind", note: "Addresses are illustrative. Some format-valid phone numbers may belong to real subscribers: never contact generated people or contact details." },
       ] },
       people: { title: "GET /people", description: "Generate one or more fictional profiles. Filters are sent in the query string; no request body or authentication is needed.", sections: [
-        { id: "endpoint", title: "Endpoint", code: { language: "http", value: "GET https://persona-dev.onrender.com/people" }, paragraphs: ["The API accepts GET and HEAD. Browsers can make these requests from any origin without credentials."] },
-        { id: "example", title: "Targeted example", code: { language: "bash", value: "curl 'https://persona-dev.onrender.com/people?nationality=FR&residenceCountry=CG&city=Brazzaville&ageGroup=adult,senior&count=1&seed=demo&asOf=2026-09-28'" }, paragraphs: ["Here the person is French and lives in Brazzaville. The city belongs to the residence country."] },
+        { id: "endpoint", title: "Endpoint", code: { language: "http", value: `GET ${config.peopleUrl}` }, paragraphs: ["The API accepts GET and HEAD. Browsers can make these requests from any origin without credentials."] },
+        { id: "example", title: "Targeted example", code: { language: "bash", value: `curl '${config.peopleUrl}?nationality=FR&residenceCountry=CG&city=Brazzaville&ageGroup=adult,senior&count=1&seed=demo&asOf=2026-09-28'` }, paragraphs: ["Here the person is French and lives in Brazzaville. The city belongs to the residence country."] },
         { id: "filters", title: "How filters interact", bullets: ["`continent` limits nationality, not residence.", "If only `nationality` or `residenceCountry` is provided, it is used for both.", "A nationality outside the requested continent returns 400.", "`age` and `appearance` are not accepted parameters."] },
       ] },
       parameters: { title: "Parameters", description: "All `GET /people` parameters are optional. Unknown, repeated or incompatible values are rejected.", sections: [
@@ -202,7 +215,7 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
           ["results[].id", "Synthetic ID"], ["results[].name", "first, last, full"], ["results[].dob", "date, age, ageGroup"], ["results[].location", "Illustrative address, city, country, postcode, city coordinates"], ["results[].email / phone", "Generated contact details; phone may be null"], ["results[].picture", "WebP large, medium, thumbnail URLs or null"], ["meta", "count, asOf, seed, schemaVersion, dataVersion, catalogVersion"],
         ] } },
         { id: "nullable", title: "Fields that may be missing", paragraphs: ["`picture` is `null` when no approved portrait matches. `phone`, `street`, `state` and `postcode` can also be `null`. `login` is omitted by default and only appears with `fields=login` or one of its child paths."], note: "Coordinates use `precision: \"city\" and identify a GeoNames city point, never a person or street." },
-        { id: "example", title: "Minimal reading example", code: { language: "js", value: `const response = await fetch('https://persona-dev.onrender.com/people?count=1');
+        { id: "example", title: "Minimal reading example", code: { language: "js", value: `const response = await fetch('${config.peopleUrl}?count=1');
 if (!response.ok) throw new Error(\`Persona returned \${response.status}\`);
 const { results, meta } = await response.json();
 console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);` } },
@@ -223,13 +236,17 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
         { id: "open", title: "Explore countries", paragraphs: ["Open the Coverage page to filter countries and inspect available data live."] },
       ] },
       replay: { title: "Repeatable results", description: "An explicit seed and stable reference date let you retrieve the same profiles for tests.", sections: [
-        { id: "inputs", title: "Set seed and asOf", code: { language: "bash", value: "curl 'https://persona-dev.onrender.com/people?count=3&seed=my-test-suite&asOf=2026-09-28'" }, paragraphs: ["With unchanged filters and versions, `seed` and `asOf` reproduce the people. Without `seed`, the API draws new entropy and `meta.seed` is `null`."] },
+        { id: "inputs", title: "Set seed and asOf", code: { language: "bash", value: `curl '${config.peopleUrl}?count=3&seed=my-test-suite&asOf=2026-09-28'` }, paragraphs: ["With unchanged filters and versions, `seed` and `asOf` reproduce the people. Without `seed`, the API draws new entropy and `meta.seed` is `null`."] },
         { id: "versions", title: "Account for versions", paragraphs: ["Repeatability also depends on `dataVersion`, `catalogVersion` and the algorithm version. `count` and `fields` do not change an existing person's identity or portrait choice; `emailDomain` changes the email address."], note: "Results are not guaranteed to match after a data, catalog or algorithm update." },
         { id: "cache", title: "Reuse a response", paragraphs: ["A request with explicit `seed` and `asOf` receives an `ETag` and `Cache-Control: private, no-cache`. Send `If-None-Match` with that ETag to get 304 if unchanged. Other responses use `Cache-Control: no-store`."] },
       ] },
       limits: { title: "Limits and safety", description: "A few rules help you use Persona without overloading the API or mistaking fictional data for real contact details.", sections: [
         { id: "limits", title: "Service limits", bullets: ["30 requests per minute per IP per instance; 429 and Retry-After beyond that.", "Encoded query string: 2,048 characters maximum.", "Response: 256 KiB maximum; otherwise 503 RESPONSE_TOO_LARGE.", "Browser access: GET and HEAD from any origin without credentials."] },
         { id: "safety", title: "Use data carefully", paragraphs: ["Addresses are illustrative and not verified delivery destinations. Geographic coordinates represent a city. Portraits may be absent."], note: "Format-valid fallback numbers may belong to real subscribers. Never call, text or email generated contacts, especially if you choose a live email domain." },
+      ] },
+      "ai-usage": { title: "Build with Persona and AI", description: "Introduce Persona to your assistant, then ask it to build an interface with fictional profiles.", sections: [
+        { id: "context", title: "Step 1 · Introduce Persona", paragraphs: ["Copy this prompt at the start of your AI conversation."], prompt: "context" },
+        { id: "table", title: "Step 2 · Ask AI to use Persona", paragraphs: ["Then copy this request. The example country adapts to your location."], prompt: "table" },
       ] },
     },
   },

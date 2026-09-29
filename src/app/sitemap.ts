@@ -3,7 +3,7 @@ import { routing } from "@/i18n/routing";
 import { docSlugs } from "@/lib/docs-content";
 import { siteOrigin } from "@/lib/site";
 
-const paths = ["", "/docs", ...docSlugs.map((slug) => `/docs/${slug}`), "/playground", "/coverage"];
+const paths = ["", "/docs", ...docSlugs.map((slug) => `/docs/${slug}`), "/playground", "/coverage", "/activity"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return paths.flatMap((path) =>

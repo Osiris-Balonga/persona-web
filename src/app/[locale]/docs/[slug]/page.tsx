@@ -9,7 +9,7 @@ import { localizedMetadata } from "@/lib/site";
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
 export function generateStaticParams() {
-  return [...docSlugs, "quickstart"].map((slug) => ({ slug }));
+  return [...docSlugs.filter((slug) => slug !== "ai-usage"), "quickstart"].map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
