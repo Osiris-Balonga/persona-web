@@ -22,7 +22,11 @@ Open `http://localhost:3000`. The English and French routes are `/en` and `/fr`;
 - `src/lib/docs-content.ts`: bilingual documentation content aligned with the API's public v2 contract.
 - `src/components/ui`: shadcn/ui primitives.
 
-The playground calls the public API from the browser. Set `NEXT_PUBLIC_PERSONA_API_URL` in `.env.local` to change its origin; `.env.example` contains the beta value. Vercel has the same variable configured for Production and Preview. This variable is intentionally public. Vercel Web Analytics is included in the localized layout.
+The playground calls the public API from the browser. Set `NEXT_PUBLIC_PERSONA_API_URL` in `.env.local` to change its origin; `.env.example` contains the beta value. Vercel has the same variable configured for Development, Preview, and Production. This variable is intentionally public. Vercel Web Analytics is included in the localized layout.
+
+## Deployment
+
+The [Vercel project](https://vercel.com/osiris-balongas-projects/persona-web) deploys `main` to [persona-web-tau.vercel.app](https://persona-web-tau.vercel.app). Pull requests get preview deployments. The [deployments page](https://vercel.com/osiris-balongas-projects/persona-web/deployments) shows build status, logs, and the previous production deployment, which can be restored with Instant Rollback if needed. The site currently calls the beta API on Render; change `NEXT_PUBLIC_PERSONA_API_URL` and redeploy when the production API is ready.
 
 ## Checks
 
