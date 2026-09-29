@@ -28,8 +28,11 @@ export default async function ActivityPage({ params }: Props) {
   let stats: Awaited<ReturnType<typeof getUsageStats>> | null = null;
   try {
     stats = await getUsageStats();
-  } catch {
-    console.error("Persona activity statistics are unavailable");
+  } catch (error) {
+    console.error("Persona activity statistics are unavailable", {
+      name: error instanceof Error ? error.name : "Unknown",
+      message: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 
   return (
