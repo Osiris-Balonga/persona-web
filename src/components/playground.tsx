@@ -1,13 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { PlaygroundForm } from "@/components/playground-form";
 import { PlaygroundResult } from "@/components/playground-result";
 import { coverageRows } from "@/lib/coverage-data";
 import {
   buildPeopleUrl,
-  defaultPlaygroundOptions,
+  buildPlaygroundPageUrl,
+  parsePlaygroundOptions,
   validatePlaygroundOptions,
   type PlaygroundOptions,
   type QueryProblem,
@@ -24,15 +26,23 @@ const requestTimeoutMs = 20000;
 
 export function Playground() {
   const t = useTranslations("Playground");
-  const [options, setOptions] = useState<PlaygroundOptions>(
-    defaultPlaygroundOptions,
-  );
+  const searchParams = useSearchParams();
+  const options = parsePlaygroundOptions(searchParams);
+  const initialOptions = useRef(options);
   const [problem, setProblem] = useState<QueryProblem | null>(null);
   const [response, setResponse] = useState<PlaygroundResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const controller = useRef<AbortController | null>(null);
   const requestUrl = buildPeopleUrl(apiOrigin, options).toString();
+
+  function changeOptions(nextOptions: PlaygroundOptions) {
+    window.history.replaceState(
+      null,
+      "",
+      buildPlaygroundPageUrl(window.location.href, nextOptions),
+    );
+  }
 
   const run = useCallback(
     async (currentOptions: PlaygroundOptions) => {
@@ -115,15 +125,12 @@ export function Playground() {
         }
       }
     },
-    [t],
+    [t, setProblem, setError, setResponse, setLoading],
   );
 
   useEffect(() => {
     // One sample request makes the result panel useful immediately. It is aborted on navigation.
-    const timer = window.setTimeout(
-      () => void run(defaultPlaygroundOptions),
-      0,
-    );
+    const timer = window.setTimeout(() => void run(initialOptions.current), 0);
     return () => {
       window.clearTimeout(timer);
       controller.current?.abort();
@@ -141,7 +148,7 @@ export function Playground() {
       <div className="playground-enter playground-enter-delay-1">
         <PlaygroundForm
           options={options}
-          onChange={setOptions}
+          onChange={changeOptions}
           requestUrl={requestUrl}
           problem={problem}
           loading={loading}

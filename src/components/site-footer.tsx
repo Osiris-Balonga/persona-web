@@ -18,8 +18,6 @@ export function SiteFooter() {
           <span className="text-xs text-[#777f8f]">{t("tagline")}</span>
         </div>
         <nav aria-label={nav("menu")} className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-[#596174]">
-          <Link href="/" className="hover:text-primary">{nav("product")}</Link>
-          <Link href="/docs/quickstart" className="hover:text-primary">{nav("api")}</Link>
           <Link href="/coverage" className="hover:text-primary">{nav("coverage")}</Link>
           <Link href="/docs" className="hover:text-primary">{nav("docs")}</Link>
           <a href="https://github.com/Osiris-Balonga/persona" target="_blank" rel="noreferrer" aria-label="GitHub">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Suspense } from "react";
 import { Playground } from "@/components/playground";
 import { requireLocale } from "@/lib/locale";
 import { localizedMetadata } from "@/lib/site";
@@ -35,7 +36,16 @@ export default async function PlaygroundPage({ params }: Props) {
           {t("aside")}
         </p>
       </div>
-      <Playground />
+      <Suspense
+        fallback={
+          <div className="grid min-h-[36rem] gap-5 lg:grid-cols-2">
+            <div className="animate-pulse bg-[#f6f8fc]" />
+            <div className="animate-pulse bg-[#f6f8fc]" />
+          </div>
+        }
+      >
+        <Playground />
+      </Suspense>
     </main>
   );
 }

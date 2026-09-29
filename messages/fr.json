@@ -5,8 +5,6 @@
   },
   "Nav": {
     "home": "Accueil",
-    "product": "Produit",
-    "api": "API",
     "docs": "Documentation",
     "playground": "Essayer /people",
     "coverage": "Couverture",

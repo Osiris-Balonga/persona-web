@@ -2,31 +2,20 @@
 
 import { Check, ChevronDown, Copy, Play, Square } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useState, useSyncExternalStore, type FormEvent } from "react";
+import { useId, useState, useSyncExternalStore, type FormEvent } from "react";
 import { SearchableCombobox } from "@/components/searchable-combobox";
 import cityData from "@/content/playground-cities.json";
 import { countryDisplayName } from "@/lib/country-display-name";
 import { coverageRows } from "@/lib/coverage-data";
 import {
   continentCodes,
+  playgroundAgeGroups,
+  playgroundFields,
   type PlaygroundOptions,
   type QueryProblem,
 } from "@/lib/playground-query";
 
-const ageGroups = ["child", "teen", "adult", "senior"] as const;
 const continents = ["africa", "americas", "asia", "europe", "oceania"] as const;
-const selectableFields = [
-  "id",
-  "gender",
-  "name",
-  "nationality",
-  "dob",
-  "location",
-  "email",
-  "phone",
-  "picture",
-  "login",
-] as const;
 const noSubscription = () => () => {};
 
 type Props = {
@@ -51,6 +40,8 @@ export function PlaygroundForm({
   const t = useTranslations("Playground");
   const locale = useLocale();
   const [copied, setCopied] = useState(false);
+  const [fieldsOpen, setFieldsOpen] = useState(false);
+  const fieldsId = useId();
   const hydrated = useSyncExternalStore(
     noSubscription,
     () => true,
@@ -178,7 +169,7 @@ export function PlaygroundForm({
         <fieldset className="sm:col-span-2">
           <legend className={labelClass}>{t("ageGroup")}</legend>
           <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
-            {ageGroups.map((group) => (
+            {playgroundAgeGroups.map((group) => (
               <label
                 key={group}
                 className={`flex cursor-pointer items-center justify-center gap-1.5 border px-2 py-2 text-xs ${options.ageGroups.includes(group) ? "border-primary bg-primary/5 text-primary" : "border-[#d9dde5] text-[#51596c]"}`}
@@ -283,40 +274,58 @@ export function PlaygroundForm({
           </span>
         </label>
 
-        <details className="sm:col-span-2">
-          <summary className="flex cursor-pointer list-none items-center justify-between border border-[#d9dde5] px-3 py-2 text-xs font-medium text-[#303746]">
+        <div className="sm:col-span-2">
+          <button
+            type="button"
+            aria-expanded={fieldsOpen}
+            aria-controls={fieldsId}
+            onClick={() => setFieldsOpen((open) => !open)}
+            className="flex min-h-10 w-full items-center justify-between border border-[#d9dde5] px-3 py-2 text-left text-xs font-medium text-[#303746] transition-[border-color,background-color] duration-200 hover:border-primary/60 hover:bg-[#f8faff] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
             <span>
               {t("fields")} ·{" "}
               {options.fields.length
                 ? t("selectedFields", { count: options.fields.length })
                 : t("allFields")}
             </span>
-            <ChevronDown aria-hidden="true" className="size-4" />
-          </summary>
-          <div className="grid grid-cols-2 gap-2 border border-t-0 border-[#d9dde5] p-3 sm:grid-cols-5">
-            {selectableFields.map((field) => (
-              <label
-                key={field}
-                className="flex items-center gap-1.5 text-xs text-[#51596c]"
-              >
-                <input
-                  type="checkbox"
-                  className="accent-primary"
-                  checked={options.fields.includes(field)}
-                  onChange={() =>
-                    update(
-                      "fields",
-                      options.fields.includes(field)
-                        ? options.fields.filter((item) => item !== field)
-                        : [...options.fields, field],
-                    )
-                  }
-                />
-                {field}
-              </label>
-            ))}
+            <ChevronDown
+              aria-hidden="true"
+              className={`size-4 shrink-0 transition-transform duration-300 ${fieldsOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+          <div
+            id={fieldsId}
+            aria-hidden={!fieldsOpen}
+            inert={!fieldsOpen}
+            className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${fieldsOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+          >
+            <div className="overflow-hidden">
+              <div className="grid grid-cols-2 gap-2 border border-t-0 border-[#d9dde5] p-3 sm:grid-cols-5">
+                {playgroundFields.map((field) => (
+                  <label
+                    key={field}
+                    className="flex min-h-8 cursor-pointer items-center gap-1.5 text-xs text-[#51596c] transition-colors duration-150 hover:text-primary"
+                  >
+                    <input
+                      type="checkbox"
+                      className="accent-primary"
+                      checked={options.fields.includes(field)}
+                      onChange={() =>
+                        update(
+                          "fields",
+                          options.fields.includes(field)
+                            ? options.fields.filter((item) => item !== field)
+                            : [...options.fields, field],
+                        )
+                      }
+                    />
+                    {field}
+                  </label>
+                ))}
+              </div>
+            </div>
           </div>
-        </details>
+        </div>
       </div>
 
       {problem && (
