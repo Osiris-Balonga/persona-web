@@ -2,6 +2,8 @@
 
 Public documentation and interactive playground for the [Persona API](https://github.com/Osiris-Balonga/persona). This repository contains the website only; the API and its portrait catalog are maintained separately.
 
+**Live site:** [persona-web-tau.vercel.app](https://persona-web-tau.vercel.app). Vercel deploys `main` to production and pull requests to preview environments. The beta site uses `https://persona-dev.onrender.com` as its public API origin.
+
 ## Local development
 
 Use Node.js 24 and npm.
@@ -11,24 +13,27 @@ npm ci
 npm run dev
 ```
 
-Open `http://localhost:3000`. The English and French routes are `/en` and `/fr`; the root redirects to English. Use the language selector to keep the current page while switching language.
+Open `http://localhost:3000`. The English and French routes are `/en` and `/fr`; the root selects the browser's preferred language. The localized home, documentation, coverage table, and playground are available in both languages.
 
 ## Structure
 
 - `src/app/[locale]`: localized pages, layouts, and metadata.
 - `src/i18n` and `messages`: next-intl routing and EN/FR interface strings.
-- `src/content/{en,fr}`: MDX documentation, kept in matching pairs.
+- `src/lib/docs-content.ts`: bilingual documentation content aligned with the API's public v2 contract.
 - `src/components/ui`: shadcn/ui primitives.
 
-The docs overview and quickstart are available in both languages. Playground and coverage currently have route shells; their interactive implementations are tracked in separate issues.
+The playground calls the public API from the browser. Set `NEXT_PUBLIC_PERSONA_API_URL` in `.env.local` to change its origin; `.env.example` contains the beta value. Vercel has the same variable configured for Development, Preview, and Production. This variable is intentionally public. Vercel Web Analytics is included in the localized layout.
 
-The playground will call the public API directly from the browser. Set `NEXT_PUBLIC_PERSONA_API_URL` in `.env.local` when working on that feature; `.env.example` contains the current beta origin. This variable is intentionally public.
+## Deployment
+
+The [Vercel project](https://vercel.com/osiris-balongas-projects/persona-web) deploys `main` to [persona-web-tau.vercel.app](https://persona-web-tau.vercel.app). Pull requests get preview deployments. The [deployments page](https://vercel.com/osiris-balongas-projects/persona-web/deployments) shows build status, logs, and the previous production deployment, which can be restored with Instant Rollback if needed. The site currently calls the beta API on Render; change `NEXT_PUBLIC_PERSONA_API_URL` and redeploy when the production API is ready.
 
 ## Checks
 
 ```sh
 npm run lint
 npm run typecheck
+npm test
 npm run build
 ```
 
