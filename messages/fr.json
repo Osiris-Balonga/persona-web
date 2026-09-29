@@ -136,12 +136,8 @@
     "chartAccessibility": "Profils générés chaque jour sur les 30 derniers jours",
     "pointAccessibility": "{date} : {count} profils générés",
     "firstData": "Première donnée : {date}",
-    "emptyTitle": "La courbe démarre bientôt",
-    "emptyDescription": "Aucun profil généré n’a encore été enregistré pendant cette période.",
     "errorTitle": "Les chiffres sont momentanément indisponibles",
-    "errorDescription": "Réessayez dans quelques minutes.",
-    "disclaimer": "Nous comptons les profils produits, pas les personnes qui visitent le site. Les essais internes de la bêta sont inclus.",
-    "refresh": "Données actualisées environ toutes les 5 minutes."
+    "errorDescription": "Réessayez dans quelques minutes."
   },
   "Footer": {
     "tagline": "Des personnes fictives. Des données réalistes."

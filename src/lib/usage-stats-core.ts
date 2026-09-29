@@ -25,6 +25,21 @@ export function usageWindow(now: Date) {
   };
 }
 
+export function fillUsageWindow(points: UsagePoint[], from: string, today: string): UsagePoint[] {
+  const counts = new Map(points.map((point) => [point.period, point.profiles]));
+  const day = new Date(`${from}T00:00:00Z`);
+  const last = new Date(`${today}T00:00:00Z`);
+  const series: UsagePoint[] = [];
+
+  while (day <= last) {
+    const period = day.toISOString().slice(0, 10);
+    series.push({ period, profiles: counts.get(period) ?? 0 });
+    day.setUTCDate(day.getUTCDate() + 1);
+  }
+
+  return series;
+}
+
 export function summarizeUsage(value: unknown, today: string): UsageSummary {
   if (!value || typeof value !== "object" || !("points" in value) || !Array.isArray(value.points)) {
     throw new Error("Invalid analytics response");

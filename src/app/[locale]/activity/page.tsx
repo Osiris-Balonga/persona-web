@@ -5,6 +5,7 @@ import styles from "@/components/activity/activity.module.css";
 import { requireLocale } from "@/lib/locale";
 import { localizedMetadata } from "@/lib/site";
 import { getUsageStats } from "@/lib/usage-stats";
+import { fillUsageWindow } from "@/lib/usage-stats-core";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -59,10 +60,8 @@ export default async function ActivityPage({ params }: Props) {
             </div>
             {stats === null ? (
               <div className={styles.chartState} role="status"><strong>{t("errorTitle")}</strong><p>{t("errorDescription")}</p></div>
-            ) : stats.points.length === 0 ? (
-              <div className={styles.chartState} role="status"><strong>{t("emptyTitle")}</strong><p>{t("emptyDescription")}</p></div>
             ) : (
-              <ActivityChart points={stats.points} locale={locale} />
+              <ActivityChart points={fillUsageWindow(stats.points, stats.window.from, stats.window.today)} locale={locale} />
             )}
             <div className={styles.chartBottom}>
               <span><i aria-hidden="true" />{t("chartLegend")}</span>
@@ -71,7 +70,6 @@ export default async function ActivityPage({ params }: Props) {
           </div>
         </section>
 
-        <div className={styles.note}><p>{t("disclaimer")}</p><p>{t("refresh")}</p></div>
       </div>
     </main>
   );

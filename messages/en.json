@@ -136,12 +136,8 @@
     "chartAccessibility": "Profiles generated each day over the last 30 days",
     "pointAccessibility": "{date}: {count} profiles generated",
     "firstData": "First data point: {date}",
-    "emptyTitle": "The chart will start soon",
-    "emptyDescription": "No generated profiles have been recorded in this period yet.",
     "errorTitle": "Activity is temporarily unavailable",
-    "errorDescription": "Please try again in a few minutes.",
-    "disclaimer": "We count generated profiles, not individual site visitors. Internal beta testing is included.",
-    "refresh": "Data refreshes about every 5 minutes."
+    "errorDescription": "Please try again in a few minutes."
   },
   "Footer": {
     "tagline": "Fictional people. Realistic data."
