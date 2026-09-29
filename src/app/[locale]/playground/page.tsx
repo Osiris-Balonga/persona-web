@@ -17,10 +17,23 @@ export default async function PlaygroundPage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations("Playground");
   return (
-    <main className="mx-auto w-full max-w-7xl px-5 pb-14 pt-8 md:px-8 md:pt-10">
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-5">
-        <div><p className="mb-2 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#4a588c]">{t("eyebrow")}</p><h1 className="text-4xl font-bold tracking-tight md:text-5xl">{t("title")}</h1><p className="mt-2 text-sm text-[#667087]">{t("description")}</p></div>
-        <p className="hidden border-l border-[#d7dbe4] pl-5 text-xs leading-5 text-[#6d7892] xl:block">{t("aside")}</p>
+    <main
+      data-playground
+      className="mx-auto w-full max-w-7xl px-5 pb-14 pt-8 md:px-8 md:pt-10"
+    >
+      <div className="playground-enter mb-6 flex flex-wrap items-end justify-between gap-5">
+        <div>
+          <p className="mb-2 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#4a588c]">
+            {t("eyebrow")}
+          </p>
+          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
+            {t("title")}
+          </h1>
+          <p className="mt-2 text-sm text-[#667087]">{t("description")}</p>
+        </div>
+        <p className="hidden border-l border-[#d7dbe4] pl-5 text-xs leading-5 text-[#6d7892] xl:block">
+          {t("aside")}
+        </p>
       </div>
       <Playground />
     </main>
