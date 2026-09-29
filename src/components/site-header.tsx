@@ -4,7 +4,6 @@ import { ArrowRight, Menu, X } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
-import { LanguageSwitcher } from "@/components/language-switcher";
 import { Button } from "@/components/ui/button";
 import { Brand } from "@/components/brand";
 import {
@@ -48,7 +47,6 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <LanguageSwitcher />
           <Button asChild variant="outline" size="sm" className="h-9 rounded-none border-[#343744] px-3.5">
             <a href="https://github.com/Osiris-Balonga/persona" target="_blank" rel="noreferrer">
               <Image src="/github.svg" alt="" width={16} height={16} /> {t("github")}
@@ -80,8 +78,7 @@ export function SiteHeader() {
               ))}
             </nav>
             <SheetClose asChild><Link href="/playground" className="mx-4 mt-2 bg-primary px-3 py-2 text-center text-sm font-semibold text-white">{t("playground")}</Link></SheetClose>
-            <div className="mt-auto flex items-center justify-between border-t border-border p-4">
-              <LanguageSwitcher />
+            <div className="mt-auto flex items-center justify-end border-t border-border p-4">
               <a className="text-sm font-medium text-primary" href="https://github.com/Osiris-Balonga/persona" target="_blank" rel="noreferrer">{t("github")}</a>
             </div>
           </SheetContent>

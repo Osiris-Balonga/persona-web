@@ -4,13 +4,12 @@ import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import type { FeaturedPerson } from "@/lib/featured-personas";
+import { countryDisplayName } from "@/lib/country-display-name";
 
 function ProfileCard({ person, locale, ageLabel }: { person: FeaturedPerson; locale: string; ageLabel: string }) {
   const [imageFailed, setImageFailed] = useState(false);
-  const nationality = useMemo(() => {
-    try { return new Intl.DisplayNames([locale], { type: "region" }).of(person.nationality) ?? person.nationality; }
-    catch { return person.nationality; }
-  }, [locale, person.nationality]);
+  const nationality = useMemo(() => countryDisplayName(person.nationality, locale), [locale, person.nationality]);
+  const residence = useMemo(() => countryDisplayName(person.location.country.code, locale, person.location.country.name), [locale, person.location.country.code, person.location.country.name]);
 
   return (
     <article className="persona-profile overflow-hidden border border-[#e7eaf2] bg-white shadow-[0_18px_48px_rgba(44,62,191,0.13)]">
@@ -26,9 +25,9 @@ function ProfileCard({ person, locale, ageLabel }: { person: FeaturedPerson; loc
         <p className="mt-0.5 flex items-center gap-1.5 truncate text-xs text-[#515971]">
           <span>{person.dob.age} {ageLabel}</span><span aria-hidden="true">·</span>
           <span className={`fi fi-${person.nationality.toLowerCase()} inline-block shrink-0 text-[1rem] leading-none`} role="img" aria-label={nationality} />
-          <span className="truncate">{nationality}</span>
+          <span className="truncate" title={nationality}>{nationality}</span>
         </p>
-        <p className="mt-2 flex items-center gap-1.5 truncate text-xs text-[#515971]"><MapPin aria-hidden="true" className="size-3 shrink-0 text-primary" /><span className="truncate">{person.location.city ? `${person.location.city}, ` : ""}{person.location.country.name}</span></p>
+        <p className="mt-2 flex items-center gap-1.5 truncate text-xs text-[#515971]"><MapPin aria-hidden="true" className="size-3 shrink-0 text-primary" /><span className="truncate" title={`${person.location.city ? `${person.location.city}, ` : ""}${residence}`}>{person.location.city ? `${person.location.city}, ` : ""}{residence}</span></p>
         {person.email && <p className="persona-card-contact mt-1 flex items-center gap-1.5 truncate text-xs text-[#515971]"><Mail aria-hidden="true" className="size-3 shrink-0 text-primary" /><span className="truncate">{person.email}</span></p>}
         {person.phoneDisplay && <p className="persona-card-contact mt-1 flex items-center gap-1.5 truncate text-xs text-[#515971]"><Phone aria-hidden="true" className="size-3 shrink-0 text-primary" /><span className="truncate">{person.phoneDisplay}</span></p>}
       </div>

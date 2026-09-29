@@ -41,7 +41,7 @@ export default async function Home({ params }: Props) {
 
   return (
     <main className="bg-white">
-      <section className="mx-auto grid w-full max-w-7xl items-center gap-7 px-5 pb-9 pt-8 md:grid-cols-[1fr_1fr] md:px-8 md:pb-7 md:pt-7 lg:gap-10">
+      <section className="mx-auto grid w-full max-w-7xl items-center gap-7 px-5 pb-9 pt-8 md:min-h-[min(760px,calc(100svh-76px))] md:grid-cols-[1fr_1fr] md:px-8 md:pb-7 md:pt-7 lg:gap-10">
         <div className="max-w-[570px]">
           <p className="persona-reveal mb-5 text-[0.64rem] font-medium uppercase tracking-[0.28em] text-[#4d5675]">{t("eyebrow")}</p>
           <h1 className="persona-reveal persona-reveal-delay-1 max-w-[620px] text-[clamp(2.65rem,4.4vw,4rem)] font-bold leading-[1.08] tracking-[-0.035em] text-foreground">

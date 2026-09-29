@@ -6,7 +6,7 @@ export type FeaturedPerson = {
   name: { first: string; last: string; full: string };
   nationality: string;
   dob: { age: number };
-  location: { city: string | null; country: { name: string } };
+  location: { city: string | null; country: { code: string; name: string } };
   email: string | null;
   phone: string | null;
   phoneDisplay: string | null;
@@ -21,7 +21,7 @@ function isPerson(value: unknown): value is Omit<FeaturedPerson, "phoneDisplay">
   if (!value || typeof value !== "object") return false;
   const person = value as Partial<FeaturedPerson>;
   return typeof person.id === "string" && typeof person.name?.full === "string"
-    && typeof person.dob?.age === "number" && typeof person.location?.country?.name === "string";
+    && typeof person.dob?.age === "number" && typeof person.location?.country?.code === "string";
 }
 
 async function fetchPerson(code: string): Promise<FeaturedPerson> {
