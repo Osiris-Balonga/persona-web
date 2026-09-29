@@ -37,18 +37,6 @@
     "portraitsTitle": "1 764 portraits validés",
     "portraitsDescription": "Des portraits réalistes, de qualité et contrôlés manuellement. Un profil peut ne pas avoir d’image."
   },
-  "Docs": {
-    "eyebrow": "Documentation développeur",
-    "title": "Développer avec Persona",
-    "description": "Commencez par une requête, puis explorez le contrat public v2.",
-    "overview": "Vue d’ensemble",
-    "quickstart": "Démarrage rapide",
-    "readQuickstart": "Lire le guide de démarrage"
-  },
-  "Quickstart": {
-    "title": "Démarrage rapide",
-    "description": "Effectuez votre première requête vers l’API Persona sans clé."
-  },
   "Playground": {
     "eyebrow": "Espace d’essai de l’API",
     "title": "Essayer /people",

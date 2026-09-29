@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/sheet";
 
 const links = [
-  { href: "/coverage", label: "coverage" },
   { href: "/docs", label: "docs" },
+  { href: "/coverage", label: "coverage" },
 ] as const;
 
 export function SiteHeader() {
@@ -37,7 +37,7 @@ export function SiteHeader() {
               key={href}
               href={href}
               aria-current={pathname === href || (href === "/docs" && pathname.startsWith("/docs/")) ? "page" : undefined}
-              className="text-[0.82rem] font-medium text-[#303447] transition-colors hover:text-primary aria-[current=page]:text-primary"
+              className="relative text-[0.82rem] font-medium text-[#303447] transition-colors duration-200 after:absolute after:-bottom-3 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-200 hover:text-primary hover:after:scale-x-100 aria-[current=page]:text-primary aria-[current=page]:after:scale-x-100"
             >
               {t(label)}
             </Link>

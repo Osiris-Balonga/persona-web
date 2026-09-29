@@ -1,9 +1,0 @@
-Envoyez une première requête à l’API de la bêta publique :
-
-```sh
-curl 'https://persona-dev.onrender.com/people?count=1&seed=docs-demo&asOf=2026-09-28'
-```
-
-La réponse contient `results` et `meta`. Chaque résultat possède un `name`, un `dob` et un `location` structurés. `picture` peut être `null`.
-
-Fournissez `seed` et `asOf` pour reproduire le même résultat tant que les versions des données, du catalogue et de l’algorithme ne changent pas. Consultez le [contrat v2 complet](https://github.com/Osiris-Balonga/persona/blob/dev/docs/api.md) avant d’utiliser d’autres filtres.

@@ -37,18 +37,6 @@
     "portraitsTitle": "1,764 reviewed portraits",
     "portraitsDescription": "High-quality, realistic and safe portraits, manually reviewed. A profile may have no image."
   },
-  "Docs": {
-    "eyebrow": "Developer documentation",
-    "title": "Build with Persona",
-    "description": "Start with one request, then explore the full public v2 contract.",
-    "overview": "Overview",
-    "quickstart": "Quickstart",
-    "readQuickstart": "Read the quickstart"
-  },
-  "Quickstart": {
-    "title": "Quickstart",
-    "description": "Make your first request to the keyless Persona API."
-  },
   "Playground": {
     "eyebrow": "API playground",
     "title": "Try /people",

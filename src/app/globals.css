@@ -2,7 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "flag-icons/css/flag-icons.min.css";
-@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -129,6 +128,20 @@
   html {
     @apply font-sans;
   }
+}
+
+@keyframes docs-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.docs-enter { animation: docs-enter 420ms cubic-bezier(.22, 1, .36, 1) both; }
+.docs-mobile-nav[open] > div { animation: docs-enter 220ms cubic-bezier(.22, 1, .36, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-enter,
+  .docs-mobile-nav[open] > div { animation: none; }
+  .docs-shell * { transition-duration: 0.01ms !important; }
 }
 
 .persona-slider-backdrop::before,
