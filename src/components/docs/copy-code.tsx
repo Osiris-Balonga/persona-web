@@ -32,7 +32,7 @@ export function CopyCode({ value, copyLabel, copiedLabel, announcement, theme = 
       <button
         type="button"
         onClick={copy}
-        className={`inline-flex min-h-9 items-center gap-1.5 rounded-sm px-2 text-xs font-medium transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 ${theme === "light" ? "text-[#47527a] hover:bg-[#e8ebf7] hover:text-primary focus-visible:outline-primary" : "text-slate-300 hover:bg-white/10 hover:text-white focus-visible:outline-white"}`}
+        className={`inline-flex min-h-9 items-center gap-1.5 rounded-sm px-2 text-xs font-medium transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 ${theme === "light" ? "text-[var(--persona-strong-muted)] hover:bg-[var(--persona-hover)] hover:text-primary focus-visible:outline-primary" : "text-slate-300 hover:bg-white/10 hover:text-white focus-visible:outline-white"}`}
         aria-label={copied ? copiedLabel : copyLabel}
       >
         {copied ? <Check aria-hidden="true" className="size-3.5" /> : <Copy aria-hidden="true" className="size-3.5" />}

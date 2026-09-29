@@ -40,14 +40,14 @@ export default async function Home({ params }: Props) {
   const t = await getTranslations("Home");
 
   return (
-    <main className="bg-white">
+    <main className="bg-[var(--persona-surface)] dark:bg-background">
       <section className="mx-auto grid w-full max-w-7xl items-center gap-7 px-5 pb-9 pt-8 md:min-h-[min(760px,calc(100svh-76px))] md:grid-cols-[1fr_1fr] md:px-8 md:pb-7 md:pt-7 lg:gap-10">
         <div className="max-w-[570px]">
-          <p className="persona-reveal mb-5 text-[0.64rem] font-medium uppercase tracking-[0.28em] text-[#4d5675]">{t("eyebrow")}</p>
+          <p className="persona-reveal mb-5 text-[0.64rem] font-medium uppercase tracking-[0.28em] text-[var(--persona-strong-muted)]">{t("eyebrow")}</p>
           <h1 className="persona-reveal persona-reveal-delay-1 max-w-[620px] text-[clamp(2.65rem,4.4vw,4rem)] font-bold leading-[1.08] tracking-[-0.035em] text-foreground">
             {t("titleStart")}{" "}<span className="text-primary">{t("titleBlue")}</span>{" "}{t("titleAnd")}{" "}<span className="text-[#19c991]">{t("titleGreen")}</span>
           </h1>
-          <p className="persona-reveal persona-reveal-delay-2 mt-4 max-w-[490px] text-[0.96rem] leading-[1.55] text-[#687082]">{t("description")}</p>
+          <p className="persona-reveal persona-reveal-delay-2 mt-4 max-w-[490px] text-[0.96rem] leading-[1.55] text-[var(--persona-copy)]">{t("description")}</p>
           <div className="persona-reveal persona-reveal-delay-3 mt-5 flex flex-wrap gap-3">
             <Button asChild className="h-10 min-w-35 rounded-none px-5 text-xs">
               <Link href="/docs">{t("readDocs")} <ArrowRight aria-hidden="true" /></Link>
@@ -56,7 +56,7 @@ export default async function Home({ params }: Props) {
               <Link href="/playground">{t("tryApi")} <ArrowRight aria-hidden="true" /></Link>
             </Button>
           </div>
-          <p className="persona-reveal persona-reveal-delay-3 mt-3 text-[0.68rem] text-[#8b92a0]">{t("note")}</p>
+          <p className="persona-reveal persona-reveal-delay-3 mt-3 text-[0.68rem] text-[var(--persona-quiet)]">{t("note")}</p>
         </div>
         <Suspense fallback={<PersonaSliderSkeleton label={t("sliderLabel")} loading={t("sliderLoading")} />}>
           <FeaturedSlider locale={locale} label={t("sliderLabel")} ageLabel={t("ageLabel")} error={t("sliderError")} />
@@ -67,10 +67,10 @@ export default async function Home({ params }: Props) {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
           {benefits.map(({ key, imagePosition }) => (
             <div key={key} className="persona-benefit persona-reveal persona-reveal-delay-3 flex min-w-0 items-center gap-3">
-              <div aria-hidden="true" className="persona-benefit-image h-28 w-[42%] shrink-0 bg-no-repeat sm:h-32 lg:h-28" style={{ backgroundImage: "url('/benefits-strip.webp')", backgroundSize: "400% auto", backgroundPosition: `${imagePosition} center` }} />
+              <div aria-hidden="true" className="persona-benefit-image h-28 w-[42%] shrink-0 bg-no-repeat sm:h-32 lg:h-28" style={{ backgroundSize: "400% auto", backgroundPosition: `${imagePosition} center` }} />
               <div className="persona-benefit-copy min-w-0">
-                <h2 className="text-[0.79rem] font-semibold leading-5 text-[#1f222c]">{t(`${key}Title`)}</h2>
-                <p className="mt-1 text-[0.7rem] leading-[1.5] text-[#767e8e]">{t(`${key}Description`)}</p>
+                <h2 className="text-[0.79rem] font-semibold leading-5 text-[var(--persona-ink)]">{t(`${key}Title`)}</h2>
+                <p className="mt-1 text-[0.7rem] leading-[1.5] text-[var(--persona-copy)]">{t(`${key}Description`)}</p>
               </div>
             </div>
           ))}

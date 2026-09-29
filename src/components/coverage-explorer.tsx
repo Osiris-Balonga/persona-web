@@ -164,14 +164,14 @@ function PageButtons({
         onClick={() => onPage(page - 1)}
         disabled={page === 1}
         aria-label={t("previous")}
-        className="flex size-8 items-center justify-center border border-[#e0e4ed] text-[#687083] disabled:opacity-40"
+        className="flex size-8 items-center justify-center border border-[var(--persona-line)] text-[var(--persona-copy)] disabled:opacity-40"
       >
         <ChevronLeft className="size-4" />
       </button>
       {numbers.map((number, index) => (
         <span key={number} className="inline-flex items-center gap-1.5">
           {index > 0 && number - numbers[index - 1] > 1 && (
-            <span className="px-1 text-[#687083]" aria-hidden="true">
+            <span className="px-1 text-[var(--persona-copy)]" aria-hidden="true">
               …
             </span>
           )}
@@ -180,7 +180,7 @@ function PageButtons({
             onClick={() => onPage(number)}
             aria-label={t("pageNumber", { page: number })}
             aria-current={page === number ? "page" : undefined}
-            className={`flex size-8 items-center justify-center border text-xs ${page === number ? "border-primary bg-primary font-semibold text-white" : "border-[#e0e4ed] text-[#303645] hover:border-primary hover:text-primary"}`}
+            className={`flex size-8 items-center justify-center border text-xs ${page === number ? "border-primary bg-primary font-semibold text-primary-foreground" : "border-[var(--persona-line)] text-[var(--persona-ink)] hover:border-primary hover:text-primary"}`}
           >
             {number}
           </button>
@@ -191,7 +191,7 @@ function PageButtons({
         onClick={() => onPage(page + 1)}
         disabled={page === pages}
         aria-label={t("next")}
-        className="flex size-8 items-center justify-center border border-[#e0e4ed] text-primary disabled:opacity-40"
+        className="flex size-8 items-center justify-center border border-[var(--persona-line)] text-primary disabled:opacity-40"
       >
         <ChevronRight className="size-4" />
       </button>
@@ -203,7 +203,7 @@ function SkeletonBar({ className = "w-20" }: { className?: string }) {
   return (
     <span
       aria-hidden="true"
-      className={`block h-2.5 rounded-full bg-[#e0e4ed] motion-safe:animate-pulse ${className}`}
+      className={`block h-2.5 rounded-full bg-[var(--persona-skeleton)] motion-safe:animate-pulse ${className}`}
     />
   );
 }
@@ -212,17 +212,17 @@ function CoverageSkeletonRows() {
   return Array.from({ length: pageSize }, (_, index) => (
     <tr
       key={index}
-      className="border-b border-[#e8ebf0] last:border-b-0"
+      className="border-b border-[var(--persona-line)] last:border-b-0"
       aria-hidden="true"
     >
       {Array.from({ length: 7 }, (_, cell) => (
         <td
           key={cell}
-          className="h-10 border-r border-[#e8ebf0] px-3 last:border-r-0"
+          className="h-10 border-r border-[var(--persona-line)] px-3 last:border-r-0"
         >
           <div className="flex items-center gap-2">
             {cell === 0 && (
-              <span className="size-5 shrink-0 rounded-full bg-[#e0e4ed] motion-safe:animate-pulse" />
+              <span className="size-5 shrink-0 rounded-full bg-[var(--persona-skeleton)] motion-safe:animate-pulse" />
             )}
             <SkeletonBar
               className={
@@ -245,7 +245,7 @@ function CoverageSkeletonCards() {
     <div
       key={index}
       aria-hidden="true"
-      className="space-y-4 border border-[#e2e6ec] p-4"
+      className="space-y-4 border border-[var(--persona-line)] p-4"
     >
       <SkeletonBar className="w-36" />
       {Array.from({ length: 5 }, (_, row) => (
@@ -267,16 +267,17 @@ function EmptyCoverage({ onReset }: { onReset: () => void }) {
         alt=""
         width={291}
         height={240}
-        className="h-auto w-36"
+        className="h-auto w-36 dark:hidden"
       />
-      <h2 className="mt-1 text-lg font-semibold text-[#20242d]">
+      <Image src="/coverage-empty-dark.webp" alt="" width={291} height={240} className="hidden h-auto w-36 dark:block" />
+      <h2 className="mt-1 text-lg font-semibold text-[var(--persona-ink)]">
         {t("emptyTitle")}
       </h2>
-      <p className="mt-1 text-sm text-[#687082]">{t("emptyDescription")}</p>
+      <p className="mt-1 text-sm text-[var(--persona-copy)]">{t("emptyDescription")}</p>
       <button
         type="button"
         onClick={onReset}
-        className="mt-5 border border-primary px-5 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="mt-5 border border-primary px-5 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         {t("clearFilters")}
       </button>
@@ -375,7 +376,7 @@ export function CoverageExplorer() {
           <span className="sr-only">{t("searchLabel")}</span>
           <Search
             aria-hidden="true"
-            className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[#7b8394]"
+            className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[var(--persona-quiet)]"
           />
           <input
             type="search"
@@ -386,7 +387,7 @@ export function CoverageExplorer() {
               setPage(1);
             }}
             placeholder={t("searchPlaceholder")}
-            className="h-10 w-full border border-[#d9dde5] bg-white pl-11 pr-3 text-sm text-foreground outline-none placeholder:text-[#70798a] focus:border-primary focus:ring-1 focus:ring-primary"
+            className="h-10 w-full border border-[var(--persona-line)] bg-[var(--persona-surface)] pl-11 pr-3 text-sm text-foreground outline-none placeholder:text-[var(--persona-copy)] focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </label>
         <SearchableCombobox
@@ -426,7 +427,7 @@ export function CoverageExplorer() {
         <p
           role="status"
           aria-live="polite"
-          className="text-sm font-semibold text-[#262a35] sm:col-span-3 lg:col-span-1 lg:justify-self-end"
+          className="text-sm font-semibold text-[var(--persona-ink)] sm:col-span-3 lg:col-span-1 lg:justify-self-end"
         >
           {loading
             ? t("loading")
@@ -438,11 +439,11 @@ export function CoverageExplorer() {
       </div>
 
       <div
-        className="mt-6 hidden overflow-x-auto border border-[#e2e6ec] lg:block"
+        className="mt-6 hidden overflow-x-auto border border-[var(--persona-line)] lg:block"
         aria-busy={loading}
       >
         <table className="w-full min-w-[950px] border-collapse text-left text-[0.75rem]">
-          <thead className="bg-[#f6f8fc] text-[#303746]">
+          <thead className="bg-[var(--persona-soft-surface)] text-[var(--persona-ink)]">
             <tr>
               {[
                 "columnCountry",
@@ -456,7 +457,7 @@ export function CoverageExplorer() {
                 <th
                   key={key}
                   scope="col"
-                  className="border-b border-r border-[#e5e8ee] px-3 py-3 font-semibold last:border-r-0"
+                  className="border-b border-r border-[var(--persona-line)] px-3 py-3 font-semibold last:border-r-0"
                 >
                   {t(key)}
                 </th>
@@ -476,22 +477,22 @@ export function CoverageExplorer() {
               visible.map((row) => (
                 <tr
                   key={row.code}
-                  className="border-b border-[#e8ebf0] text-[#454d5f] last:border-b-0 hover:bg-[#f8faff]"
+                  className="border-b border-[var(--persona-line)] text-[var(--persona-ink)] last:border-b-0 hover:bg-[var(--persona-hover)]"
                 >
-                  <td className="max-w-[195px] border-r border-[#e8ebf0] px-3 py-2">
+                  <td className="max-w-[195px] border-r border-[var(--persona-line)] px-3 py-2">
                     <CountryCell row={row} locale={locale} />
                   </td>
-                  <td className="border-r border-[#e8ebf0] px-3 py-2 whitespace-nowrap">
+                  <td className="border-r border-[var(--persona-line)] px-3 py-2 whitespace-nowrap">
                     {regionName(
                       row.subregion ?? row.continent,
                       locale,
                       t("otherRegion"),
                     )}
                   </td>
-                  <td className="border-r border-[#e8ebf0] px-3 py-2">
+                  <td className="border-r border-[var(--persona-line)] px-3 py-2">
                     <RowStatus status={row.status} />
                   </td>
-                  <td className="border-r border-[#e8ebf0] px-3 py-2 whitespace-nowrap">
+                  <td className="border-r border-[var(--persona-line)] px-3 py-2 whitespace-nowrap">
                     {row.sampledCities ? (
                       <span className="inline-flex items-center gap-2">
                         <StatusDot
@@ -503,10 +504,10 @@ export function CoverageExplorer() {
                       "—"
                     )}
                   </td>
-                  <td className="border-r border-[#e8ebf0] px-3 py-2">
+                  <td className="border-r border-[var(--persona-line)] px-3 py-2">
                     <PhoneSource status={row.phone} />
                   </td>
-                  <td className="border-r border-[#e8ebf0] px-3 py-2 whitespace-nowrap">
+                  <td className="border-r border-[var(--persona-line)] px-3 py-2 whitespace-nowrap">
                     {row.status === "available" ? (
                       <span className="inline-flex items-center gap-2">
                         <StatusDot color="mint" />
@@ -531,20 +532,20 @@ export function CoverageExplorer() {
         {loading ? (
           <CoverageSkeletonCards />
         ) : filtered.length === 0 ? (
-          <div className="border border-[#e2e6ec]">
+          <div className="border border-[var(--persona-line)]">
             <EmptyCoverage onReset={resetFilters} />
           </div>
         ) : (
           visible.map((row) => (
             <article
               key={row.code}
-              className="border border-[#e2e6ec] bg-white p-4 text-sm text-[#454d5f]"
+              className="border border-[var(--persona-line)] bg-[var(--persona-surface)] p-4 text-sm text-[var(--persona-ink)]"
             >
-              <h2 className="mb-3 font-semibold text-[#20242d]">
+              <h2 className="mb-3 font-semibold text-[var(--persona-ink)]">
                 <CountryCell row={row} locale={locale} />
               </h2>
               <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-xs">
-                <dt className="text-[#727a8b]">{t("columnRegion")}</dt>
+                <dt className="text-[var(--persona-copy)]">{t("columnRegion")}</dt>
                 <dd>
                   {regionName(
                     row.subregion ?? row.continent,
@@ -552,28 +553,28 @@ export function CoverageExplorer() {
                     t("otherRegion"),
                   )}
                 </dd>
-                <dt className="text-[#727a8b]">{t("columnProfiles")}</dt>
+                <dt className="text-[var(--persona-copy)]">{t("columnProfiles")}</dt>
                 <dd>
                   <RowStatus status={row.status} />
                 </dd>
-                <dt className="text-[#727a8b]">{t("columnPostcodes")}</dt>
+                <dt className="text-[var(--persona-copy)]">{t("columnPostcodes")}</dt>
                 <dd>
                   {row.sampledCities
                     ? `${row.postcodeCities}/${row.sampledCities}`
                     : "—"}
                 </dd>
-                <dt className="text-[#727a8b]">{t("columnPhone")}</dt>
+                <dt className="text-[var(--persona-copy)]">{t("columnPhone")}</dt>
                 <dd>
                   <PhoneSource status={row.phone} />
                 </dd>
-                <dt className="text-[#727a8b]">{t("columnAddresses")}</dt>
+                <dt className="text-[var(--persona-copy)]">{t("columnAddresses")}</dt>
                 <dd>
                   {row.status === "available"
                     ? t("addressIllustrative")
                     : t("notAvailable")}
                 </dd>
               </dl>
-              <p className="mt-3 border-t border-[#edf0f4] pt-3 text-xs text-[#727a8b]">
+              <p className="mt-3 border-t border-[var(--persona-line)] pt-3 text-xs text-[var(--persona-copy)]">
                 {t(noteKey(row))}
               </p>
             </article>
@@ -582,7 +583,7 @@ export function CoverageExplorer() {
       </div>
 
       {!loading && (
-        <div className="mt-7 flex flex-wrap items-center justify-between gap-4 text-xs text-[#697284]">
+        <div className="mt-7 flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--persona-copy)]">
           <p>
             {filtered.length === 0
               ? t("filteredCount", { count: 0, total: coverageTotals.all })

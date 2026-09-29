@@ -12,6 +12,12 @@
     "menu": "Open menu",
     "closeMenu": "Close menu"
   },
+  "Theme": {
+    "change": "Choose theme",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
   "Home": {
     "eyebrow": "Synthetic people for a brighter product world",
     "title": "Generate coherent fictional people for products and tests.",

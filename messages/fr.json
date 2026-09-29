@@ -12,6 +12,12 @@
     "menu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu"
   },
+  "Theme": {
+    "change": "Choisir le thème",
+    "system": "Système",
+    "light": "Clair",
+    "dark": "Sombre"
+  },
   "Home": {
     "eyebrow": "Des personnes fictives pour de meilleurs produits",
     "title": "Générez des personnes fictives cohérentes pour vos produits et vos tests.",

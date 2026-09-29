@@ -120,18 +120,18 @@ export function PlaygroundForm({
   }
 
   const inputClass =
-    "h-9 w-full min-w-0 rounded-none border border-[#d9dde5] bg-white px-3 text-xs text-[#303746] outline-none focus:border-primary focus:ring-1 focus:ring-primary disabled:bg-[#f6f7fa] disabled:text-[#9aa1b0]";
-  const labelClass = "mb-1.5 block text-xs font-semibold text-[#292e39]";
+    "h-9 w-full min-w-0 rounded-none border border-[var(--persona-line)] bg-[var(--persona-surface)] px-3 text-xs text-[var(--persona-ink)] outline-none focus:border-primary focus:ring-1 focus:ring-primary disabled:bg-[var(--persona-soft-surface)] disabled:text-[var(--persona-quiet)]";
+  const labelClass = "mb-1.5 block text-xs font-semibold text-[var(--persona-ink)]";
 
   return (
     <form
       onSubmit={submit}
-      className="border border-[#e4e8ef] bg-white p-4 sm:p-5"
+      className="border border-[var(--persona-line)] bg-[var(--persona-surface)] p-4 sm:p-5"
     >
       <h2 className="text-lg font-semibold tracking-tight">
         {t("configuration")}
       </h2>
-      <p className="mt-0.5 text-xs text-[#747c8e]">{t("configurationHint")}</p>
+      <p className="mt-0.5 text-xs text-[var(--persona-copy)]">{t("configurationHint")}</p>
 
       <div className="mt-5 grid gap-x-4 gap-y-4 sm:grid-cols-2">
         <label>
@@ -144,7 +144,7 @@ export function PlaygroundForm({
             value={options.count}
             onChange={(event) => update("count", Number(event.target.value))}
           />
-          <span className="mt-1 block text-[0.68rem] text-[#8a92a0]">
+          <span className="mt-1 block text-[0.68rem] text-[var(--persona-quiet)]">
             {t("countHint")}
           </span>
         </label>
@@ -172,7 +172,7 @@ export function PlaygroundForm({
             {playgroundAgeGroups.map((group) => (
               <label
                 key={group}
-                className={`flex cursor-pointer items-center justify-center gap-1.5 border px-2 py-2 text-xs ${options.ageGroups.includes(group) ? "border-primary bg-primary/5 text-primary" : "border-[#d9dde5] text-[#51596c]"}`}
+                className={`flex cursor-pointer items-center justify-center gap-1.5 border px-2 py-2 text-xs ${options.ageGroups.includes(group) ? "border-primary bg-primary/5 text-primary" : "border-[var(--persona-line)] text-[var(--persona-copy)]"}`}
               >
                 <input
                   type="checkbox"
@@ -257,7 +257,7 @@ export function PlaygroundForm({
             placeholder="demo"
             onChange={(event) => update("seed", event.target.value)}
           />
-          <span className="mt-1 block text-[0.68rem] text-[#8a92a0]">
+          <span className="mt-1 block text-[0.68rem] text-[var(--persona-quiet)]">
             {t("seedHint")}
           </span>
         </label>
@@ -269,7 +269,7 @@ export function PlaygroundForm({
             value={options.asOf}
             onChange={(event) => update("asOf", event.target.value)}
           />
-          <span className="mt-1 block text-[0.68rem] text-[#8a92a0]">
+          <span className="mt-1 block text-[0.68rem] text-[var(--persona-quiet)]">
             {t("asOfHint")}
           </span>
         </label>
@@ -280,7 +280,7 @@ export function PlaygroundForm({
             aria-expanded={fieldsOpen}
             aria-controls={fieldsId}
             onClick={() => setFieldsOpen((open) => !open)}
-            className="flex min-h-10 w-full items-center justify-between border border-[#d9dde5] px-3 py-2 text-left text-xs font-medium text-[#303746] transition-[border-color,background-color] duration-200 hover:border-primary/60 hover:bg-[#f8faff] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="flex min-h-10 w-full items-center justify-between border border-[var(--persona-line)] px-3 py-2 text-left text-xs font-medium text-[var(--persona-ink)] transition-[border-color,background-color] duration-200 hover:border-primary/60 hover:bg-[var(--persona-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             <span>
               {t("fields")} ·{" "}
@@ -300,11 +300,11 @@ export function PlaygroundForm({
             className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${fieldsOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
           >
             <div className="overflow-hidden">
-              <div className="grid grid-cols-2 gap-2 border border-t-0 border-[#d9dde5] p-3 sm:grid-cols-5">
+              <div className="grid grid-cols-2 gap-2 border border-t-0 border-[var(--persona-line)] p-3 sm:grid-cols-5">
                 {playgroundFields.map((field) => (
                   <label
                     key={field}
-                    className="flex min-h-8 cursor-pointer items-center gap-1.5 text-xs text-[#51596c] transition-colors duration-150 hover:text-primary"
+                    className="flex min-h-8 cursor-pointer items-center gap-1.5 text-xs text-[var(--persona-copy)] transition-colors duration-150 hover:text-primary"
                   >
                     <input
                       type="checkbox"
@@ -331,13 +331,13 @@ export function PlaygroundForm({
       {problem && (
         <p
           role="alert"
-          className="mt-4 border border-[#f2c7c7] bg-[#fff7f7] px-3 py-2 text-xs text-[#ad3333]"
+          className="mt-4 border border-[var(--persona-red-line)] bg-[var(--persona-red-bg)] px-3 py-2 text-xs text-[var(--persona-red-ink)]"
         >
           {t(`problem${problem[0].toUpperCase()}${problem.slice(1)}`)}
         </p>
       )}
 
-      <div className="mt-5 bg-[#f6f8fc] p-3 text-xs">
+      <div className="mt-5 bg-[var(--persona-soft-surface)] p-3 text-xs">
         <div className="mb-2 flex items-center justify-between">
           <strong className="font-semibold">{t("requestPreview")}</strong>
           <button
@@ -355,12 +355,12 @@ export function PlaygroundForm({
         </div>
         <div className="flex gap-3">
           <span className="font-semibold text-primary">GET</span>
-          <code className="min-w-0 break-all text-[#4b5672]">{requestUrl}</code>
+          <code className="min-w-0 break-all text-[var(--persona-strong-muted)]">{requestUrl}</code>
         </div>
       </div>
       <button
         type="submit"
-        className="mt-4 flex h-10 w-full items-center justify-center gap-2 bg-primary text-xs font-semibold text-white transition-colors hover:bg-[#2636a9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="mt-4 flex h-10 w-full items-center justify-center gap-2 bg-primary text-xs font-semibold text-primary-foreground transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
         {loading ? (
           <Square aria-hidden="true" className="size-3.5" />
