@@ -1,8 +1,9 @@
 "use client";
 
 import { ChevronDown, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { countryDisplayName } from "@/lib/country-display-name";
 import {
   coverageRows,
@@ -197,6 +198,91 @@ function PageButtons({
   );
 }
 
+function SkeletonBar({ className = "w-20" }: { className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`block h-2.5 rounded-full bg-[#e0e4ed] motion-safe:animate-pulse ${className}`}
+    />
+  );
+}
+
+function CoverageSkeletonRows() {
+  return Array.from({ length: pageSize }, (_, index) => (
+    <tr
+      key={index}
+      className="border-b border-[#e8ebf0] last:border-b-0"
+      aria-hidden="true"
+    >
+      {Array.from({ length: 7 }, (_, cell) => (
+        <td
+          key={cell}
+          className="h-10 border-r border-[#e8ebf0] px-3 last:border-r-0"
+        >
+          <div className="flex items-center gap-2">
+            {cell === 0 && (
+              <span className="size-5 shrink-0 rounded-full bg-[#e0e4ed] motion-safe:animate-pulse" />
+            )}
+            <SkeletonBar
+              className={
+                cell === 6
+                  ? "w-28 max-w-full"
+                  : cell === 0
+                    ? "w-24 max-w-full"
+                    : "w-16 max-w-full"
+              }
+            />
+          </div>
+        </td>
+      ))}
+    </tr>
+  ));
+}
+
+function CoverageSkeletonCards() {
+  return Array.from({ length: 4 }, (_, index) => (
+    <div
+      key={index}
+      aria-hidden="true"
+      className="space-y-4 border border-[#e2e6ec] p-4"
+    >
+      <SkeletonBar className="w-36" />
+      {Array.from({ length: 5 }, (_, row) => (
+        <div key={row} className="flex justify-between gap-6">
+          <SkeletonBar className="w-20" />
+          <SkeletonBar className="w-28" />
+        </div>
+      ))}
+    </div>
+  ));
+}
+
+function EmptyCoverage({ onReset }: { onReset: () => void }) {
+  const t = useTranslations("Coverage");
+  return (
+    <div className="flex min-h-80 flex-col items-center justify-center px-5 py-10 text-center">
+      <Image
+        src="/coverage-empty.webp"
+        alt=""
+        width={291}
+        height={240}
+        className="h-auto w-36"
+      />
+      <h2 className="mt-1 text-lg font-semibold text-[#20242d]">
+        {t("emptyTitle")}
+      </h2>
+      <p className="mt-1 text-sm text-[#687082]">{t("emptyDescription")}</p>
+      <button
+        type="button"
+        onClick={onReset}
+        className="mt-5 border border-primary px-5 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      >
+        {t("clearFilters")}
+      </button>
+    </div>
+  );
+}
+
 export function CoverageExplorer() {
   const t = useTranslations("Coverage");
   const locale = useLocale();
@@ -204,6 +290,19 @@ export function CoverageExplorer() {
   const [region, setRegion] = useState("all");
   const [status, setStatus] = useState("all");
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setLoading(false), 220);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  function resetFilters() {
+    setSearch("");
+    setRegion("all");
+    setStatus("all");
+    setPage(1);
+  }
 
   const subregions = useMemo(
     () =>
@@ -269,6 +368,7 @@ export function CoverageExplorer() {
           />
           <input
             type="search"
+            disabled={loading}
             value={search}
             onChange={(event) => {
               setSearch(event.target.value);
@@ -281,6 +381,7 @@ export function CoverageExplorer() {
         <label className="relative block">
           <span className="sr-only">{t("regionLabel")}</span>
           <select
+            disabled={loading}
             value={region}
             onChange={(event) => {
               setRegion(event.target.value);
@@ -312,6 +413,7 @@ export function CoverageExplorer() {
         <label className="relative block">
           <span className="sr-only">{t("availabilityLabel")}</span>
           <select
+            disabled={loading}
             value={status}
             onChange={(event) => {
               setStatus(event.target.value);
@@ -329,15 +431,24 @@ export function CoverageExplorer() {
             className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#687083]"
           />
         </label>
-        <p className="text-sm font-semibold text-[#262a35] sm:col-span-3 lg:col-span-1 lg:justify-self-end">
-          {t("filteredCount", {
-            count: filtered.length,
-            total: coverageTotals.all,
-          })}
+        <p
+          role="status"
+          aria-live="polite"
+          className="text-sm font-semibold text-[#262a35] sm:col-span-3 lg:col-span-1 lg:justify-self-end"
+        >
+          {loading
+            ? t("loading")
+            : t("filteredCount", {
+                count: filtered.length,
+                total: coverageTotals.all,
+              })}
         </p>
       </div>
 
-      <div className="mt-6 hidden overflow-x-auto border border-[#e2e6ec] lg:block">
+      <div
+        className="mt-6 hidden overflow-x-auto border border-[#e2e6ec] lg:block"
+        aria-busy={loading}
+      >
         <table className="w-full min-w-[950px] border-collapse text-left text-[0.75rem]">
           <thead className="bg-[#f6f8fc] text-[#303746]">
             <tr>
@@ -361,114 +472,135 @@ export function CoverageExplorer() {
             </tr>
           </thead>
           <tbody>
-            {visible.map((row) => (
-              <tr
-                key={row.code}
-                className="border-b border-[#e8ebf0] text-[#454d5f] last:border-b-0 hover:bg-[#f8faff]"
-              >
-                <td className="max-w-[195px] border-r border-[#e8ebf0] px-3 py-2">
-                  <CountryCell row={row} locale={locale} />
+            {loading ? (
+              <CoverageSkeletonRows />
+            ) : filtered.length === 0 ? (
+              <tr>
+                <td colSpan={7}>
+                  <EmptyCoverage onReset={resetFilters} />
                 </td>
-                <td className="border-r border-[#e8ebf0] px-3 py-2 whitespace-nowrap">
+              </tr>
+            ) : (
+              visible.map((row) => (
+                <tr
+                  key={row.code}
+                  className="border-b border-[#e8ebf0] text-[#454d5f] last:border-b-0 hover:bg-[#f8faff]"
+                >
+                  <td className="max-w-[195px] border-r border-[#e8ebf0] px-3 py-2">
+                    <CountryCell row={row} locale={locale} />
+                  </td>
+                  <td className="border-r border-[#e8ebf0] px-3 py-2 whitespace-nowrap">
+                    {regionName(
+                      row.subregion ?? row.continent,
+                      locale,
+                      t("otherRegion"),
+                    )}
+                  </td>
+                  <td className="border-r border-[#e8ebf0] px-3 py-2">
+                    <RowStatus status={row.status} />
+                  </td>
+                  <td className="border-r border-[#e8ebf0] px-3 py-2 whitespace-nowrap">
+                    {row.sampledCities ? (
+                      <span className="inline-flex items-center gap-2">
+                        <StatusDot
+                          color={row.postcodeCities ? "mint" : "gray"}
+                        />
+                        {row.postcodeCities}/{row.sampledCities}
+                      </span>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
+                  <td className="border-r border-[#e8ebf0] px-3 py-2">
+                    <PhoneSource status={row.phone} />
+                  </td>
+                  <td className="border-r border-[#e8ebf0] px-3 py-2 whitespace-nowrap">
+                    {row.status === "available" ? (
+                      <span className="inline-flex items-center gap-2">
+                        <StatusDot color="mint" />
+                        {t("addressIllustrative")}
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-2">
+                        <StatusDot color="gray" />
+                        {t("notAvailable")}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2">{t(noteKey(row))}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="mt-6 space-y-3 lg:hidden" aria-busy={loading}>
+        {loading ? (
+          <CoverageSkeletonCards />
+        ) : filtered.length === 0 ? (
+          <div className="border border-[#e2e6ec]">
+            <EmptyCoverage onReset={resetFilters} />
+          </div>
+        ) : (
+          visible.map((row) => (
+            <article
+              key={row.code}
+              className="border border-[#e2e6ec] bg-white p-4 text-sm text-[#454d5f]"
+            >
+              <h2 className="mb-3 font-semibold text-[#20242d]">
+                <CountryCell row={row} locale={locale} />
+              </h2>
+              <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-xs">
+                <dt className="text-[#727a8b]">{t("columnRegion")}</dt>
+                <dd>
                   {regionName(
                     row.subregion ?? row.continent,
                     locale,
                     t("otherRegion"),
                   )}
-                </td>
-                <td className="border-r border-[#e8ebf0] px-3 py-2">
+                </dd>
+                <dt className="text-[#727a8b]">{t("columnProfiles")}</dt>
+                <dd>
                   <RowStatus status={row.status} />
-                </td>
-                <td className="border-r border-[#e8ebf0] px-3 py-2 whitespace-nowrap">
-                  {row.sampledCities ? (
-                    <span className="inline-flex items-center gap-2">
-                      <StatusDot color={row.postcodeCities ? "mint" : "gray"} />
-                      {row.postcodeCities}/{row.sampledCities}
-                    </span>
-                  ) : (
-                    "—"
-                  )}
-                </td>
-                <td className="border-r border-[#e8ebf0] px-3 py-2">
+                </dd>
+                <dt className="text-[#727a8b]">{t("columnPostcodes")}</dt>
+                <dd>
+                  {row.sampledCities
+                    ? `${row.postcodeCities}/${row.sampledCities}`
+                    : "—"}
+                </dd>
+                <dt className="text-[#727a8b]">{t("columnPhone")}</dt>
+                <dd>
                   <PhoneSource status={row.phone} />
-                </td>
-                <td className="border-r border-[#e8ebf0] px-3 py-2 whitespace-nowrap">
-                  {row.status === "available" ? (
-                    <span className="inline-flex items-center gap-2">
-                      <StatusDot color="mint" />
-                      {t("addressIllustrative")}
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-2">
-                      <StatusDot color="gray" />
-                      {t("notAvailable")}
-                    </span>
-                  )}
-                </td>
-                <td className="px-3 py-2">{t(noteKey(row))}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="mt-6 space-y-3 lg:hidden">
-        {visible.map((row) => (
-          <article
-            key={row.code}
-            className="border border-[#e2e6ec] bg-white p-4 text-sm text-[#454d5f]"
-          >
-            <h2 className="mb-3 font-semibold text-[#20242d]">
-              <CountryCell row={row} locale={locale} />
-            </h2>
-            <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-xs">
-              <dt className="text-[#727a8b]">{t("columnRegion")}</dt>
-              <dd>
-                {regionName(
-                  row.subregion ?? row.continent,
-                  locale,
-                  t("otherRegion"),
-                )}
-              </dd>
-              <dt className="text-[#727a8b]">{t("columnProfiles")}</dt>
-              <dd>
-                <RowStatus status={row.status} />
-              </dd>
-              <dt className="text-[#727a8b]">{t("columnPostcodes")}</dt>
-              <dd>
-                {row.sampledCities
-                  ? `${row.postcodeCities}/${row.sampledCities}`
-                  : "—"}
-              </dd>
-              <dt className="text-[#727a8b]">{t("columnPhone")}</dt>
-              <dd>
-                <PhoneSource status={row.phone} />
-              </dd>
-              <dt className="text-[#727a8b]">{t("columnAddresses")}</dt>
-              <dd>
-                {row.status === "available"
-                  ? t("addressIllustrative")
-                  : t("notAvailable")}
-              </dd>
-            </dl>
-            <p className="mt-3 border-t border-[#edf0f4] pt-3 text-xs text-[#727a8b]">
-              {t(noteKey(row))}
-            </p>
-          </article>
-        ))}
-      </div>
-
-      {filtered.length === 0 && (
-        <div className="border-x border-b border-[#e2e6ec] px-4 py-16 text-center text-sm text-[#657084]">
-          {t("empty")}
-        </div>
-      )}
-      <div className="mt-7 flex flex-wrap items-center justify-between gap-4 text-xs text-[#697284]">
-        <p>{t("showing", { first, last, count: filtered.length })}</p>
-        {filtered.length > pageSize && (
-          <PageButtons page={currentPage} pages={pages} onPage={setPage} />
+                </dd>
+                <dt className="text-[#727a8b]">{t("columnAddresses")}</dt>
+                <dd>
+                  {row.status === "available"
+                    ? t("addressIllustrative")
+                    : t("notAvailable")}
+                </dd>
+              </dl>
+              <p className="mt-3 border-t border-[#edf0f4] pt-3 text-xs text-[#727a8b]">
+                {t(noteKey(row))}
+              </p>
+            </article>
+          ))
         )}
       </div>
+
+      {!loading && (
+        <div className="mt-7 flex flex-wrap items-center justify-between gap-4 text-xs text-[#697284]">
+          <p>
+            {filtered.length === 0
+              ? t("filteredCount", { count: 0, total: coverageTotals.all })
+              : t("showing", { first, last, count: filtered.length })}
+          </p>
+          {filtered.length > pageSize && (
+            <PageButtons page={currentPage} pages={pages} onPage={setPage} />
+          )}
+        </div>
+      )}
     </>
   );
 }
