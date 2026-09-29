@@ -1,9 +1,26 @@
-Send one request to the current public beta API:
+import { Link } from '@/i18n/navigation'
+import { CodeBlock } from '@/components/docs/code-block'
+import { firstRequest, javascriptRequest } from '@/lib/docs-examples'
 
-```sh
-curl 'https://persona-dev.onrender.com/people?count=1&seed=docs-demo&asOf=2026-09-28'
-```
+Persona is open during beta: no API key, account or request body is needed. Send a `GET` request to the staging API.
 
-The response contains `results` and `meta`. Each result has a structured `name`, `dob` and `location`. `picture` can be `null`.
+## curl
 
-Supply both `seed` and `asOf` to replay the same result while the data, catalog and generation algorithm versions remain unchanged. Read the [complete v2 contract](https://github.com/Osiris-Balonga/persona/blob/dev/docs/api.md) before using additional filters.
+<CodeBlock language="shell" code={firstRequest} copyLabel="Copy" copiedLabel="Copied" />
+
+The parameters ask for one adult or senior with French nationality and a residence in Brazzaville, Congo. `seed` and `asOf` make the request replayable against unchanged data, portrait catalog and generation algorithm versions.
+
+## JavaScript
+
+<CodeBlock language="javascript" code={javascriptRequest} copyLabel="Copy" copiedLabel="Copied" />
+
+Read `results[0]` for the person and `meta` for the count, reference date, seed and version identifiers. The <Link href="/docs/response">response guide</Link> includes a complete JSON example. A requested portrait, phone or postcode may be `null`.
+
+## Next steps
+
+- <Link href="/docs/people">Explore supported filters</Link>. `count` accepts 1–100 and defaults to 1.
+- <Link href="/docs/replay">Learn seeded replay and ETags</Link>.
+- <Link href="/docs/errors">Handle 400 and 429 responses</Link>.
+- <Link href="/playground">Open the playground</Link> when the live builder is ready.
+
+The staging origin is `https://persona-dev.onrender.com`. Replace it with the production origin when published. Never contact generated email addresses or phone numbers.

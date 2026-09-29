@@ -1,0 +1,19 @@
+import { Link } from '@/i18n/navigation'
+import { CodeBlock } from '@/components/docs/code-block'
+import { replayRequest } from '@/lib/docs-examples'
+
+Supply **both** `seed` and `asOf` to replay generated people. Results remain repeatable while the filters, geographic data, portrait catalog and generation algorithm versions remain unchanged. `asOf` defaults to the current UTC date, so omitting it can change ages and results over time.
+
+## What changes a result?
+
+Generation v5 derives separate keys for each person and component. Changing `count` or `fields` does not shift the people already generated or alter retained values. Changing `emailDomain` changes email addresses and the response ETag, but not identity or portrait choices. Without a seed, the API draws fresh entropy and returns `meta.seed: null`.
+
+The response reports `meta.dataVersion`, `meta.catalogVersion` and `meta.schemaVersion`. Store these with the request parameters when a test must be reproducible. A deployed update may change results even with the same seed and date.
+
+## Conditional requests
+
+Successful responses with explicit `seed` and `asOf` return `Cache-Control: private, no-cache` and an `ETag`. Send that ETag in `If-None-Match` to receive `304 Not Modified` when the response is unchanged. Replace the placeholder below with the exact ETag from your first response.
+
+<CodeBlock language="shell" code={replayRequest} copyLabel="Copy" copiedLabel="Copied" />
+
+Other successful responses and errors use `Cache-Control: no-store`. Conditional requests still count toward the <Link href="/docs/errors">rate limit</Link>. Return to the <Link href="/docs/quickstart">quickstart</Link> for a first request.

@@ -1,5 +1,25 @@
-Persona is a public, keyless API for coherent fictional people. `GET /people` returns structured names, ages, locations and contact details, with a reviewed portrait when a compatible image is available.
+import { Link } from '@/i18n/navigation'
 
-The current response uses schema version **2**. Start with the quickstart, then consult the [full API contract](https://github.com/Osiris-Balonga/persona/blob/dev/docs/api.md) for every filter and field.
+Persona generates coherent fictional profiles for product interfaces and tests. The public v2 API currently exposes one keyless endpoint, `GET /people`. It returns structured identity, location and contact data, plus a reviewed portrait when one is available.
 
-> Generated addresses are illustrative. Some generated phone numbers may belong to real subscribers; do not contact them.
+## Start here
+
+1. <Link href="/docs/quickstart">Make your first request</Link> with curl or JavaScript.
+2. <Link href="/docs/people">Choose request parameters</Link> for the people you need.
+3. <Link href="/docs/response">Read the response and select fields</Link>.
+4. <Link href="/docs/errors">Handle errors and rate limits</Link>.
+5. <Link href="/docs/replay">Replay seeded requests</Link>.
+
+You can also <Link href="/playground">try the playground</Link> when its live request builder is available.
+
+## Beta endpoint
+
+`https://persona-dev.onrender.com/people`
+
+This is the **staging** API origin for the public beta. Replace it when a production origin is published. The API does not require a key. Browser requests allow `GET` and `HEAD` from any origin without credentials.
+
+## Use generated data responsibly
+
+Profiles are fictional. Addresses are illustrative, and city coordinates do not locate the generated street or a person. Some fallback phone numbers may belong to real subscribers. Do not call, text or email generated contacts; a custom email domain may be live. Portraits can be absent when no reviewed match exists.
+
+<p className="text-sm text-muted-foreground">Contract checked against Persona API <a href="https://github.com/Osiris-Balonga/persona/tree/81a058ffca1fc8753fb3f0bd6ec861cb0210dcc1">dev revision 81a058f</a>. Data availability and deployed behavior may change during beta.</p>

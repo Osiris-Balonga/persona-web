@@ -1,0 +1,37 @@
+import { Link } from '@/i18n/navigation'
+import { CodeBlock } from '@/components/docs/code-block'
+import { fieldsRequest, sampleResponse } from '@/lib/docs-examples'
+
+Une réponse réussie contient un tableau `results` et un objet `meta`. Cet exemple v2 complet est un **instantané du dépôt API**, sans garantie de résultat identique sur l’API déployée. Il illustre une requête avec `seed=guide-v2`, `asOf=2026-09-28`, une nationalité française et une résidence à Brazzaville, au Congo.
+
+<CodeBlock language="json" code={sampleResponse} copyLabel="Copier" copiedLabel="Copié" />
+
+## Champs d’une personne
+
+Chaque résultat contient `id`, `gender`, `name` (`first`, `last`, `full`), `nationality`, `dob` (`date`, `age`, `ageGroup`), `location`, `email`, `phone` et `picture`. L’âge est compris entre 6 et 100 ans à la date `meta.asOf`. La localisation comprend `street`, `city`, `state`, `country` (`code`, `name`), `postcode`, `coordinates` (`latitude`, `longitude`, `precision`) et `formatted`.
+
+`street`, `state`, `postcode`, `phone` et `picture` peuvent valoir `null`. Un objet `picture` non nul contient des URL HTTPS WebP `large`, `medium` et `thumbnail`. Les coordonnées sont le point GeoNames exact de la ville choisie, avec `precision: "city"` ; elles ne situent ni la rue illustrative ni une personne.
+
+`meta` contient `count`, `asOf`, `seed` (ou `null`), `schemaVersion: "2"`, `dataVersion` et `catalogVersion`. Un objet `login` synthétique (`username`, `password`) est **omis par défaut** et peut être demandé avec `fields` ; il ne sert qu’à la démonstration.
+
+## Sélectionner les champs publics
+
+`fields` sélectionne les propriétés de chaque résultat ; `results` et `meta` restent présents. Sans ce paramètre, tous les champs publics sauf `login` sont inclus.
+
+<CodeBlock language="shell" code={fieldsRequest} copyLabel="Copier" copiedLabel="Copié" />
+
+Chemins racine autorisés : `id`, `gender`, `name`, `nationality`, `dob`, `location`, `email`, `phone`, `picture`, `login`.
+
+| Parent | Sous-champs |
+| --- | --- |
+| `name` | `first`, `last`, `full` |
+| `dob` | `date`, `age`, `ageGroup` |
+| `location` | `street`, `city`, `state`, `country`, `postcode`, `coordinates`, `formatted` |
+| `location.country` | `code`, `name` |
+| `location.coordinates` | `latitude`, `longitude`, `precision` |
+| `picture` | `large`, `medium`, `thumbnail` |
+| `login` | `username`, `password` |
+
+Un chemin vide, inconnu, répété ou contradictoire tel que `name,name.first` renvoie 400. Un parent nullable reste `null` même si l’un de ses enfants est sélectionné. La sélection a lieu après génération et ne change pas les valeurs conservées pour la même seed et les mêmes versions.
+
+Consultez les <Link href="/docs/people">paramètres de requête</Link> ou les <Link href="/docs/replay">règles de rejeu</Link>.

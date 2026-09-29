@@ -27,11 +27,31 @@
     "description": "Commencez par une requête, puis explorez le contrat public v2.",
     "overview": "Vue d’ensemble",
     "quickstart": "Démarrage rapide",
+    "people": "GET /people",
+    "response": "Réponse et champs",
+    "errors": "Erreurs et limites",
+    "replay": "Rejeu avec seed",
     "readQuickstart": "Lire le guide de démarrage"
   },
   "Quickstart": {
     "title": "Démarrage rapide",
     "description": "Effectuez votre première requête vers l’API Persona sans clé."
+  },
+  "PeopleReference": {
+    "title": "GET /people",
+    "description": "Le point d’entrée public v2 et ses paramètres de requête disponibles."
+  },
+  "ResponseReference": {
+    "title": "Réponse et sélection des champs",
+    "description": "Comprendre le schéma des profils v2 et choisir les champs utiles."
+  },
+  "ErrorsReference": {
+    "title": "Erreurs et limites",
+    "description": "Gérer les requêtes invalides, la taille des réponses et les limites de débit."
+  },
+  "ReplayReference": {
+    "title": "Rejeu avec seed",
+    "description": "Reproduire les profils et utiliser les requêtes conditionnelles."
   },
   "Playground": {
     "eyebrow": "Espace d’essai de l’API",

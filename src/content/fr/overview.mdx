@@ -1,5 +1,25 @@
-Persona est une API publique sans clé qui fournit des personnes fictives cohérentes. `GET /people` renvoie des noms, âges, lieux et coordonnées structurés, ainsi qu’un portrait validé lorsqu’une image compatible est disponible.
+import { Link } from '@/i18n/navigation'
 
-La réponse actuelle utilise la version **2** du schéma. Commencez par le guide de démarrage, puis consultez le [contrat complet de l’API](https://github.com/Osiris-Balonga/persona/blob/dev/docs/api.md) pour connaître tous les filtres et champs.
+Persona génère des profils fictifs cohérents pour les interfaces et les tests. L’API publique v2 expose actuellement un point d’entrée sans clé, `GET /people`. Elle renvoie une identité, une localisation et des coordonnées structurées, ainsi qu’un portrait validé lorsqu’il est disponible.
 
-> Les adresses générées sont illustratives. Certains numéros de téléphone générés peuvent appartenir à de vrais abonnés ; ne les contactez pas.
+## Pour commencer
+
+1. <Link href="/docs/quickstart">Effectuez votre première requête</Link> avec curl ou JavaScript.
+2. <Link href="/docs/people">Choisissez les paramètres</Link> des personnes souhaitées.
+3. <Link href="/docs/response">Lisez la réponse et sélectionnez les champs</Link>.
+4. <Link href="/docs/errors">Gérez les erreurs et les limites</Link>.
+5. <Link href="/docs/replay">Rejouez une requête avec seed</Link>.
+
+Vous pourrez aussi <Link href="/playground">essayer le playground</Link> dès que son formulaire interactif sera disponible.
+
+## Adresse de la bêta
+
+`https://persona-dev.onrender.com/people`
+
+Il s’agit de l’origine API de **préproduction** pour la bêta publique. Elle sera remplacée après publication de l’origine de production. Aucune clé API n’est requise. Les requêtes navigateur `GET` et `HEAD` sont autorisées depuis toute origine, sans identifiants.
+
+## Utiliser les données générées avec prudence
+
+Les profils sont fictifs. Les adresses sont illustratives et les coordonnées sont celles de la ville, pas de la rue ou de la personne. Certains numéros de secours peuvent appartenir à de vrais abonnés. N’appelez pas et n’envoyez ni SMS ni e-mail aux contacts générés ; un domaine e-mail personnalisé peut être actif. Un portrait peut manquer faute de correspondance validée.
+
+<p className="text-sm text-muted-foreground">Contrat vérifié à la <a href="https://github.com/Osiris-Balonga/persona/tree/81a058ffca1fc8753fb3f0bd6ec861cb0210dcc1">révision API dev 81a058f</a>. La disponibilité des données et le comportement déployé peuvent évoluer pendant la bêta.</p>

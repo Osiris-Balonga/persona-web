@@ -1,0 +1,29 @@
+import { Link } from '@/i18n/navigation'
+import { CodeBlock } from '@/components/docs/code-block'
+import { firstRequest } from '@/lib/docs-examples'
+
+`GET https://persona-dev.onrender.com/people` returns one or more fictional profiles. It needs no API key or request body.
+
+<CodeBlock language="shell" code={firstRequest} copyLabel="Copy" copiedLabel="Copied" />
+
+## Query parameters
+
+| Parameter | Accepted value |
+| --- | --- |
+| `count` | Integer 1–100; default 1. |
+| `gender` | `male` or `female`. |
+| `ageGroup` | Distinct comma-separated values: `child` (6–12), `teen` (13–17), `adult` (18–64), `senior` (65–100). |
+| `nationality` | Uppercase ISO two-letter code with a reviewed name pool. |
+| `residenceCountry` | Uppercase ISO two-letter code with an available city. |
+| `continent` | `africa`, `americas`, `asia`, `europe`, or `oceania`; constrains **nationality**. |
+| `city` | City in the residence country, maximum 100 characters; requires `residenceCountry` or `nationality`. |
+| `emailDomain` | ASCII domain with at least two labels; lowercased; default `example.test`. |
+| `seed` | Nonblank string, maximum 128 characters. |
+| `asOf` | Valid `YYYY-MM-DD` date; default current UTC date. |
+| `fields` | Comma-separated public field paths, maximum 512 characters. |
+
+With only one country parameter, it supplies both nationality and residence. A residence without a reviewed name pool needs a separate nationality or continent filter. With `continent` and an explicit `residenceCountry`, nationality comes from the continent while residence stays fixed. A nationality outside the requested continent is invalid. Without a country, one is drawn for both.
+
+The encoded query may be at most 2,048 characters. Unknown or repeated parameters return 400. **`age` and `appearance` are not public query filters.**
+
+See the <Link href="/docs/response">response and field selection guide</Link>, the <Link href="/docs/errors">error guide</Link>, or <Link href="/playground">try /people</Link> in the playground.

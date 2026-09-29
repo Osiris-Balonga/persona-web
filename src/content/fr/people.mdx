@@ -1,0 +1,29 @@
+import { Link } from '@/i18n/navigation'
+import { CodeBlock } from '@/components/docs/code-block'
+import { firstRequest } from '@/lib/docs-examples'
+
+`GET https://persona-dev.onrender.com/people` renvoie un ou plusieurs profils fictifs. Aucune clé API ni corps de requête ne sont nécessaires.
+
+<CodeBlock language="shell" code={firstRequest} copyLabel="Copier" copiedLabel="Copié" />
+
+## Paramètres de requête
+
+| Paramètre | Valeur acceptée |
+| --- | --- |
+| `count` | Entier de 1 à 100 ; 1 par défaut. |
+| `gender` | `male` ou `female`. |
+| `ageGroup` | Valeurs distinctes séparées par des virgules : `child` (6–12 ans), `teen` (13–17), `adult` (18–64), `senior` (65–100). |
+| `nationality` | Code ISO à deux lettres majuscules avec un répertoire de noms validé. |
+| `residenceCountry` | Code ISO à deux lettres majuscules avec une ville disponible. |
+| `continent` | `africa`, `americas`, `asia`, `europe` ou `oceania` ; limite la **nationalité**. |
+| `city` | Ville du pays de résidence, 100 caractères maximum ; requiert `residenceCountry` ou `nationality`. |
+| `emailDomain` | Domaine ASCII avec au moins deux segments, mis en minuscules ; `example.test` par défaut. |
+| `seed` | Chaîne non vide, 128 caractères maximum. |
+| `asOf` | Date valide `YYYY-MM-DD` ; date UTC du jour par défaut. |
+| `fields` | Chemins de champs publics séparés par des virgules, 512 caractères maximum. |
+
+Si un seul paramètre de pays est fourni, il détermine la nationalité et la résidence. Une résidence sans répertoire de noms validé nécessite une nationalité ou un continent distinct. Avec `continent` et `residenceCountry` explicite, la nationalité provient du continent tandis que la résidence reste fixe. Une nationalité hors du continent demandé est invalide. Sans pays fourni, un pays est tiré pour les deux.
+
+La requête encodée est limitée à 2 048 caractères. Les paramètres inconnus ou répétés renvoient 400. **`age` et `appearance` ne sont pas des filtres publics.**
+
+Consultez la <Link href="/docs/response">réponse et la sélection des champs</Link>, les <Link href="/docs/errors">erreurs</Link> ou <Link href="/playground">essayez /people</Link> dans le playground.

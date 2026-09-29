@@ -1,0 +1,22 @@
+import { Link } from '@/i18n/navigation'
+
+Vérifiez le statut HTTP avant de lire `results`. Une erreur contient `error.code` et `error.message` ; une entrée invalide identifie aussi `error.parameter` lorsque c’est applicable. Les réponses d’erreur utilisent `Cache-Control: no-store`.
+
+| Statut | Signification | Action |
+| --- | --- | --- |
+| `400` | Entrée invalide, contradictoire ou non prise en charge. Codes possibles : `INVALID_QUERY`, `CONFLICTING_FILTERS` et `UNSUPPORTED_VALUE`. | Corrigez le paramètre indiqué ; ne relancez pas la même requête. |
+| `404` | Route inconnue. | Vérifiez l’URL. |
+| `405` | Méthode non prise en charge sur une route documentée. | Utilisez `GET` ou `HEAD`. |
+| `429` | `RATE_LIMITED`. | Attendez au moins le nombre de secondes indiqué par `Retry-After`. |
+| `503` | `RESPONSE_TOO_LARGE` si la réponse dépasse 256 Kio. | Réduisez `count` ou sélectionnez moins de champs. |
+
+La limite par défaut est de **30 requêtes par minute, par adresse IP cliente et par instance serveur**, requêtes conditionnelles comprises. Le quota est conservé en mémoire par processus ; plusieurs instances ne le partagent pas. Ne comptez pas sur ce détail pour augmenter la capacité.
+
+## Limites des entrées et réponses
+
+- La requête encodée ne peut dépasser 2 048 caractères ; un paramètre inconnu ou répété renvoie 400.
+- Les corps des requêtes `GET` et `HEAD` sont refusés ; la taille des corps est limitée à 1 Kio.
+- Une réponse de plus de 256 Kio renvoie 503 avec `RESPONSE_TOO_LARGE`.
+- Le navigateur peut envoyer `GET` et `HEAD` depuis toute origine sans identifiants.
+
+Consultez les <Link href="/docs/people">règles des paramètres</Link> et le <Link href="/docs/replay">fonctionnement du cache</Link>. Ne contactez pas les numéros ou adresses e-mail générés : certains peuvent appartenir à de vrais abonnés ou à des domaines actifs.

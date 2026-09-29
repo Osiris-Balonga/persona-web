@@ -1,0 +1,19 @@
+import { Link } from '@/i18n/navigation'
+import { CodeBlock } from '@/components/docs/code-block'
+import { replayRequest } from '@/lib/docs-examples'
+
+Fournissez **à la fois** `seed` et `asOf` pour rejouer les personnes générées. Les résultats restent reproductibles tant que les filtres et les versions des données géographiques, du catalogue de portraits et de l’algorithme ne changent pas. `asOf` vaut par défaut la date UTC du jour : son omission peut donc faire évoluer les âges et les résultats.
+
+## Qu’est-ce qui change un résultat ?
+
+La génération v5 dérive des clés distinctes pour chaque personne et chaque composant. Modifier `count` ou `fields` ne décale pas les personnes déjà générées et ne change pas les valeurs conservées. Modifier `emailDomain` change les adresses e-mail et l’ETag de la réponse, mais pas l’identité ni le choix du portrait. Sans seed, l’API tire une nouvelle entropie et renvoie `meta.seed: null`.
+
+La réponse indique `meta.dataVersion`, `meta.catalogVersion` et `meta.schemaVersion`. Conservez-les avec les paramètres quand un test doit être reproductible. Une mise à jour de l’API déployée peut changer les résultats malgré une seed et une date identiques.
+
+## Requêtes conditionnelles
+
+Une réponse réussie avec `seed` et `asOf` explicites fournit `Cache-Control: private, no-cache` et un `ETag`. Transmettez cet ETag dans `If-None-Match` pour recevoir `304 Not Modified` si la réponse n’a pas changé. Remplacez l’espace réservé ci-dessous par l’ETag exact de la première réponse.
+
+<CodeBlock language="shell" code={replayRequest} copyLabel="Copier" copiedLabel="Copié" />
+
+Les autres réponses réussies et les erreurs utilisent `Cache-Control: no-store`. Les requêtes conditionnelles comptent quand même dans la <Link href="/docs/errors">limite de débit</Link>. Revenez au <Link href="/docs/quickstart">démarrage rapide</Link> pour une première requête.

@@ -1,9 +1,26 @@
-Envoyez une première requête à l’API de la bêta publique :
+import { Link } from '@/i18n/navigation'
+import { CodeBlock } from '@/components/docs/code-block'
+import { firstRequest, javascriptRequest } from '@/lib/docs-examples'
 
-```sh
-curl 'https://persona-dev.onrender.com/people?count=1&seed=docs-demo&asOf=2026-09-28'
-```
+Persona est ouverte pendant la bêta : aucune clé API, aucun compte et aucun corps de requête ne sont nécessaires. Envoyez une requête `GET` à l’API de préproduction.
 
-La réponse contient `results` et `meta`. Chaque résultat possède un `name`, un `dob` et un `location` structurés. `picture` peut être `null`.
+## curl
 
-Fournissez `seed` et `asOf` pour reproduire le même résultat tant que les versions des données, du catalogue et de l’algorithme ne changent pas. Consultez le [contrat v2 complet](https://github.com/Osiris-Balonga/persona/blob/dev/docs/api.md) avant d’utiliser d’autres filtres.
+<CodeBlock language="shell" code={firstRequest} copyLabel="Copier" copiedLabel="Copié" />
+
+Ces paramètres demandent une personne adulte ou âgée de nationalité française résidant à Brazzaville, au Congo. `seed` et `asOf` permettent de rejouer la requête si les versions des données, du catalogue de portraits et de l’algorithme restent inchangées.
+
+## JavaScript
+
+<CodeBlock language="javascript" code={javascriptRequest} copyLabel="Copier" copiedLabel="Copié" />
+
+Lisez la personne dans `results[0]` et le nombre, la date de référence, la seed et les versions dans `meta`. Le <Link href="/docs/response">guide de réponse</Link> contient un exemple JSON complet. Le portrait, le téléphone ou le code postal peuvent valoir `null`.
+
+## Pour aller plus loin
+
+- <Link href="/docs/people">Consultez les filtres disponibles</Link>. `count` accepte 1 à 100 et vaut 1 par défaut.
+- <Link href="/docs/replay">Comprenez le rejeu et les ETags</Link>.
+- <Link href="/docs/errors">Gérez les réponses 400 et 429</Link>.
+- <Link href="/playground">Ouvrez le playground</Link> dès que son formulaire interactif sera prêt.
+
+L’origine de préproduction est `https://persona-dev.onrender.com`. Remplacez-la par celle de production dès sa publication. Ne contactez jamais les adresses e-mail ou numéros générés.

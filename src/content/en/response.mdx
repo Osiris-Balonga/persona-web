@@ -1,0 +1,37 @@
+import { Link } from '@/i18n/navigation'
+import { CodeBlock } from '@/components/docs/code-block'
+import { fieldsRequest, sampleResponse } from '@/lib/docs-examples'
+
+Success returns JSON with a `results` array and a `meta` object. This complete v2 sample is a **snapshot from the API repository**, not a promise of identical deployed output. It illustrates a request with `seed=guide-v2`, `asOf=2026-09-28`, French nationality and residence in Brazzaville, Congo.
+
+<CodeBlock language="json" code={sampleResponse} copyLabel="Copy" copiedLabel="Copied" />
+
+## Person fields
+
+Each result has `id`, `gender`, `name` (`first`, `last`, `full`), `nationality`, `dob` (`date`, `age`, `ageGroup`), `location`, `email`, `phone`, and `picture`. Age is 6–100 at `meta.asOf`. Location includes `street`, `city`, `state`, `country` (`code`, `name`), `postcode`, `coordinates` (`latitude`, `longitude`, `precision`) and `formatted`.
+
+`street`, `state`, `postcode`, `phone`, and `picture` may be `null`. Non-null `picture` contains HTTPS WebP `large`, `medium`, and `thumbnail` URLs. Coordinates are the sampled city's exact GeoNames point, marked `precision: "city"`; they do not locate the illustrative street or a person.
+
+`meta` contains `count`, `asOf`, `seed` (or `null`), `schemaVersion: "2"`, `dataVersion` and `catalogVersion`. A synthetic `login` object (`username`, `password`) is **omitted by default** and can be requested through `fields`; treat it as demonstration data.
+
+## Select public fields
+
+`fields` selects properties within each result; `results` and `meta` remain. Without it, all public fields except `login` are included.
+
+<CodeBlock language="shell" code={fieldsRequest} copyLabel="Copy" copiedLabel="Copied" />
+
+Allowed top-level paths: `id`, `gender`, `name`, `nationality`, `dob`, `location`, `email`, `phone`, `picture`, `login`.
+
+| Parent | Nested paths |
+| --- | --- |
+| `name` | `first`, `last`, `full` |
+| `dob` | `date`, `age`, `ageGroup` |
+| `location` | `street`, `city`, `state`, `country`, `postcode`, `coordinates`, `formatted` |
+| `location.country` | `code`, `name` |
+| `location.coordinates` | `latitude`, `longitude`, `precision` |
+| `picture` | `large`, `medium`, `thumbnail` |
+| `login` | `username`, `password` |
+
+An empty, unknown, repeated or conflicting path such as `name,name.first` returns 400. A nullable parent remains `null` when a child is selected. Field selection happens after generation and does not change retained values for the same seed and versions.
+
+See <Link href="/docs/people">request parameters</Link> or <Link href="/docs/replay">replay rules</Link>.

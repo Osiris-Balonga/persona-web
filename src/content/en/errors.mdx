@@ -1,0 +1,22 @@
+import { Link } from '@/i18n/navigation'
+
+Check HTTP status before reading `results`. Errors contain `error.code` and `error.message`; invalid input also identifies `error.parameter` when applicable. Error responses use `Cache-Control: no-store`.
+
+| Status | Meaning | Action |
+| --- | --- | --- |
+| `400` | Invalid, conflicting or unsupported input. Codes include `INVALID_QUERY`, `CONFLICTING_FILTERS` and `UNSUPPORTED_VALUE`. | Correct the named parameter; do not retry unchanged. |
+| `404` | Unknown route. | Check the URL. |
+| `405` | Unsupported method on a documented route. | Use `GET` or `HEAD`. |
+| `429` | `RATE_LIMITED`. | Wait at least the `Retry-After` seconds before retrying. |
+| `503` | `RESPONSE_TOO_LARGE` when output exceeds 256 KiB. | Reduce `count` or select fewer fields. |
+
+The default rate limit is **30 requests per minute per client IP per server instance**, including conditional requests. The quota is in memory per process, so separate instances do not share it. Do not rely on that implementation detail for extra capacity.
+
+## Input and output bounds
+
+- The encoded query is limited to 2,048 characters; unknown and repeated parameters return 400.
+- `GET` and `HEAD` bodies are rejected; request bodies are capped at 1 KiB.
+- A response over 256 KiB returns 503 with `RESPONSE_TOO_LARGE`.
+- Browser access allows `GET` and `HEAD` from any origin without credentials.
+
+See <Link href="/docs/people">parameter rules</Link> and <Link href="/docs/replay">caching behavior</Link>. Do not contact generated phone numbers or email addresses: some may point to real subscribers or active domains.
