@@ -1,21 +1,20 @@
 import "server-only";
 import { summarizeUsage, usageWindow } from "@/lib/usage-stats-core";
-
-const analyticsOrigin = "https://persona-analytics.osirisbalonga.workers.dev";
+import { serverConfig } from "@/lib/server-config";
 
 export async function getUsageStats(now = new Date()) {
-  const token = process.env.ANALYTICS_READ_TOKEN;
+  const token = serverConfig.analyticsReadToken;
   if (!token) throw new Error("Analytics read token is not configured");
 
   const window = usageWindow(now);
-  const environment = process.env.ANALYTICS_ENVIRONMENT === "production" ? "production" : "staging";
+  const environment = serverConfig.analyticsEnvironment;
   const query = new URLSearchParams({
     environment,
     from: window.from,
     to: window.to,
     granularity: "day",
   });
-  const response = await fetch(`${analyticsOrigin}/v1/stats?${query}`, {
+  const response = await fetch(`${serverConfig.analyticsOrigin}/v1/stats?${query}`, {
     headers: { Authorization: `Bearer ${token}` },
     next: { revalidate: 300 },
     signal: AbortSignal.timeout(8000),

@@ -20,9 +20,10 @@ Open `http://localhost:3000`. The English and French routes are `/en` and `/fr`;
 - `src/app/[locale]`: localized pages, layouts, and metadata.
 - `src/i18n` and `messages`: next-intl routing and EN/FR interface strings.
 - `src/lib/docs-content.ts`: bilingual documentation content aligned with the API's public v2 contract.
+- `src/lib/config.ts` and `src/lib/server-config.ts`: public URLs and server-only environment settings.
 - `src/components/ui`: shadcn/ui primitives.
 
-The playground calls the public API from the browser. Set `NEXT_PUBLIC_PERSONA_API_URL` in `.env.local` to change its origin; `.env.example` contains the beta value. Vercel has the same variable configured for Development, Preview, and Production. This variable is intentionally public. Vercel Web Analytics is included in the localized layout.
+The playground and documentation use the public API origin from `NEXT_PUBLIC_PERSONA_API_URL`. Set it in `.env.local` to change the origin; `.env.example` contains the beta value. Vercel has the same variable configured for Development, Preview, and Production. This variable is intentionally public. `NEXT_PUBLIC_SITE_URL` controls canonical and Open Graph URLs when set. Vercel Web Analytics is included in the localized layout.
 
 ## Deployment
 
