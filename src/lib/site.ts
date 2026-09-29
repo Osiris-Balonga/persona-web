@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
 import { routing, type Locale } from "@/i18n/routing";
+import { serverConfig } from "@/lib/server-config";
 
-const configuredOrigin = process.env.NEXT_PUBLIC_SITE_URL;
-const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-
-export const siteOrigin = (
-  configuredOrigin ??
-  (vercelHost ? `https://${vercelHost}` : "http://localhost:3000")
-).replace(/\/$/, "");
+export const siteOrigin = serverConfig.siteOrigin;
 
 export function localizedMetadata(
   locale: Locale,

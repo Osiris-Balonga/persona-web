@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Brand } from "@/components/brand";
+import { config } from "@/lib/config";
 
 export function SiteFooter() {
   const t = useTranslations("Footer");
@@ -21,7 +22,7 @@ export function SiteFooter() {
           <Link href="/coverage" className="hover:text-primary">{nav("coverage")}</Link>
           <Link href="/activity" className="hover:text-primary">{nav("activity")}</Link>
           <Link href="/docs" className="hover:text-primary">{nav("docs")}</Link>
-          <a href="https://github.com/Osiris-Balonga/persona" target="_blank" rel="noreferrer" aria-label="GitHub">
+          <a href={config.repositoryUrl} target="_blank" rel="noreferrer" aria-label="GitHub">
             <Image src="/github.svg" alt="" width={21} height={21} className="dark:invert" />
           </a>
         </nav>

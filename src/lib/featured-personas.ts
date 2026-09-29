@@ -1,5 +1,6 @@
 import { parsePhoneNumberFromString } from "libphonenumber-js/min";
 import { featuredCountries } from "@/lib/featured-geography";
+import { config } from "@/lib/config";
 
 export type FeaturedPerson = {
   id: string;
@@ -32,7 +33,7 @@ async function fetchPerson(code: string): Promise<FeaturedPerson> {
     emailDomain: "persona.com",
     seed: `persona-web-featured-v1-${code}`,
   });
-  const response = await fetch(`https://persona-dev.onrender.com/people?${query}`, { next: { revalidate: 86400 } });
+  const response = await fetch(`${config.peopleUrl}?${query}`, { next: { revalidate: 86400 } });
   if (!response.ok) throw new Error(`Persona API ${response.status} for ${code}`);
   const data: unknown = await response.json();
   const results = (data as { results?: unknown }).results;

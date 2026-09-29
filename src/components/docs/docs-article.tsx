@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { docHref, docs, type DocLocale, type DocSlug } from "@/lib/docs-content";
+import { config } from "@/lib/config";
 import { CodeBlock } from "./code-block";
 import { CopyCode } from "./copy-code";
 import { AiUsagePrompt } from "./ai-usage-prompt";
@@ -21,7 +22,12 @@ export function DocsArticle({ locale, slug, visitorCountry }: { locale: DocLocal
     <nav aria-label={dictionary.label} className="space-y-7">
       {dictionary.navigation.map((group) => (
         <div key={group.title}>
-          <p className="px-3 text-[0.84rem] font-semibold text-[var(--persona-ink)]">{group.title}</p>
+          <p className="flex items-center gap-2 px-3 text-[0.84rem] font-semibold text-[var(--persona-ink)]">
+            {group.title}
+            {group.items.some((item) => item.slug === "ai-usage") && (
+              <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-primary" />
+            )}
+          </p>
           <div className="mt-2 space-y-0.5">
             {group.items.map((item) => (
               <Link
@@ -43,7 +49,7 @@ export function DocsArticle({ locale, slug, visitorCountry }: { locale: DocLocal
     <div className="w-full bg-[var(--persona-surface)]">
     <div className="docs-shell mx-auto grid w-full max-w-7xl grid-cols-1 gap-0 px-5 md:grid-cols-[216px_minmax(0,1fr)] md:px-8 xl:grid-cols-[232px_minmax(0,1fr)_204px]">
       <aside className="hidden pb-20 pt-9 md:block">
-        <div className="sticky top-7 max-h-[calc(100vh-3.5rem)] overflow-y-auto pr-5 [scrollbar-width:thin]">{navigation}</div>
+        <div className="docs-nav-scroll sticky top-7 max-h-[calc(100vh-3.5rem)] overflow-y-auto pr-5">{navigation}</div>
       </aside>
 
       <main className="min-w-0 pb-20 pt-8 md:px-10 md:pt-12 lg:px-14 xl:pl-28 xl:pr-12">
@@ -59,8 +65,8 @@ export function DocsArticle({ locale, slug, visitorCountry }: { locale: DocLocal
 
           {slug === "quickstart" && (
             <div className="mt-8 flex min-w-0 items-center justify-between gap-3 rounded-md bg-[var(--persona-soft-surface)] px-4 py-3 font-mono text-[0.8rem] text-primary sm:text-sm">
-              <span className="min-w-0 break-all sm:whitespace-nowrap">https://persona-dev.onrender.com/people</span>
-              <CopyCode theme="light" value="https://persona-dev.onrender.com/people" copyLabel={dictionary.copy} copiedLabel={dictionary.copied} announcement={dictionary.copiedDescription} />
+              <span className="min-w-0 break-all sm:whitespace-nowrap">{config.peopleUrl}</span>
+              <CopyCode theme="light" value={config.peopleUrl} copyLabel={dictionary.copy} copiedLabel={dictionary.copied} announcement={dictionary.copiedDescription} />
             </div>
           )}
 
