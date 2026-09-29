@@ -1,7 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { docHref, docs, type DocLocale, type DocSlug } from "@/lib/docs-content";
+import { CodeBlock } from "./code-block";
 import { CopyCode } from "./copy-code";
+import { AiUsagePrompt } from "./ai-usage-prompt";
 
 function InlineText({ value }: { value: string }) {
   return value.split(/(`[^`]+`)/g).map((part, index) =>
@@ -11,18 +13,7 @@ function InlineText({ value }: { value: string }) {
   );
 }
 
-function CodeText({ value, language }: { value: string; language: string }) {
-  if (language !== "json" && language !== "bash" && language !== "http") return value;
-  return value.split(/("(?:\\.|[^"\\])*"(?=\s*:)|"(?:\\.|[^"\\])*"|\bcurl\b|\bGET\b|\b\d+\b)/g).map((part, index) => {
-    const color = part === "curl" || part === "GET" ? "text-[#58e2ad]"
-      : part.startsWith('"') && /"\s*$/.test(part) && value.includes(`${part}:`) ? "text-[#a5bcff]"
-      : part.startsWith('"') ? "text-[#8fdfc2]"
-      : /^\d+$/.test(part) ? "text-[#eab17e]" : "";
-    return color ? <span key={index} className={color}>{part}</span> : part;
-  });
-}
-
-export function DocsArticle({ locale, slug }: { locale: DocLocale; slug: DocSlug }) {
+export function DocsArticle({ locale, slug, visitorCountry }: { locale: DocLocale; slug: DocSlug; visitorCountry?: string }) {
   const dictionary = docs[locale];
   const page = dictionary.pages[slug];
 
@@ -81,13 +72,9 @@ export function DocsArticle({ locale, slug }: { locale: DocLocale; slug: DocSlug
                   <p key={paragraph} className="mt-3 text-[0.88rem] leading-[1.8] text-[var(--persona-copy)]"><InlineText value={paragraph} /></p>
                 ))}
                 {section.code && (
-                  <div className="mt-4 min-w-0 overflow-hidden rounded-md bg-[#1c2534] text-slate-100">
-                    <div className="flex h-10 items-center justify-end border-b border-white/10 px-4">
-                      <CopyCode value={section.code.value} copyLabel={dictionary.copy} copiedLabel={dictionary.copied} announcement={dictionary.copiedDescription} />
-                    </div>
-                    <pre tabIndex={0} className="docs-code-scroll overflow-x-auto px-4 py-4 text-[0.76rem] leading-[1.75] sm:text-[0.8rem]"><code><CodeText value={section.code.value} language={section.code.language} /></code></pre>
-                  </div>
+                  <div className="mt-4"><CodeBlock value={section.code.value} language={section.code.language} copyLabel={dictionary.copy} copiedLabel={dictionary.copied} announcement={dictionary.copiedDescription} /></div>
                 )}
+                {section.prompt && <AiUsagePrompt locale={locale} country={visitorCountry ?? "CG"} kind={section.prompt} copyLabel={dictionary.copy} copiedLabel={dictionary.copied} announcement={dictionary.copiedDescription} />}
                 {section.bullets && (
                   <ul className="mt-4 space-y-2.5">
                     {section.bullets.map((bullet) => (

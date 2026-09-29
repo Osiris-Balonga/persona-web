@@ -1,5 +1,5 @@
 export const docSlugs = [
-  "overview", "people", "parameters", "response", "errors", "coverage", "replay", "limits",
+  "overview", "people", "parameters", "response", "errors", "coverage", "replay", "limits", "ai-usage",
 ] as const;
 
 export type DocSlug = "quickstart" | (typeof docSlugs)[number];
@@ -14,6 +14,7 @@ type Section = {
   bullets?: string[];
   table?: Table;
   note?: string;
+  prompt?: "testimonials" | "table";
 };
 type Page = { title: string; description: string; sections: Section[] };
 type NavigationGroup = { title: string; items: { slug: DocSlug; label: string }[] };
@@ -41,6 +42,7 @@ export const docs: Record<DocLocale, DocsDictionary> = {
       { title: "Démarrer", items: [{ slug: "overview", label: "Vue d’ensemble" }, { slug: "quickstart", label: "Première requête" }] },
       { title: "Référence", items: [{ slug: "people", label: "GET /people" }, { slug: "parameters", label: "Paramètres" }, { slug: "response", label: "Réponse" }, { slug: "errors", label: "Erreurs" }] },
       { title: "Comprendre les données", items: [{ slug: "coverage", label: "Pays et couverture" }, { slug: "replay", label: "Résultats reproductibles" }, { slug: "limits", label: "Limites et sécurité" }] },
+      { title: "Utiliser", items: [{ slug: "ai-usage", label: "Avec l’IA" }] },
     ],
     pages: {
       quickstart: {
@@ -150,6 +152,16 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
           { id: "safety", title: "Utiliser les données avec prudence", paragraphs: ["Les adresses sont illustratives et ne sont pas vérifiées pour la livraison. Les coordonnées géographiques correspondent à une ville. Les portraits peuvent être absents."], note: "Des numéros de secours au format valide peuvent appartenir à de vrais abonnés. Ne passez aucun appel, SMS ou email vers des coordonnées générées, surtout si vous choisissez un domaine email réel." },
         ],
       },
+      "ai-usage": {
+        title: "Utiliser Persona avec l’IA",
+        description: "Deux prompts prêts à copier pour créer des interfaces de démonstration avec des profils fictifs récupérés via Persona.",
+        sections: [
+          { id: "principle", title: "Donner une source à l’assistant", paragraphs: ["Indiquez à votre assistant l’URL de `GET /people` et demandez-lui de lire `results` avant de composer l’interface. Les filtres `nationality` et `residenceCountry` ciblent ici le pays de l’exemple ; `count`, `ageGroup` et `fields` limitent la réponse aux données utiles."] },
+          { id: "testimonials", title: "Témoignages fictifs", paragraphs: ["Ce prompt crée une section de démonstration avec des portraits, des noms et des villes issus de l’API. Les avis restent explicitement fictifs."], prompt: "testimonials" },
+          { id: "table", title: "Table d’utilisateurs", paragraphs: ["Celui-ci remplit une table avec dix profils et des colonnes provenant de la réponse, sans inventer de statut ni de solde."], prompt: "table" },
+          { id: "verify", title: "Vérifier le résultat", bullets: ["Si l’assistant n’a pas accès au réseau, fournissez-lui la réponse JSON vous-même ; il ne doit pas inventer les profils.", "`picture` peut être `null` : prévoyez des initiales à la place d’une photo.", "`seed` et `asOf` figent l’exemple tant que les versions de données et d’algorithme ne changent pas.", "Ne présentez pas les avis fictifs comme de vrais témoignages et ne contactez pas les coordonnées générées."] },
+        ],
+      },
     },
   },
   en: {
@@ -158,6 +170,7 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
       { title: "Start here", items: [{ slug: "overview", label: "Overview" }, { slug: "quickstart", label: "First request" }] },
       { title: "Reference", items: [{ slug: "people", label: "GET /people" }, { slug: "parameters", label: "Parameters" }, { slug: "response", label: "Response" }, { slug: "errors", label: "Errors" }] },
       { title: "Understand the data", items: [{ slug: "coverage", label: "Countries and coverage" }, { slug: "replay", label: "Repeatable results" }, { slug: "limits", label: "Limits and safety" }] },
+      { title: "Use Persona", items: [{ slug: "ai-usage", label: "With AI" }] },
     ],
     pages: {
       quickstart: { title: "First request", description: "Retrieve coherent fictional people from the public API with one request. No API key is required.", sections: [
@@ -230,6 +243,12 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
       limits: { title: "Limits and safety", description: "A few rules help you use Persona without overloading the API or mistaking fictional data for real contact details.", sections: [
         { id: "limits", title: "Service limits", bullets: ["30 requests per minute per IP per instance; 429 and Retry-After beyond that.", "Encoded query string: 2,048 characters maximum.", "Response: 256 KiB maximum; otherwise 503 RESPONSE_TOO_LARGE.", "Browser access: GET and HEAD from any origin without credentials."] },
         { id: "safety", title: "Use data carefully", paragraphs: ["Addresses are illustrative and not verified delivery destinations. Geographic coordinates represent a city. Portraits may be absent."], note: "Format-valid fallback numbers may belong to real subscribers. Never call, text or email generated contacts, especially if you choose a live email domain." },
+      ] },
+      "ai-usage": { title: "Use Persona with AI", description: "Two ready-to-copy prompts for building demo interfaces with fictional profiles retrieved from Persona.", sections: [
+        { id: "principle", title: "Give the assistant a source", paragraphs: ["Give your assistant the `GET /people` URL and ask it to read `results` before composing the interface. The `nationality` and `residenceCountry` filters target the example country; `count`, `ageGroup` and `fields` keep the response focused."] },
+        { id: "testimonials", title: "Fictional testimonials", paragraphs: ["This prompt builds a demo section with portraits, names and cities from the API. The quotes are explicitly fictional."], prompt: "testimonials" },
+        { id: "table", title: "Users table", paragraphs: ["This one fills a table with ten profiles and columns from the response, without inventing status or balance fields."], prompt: "table" },
+        { id: "verify", title: "Check the result", bullets: ["If the assistant cannot access the network, provide the JSON response yourself; it must not invent profiles.", "`picture` may be `null`: show initials when no portrait is available.", "`seed` and `asOf` keep the example stable while data and algorithm versions remain unchanged.", "Do not present fictional quotes as real testimonials or contact generated details."] },
       ] },
     },
   },
