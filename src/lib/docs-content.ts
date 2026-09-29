@@ -42,8 +42,8 @@ export const docs: Record<DocLocale, DocsDictionary> = {
     openPlayground: "Essayer /people",
     navigation: [
       { title: "Démarrer", items: [{ slug: "overview", label: "Vue d’ensemble" }, { slug: "quickstart", label: "Première requête" }] },
-      { title: "Référence", items: [{ slug: "people", label: "GET /people" }, { slug: "parameters", label: "Paramètres" }, { slug: "response", label: "Réponse" }, { slug: "errors", label: "Erreurs" }] },
       { title: "Utiliser avec l’IA", items: [{ slug: "ai-usage", label: "Prompts à copier" }] },
+      { title: "Référence", items: [{ slug: "people", label: "GET /people" }, { slug: "parameters", label: "Paramètres" }, { slug: "response", label: "Réponse" }, { slug: "errors", label: "Erreurs" }] },
       { title: "Pour aller plus loin", items: [{ slug: "coverage", label: "Pays et couverture" }, { slug: "replay", label: "Résultats reproductibles" }, { slug: "limits", label: "Limites et sécurité" }] },
     ],
     pages: {
@@ -168,8 +168,8 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
     label: "Documentation", onThisPage: "On this page", copy: "Copy", copied: "Copied", copiedDescription: "Code copied to clipboard", openPlayground: "Try /people",
     navigation: [
       { title: "Start here", items: [{ slug: "overview", label: "Overview" }, { slug: "quickstart", label: "First request" }] },
-      { title: "Reference", items: [{ slug: "people", label: "GET /people" }, { slug: "parameters", label: "Parameters" }, { slug: "response", label: "Response" }, { slug: "errors", label: "Errors" }] },
       { title: "Use with AI", items: [{ slug: "ai-usage", label: "Copyable prompts" }] },
+      { title: "Reference", items: [{ slug: "people", label: "GET /people" }, { slug: "parameters", label: "Parameters" }, { slug: "response", label: "Response" }, { slug: "errors", label: "Errors" }] },
       { title: "Go further", items: [{ slug: "coverage", label: "Countries and coverage" }, { slug: "replay", label: "Repeatable results" }, { slug: "limits", label: "Limits and safety" }] },
     ],
     pages: {
