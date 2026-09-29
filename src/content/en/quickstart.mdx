@@ -1,9 +1,0 @@
-Send one request to the current public beta API:
-
-```sh
-curl 'https://persona-dev.onrender.com/people?count=1&seed=docs-demo&asOf=2026-09-28'
-```
-
-The response contains `results` and `meta`. Each result has a structured `name`, `dob` and `location`. `picture` can be `null`.
-
-Supply both `seed` and `asOf` to replay the same result while the data, catalog and generation algorithm versions remain unchanged. Read the [complete v2 contract](https://github.com/Osiris-Balonga/persona/blob/dev/docs/api.md) before using additional filters.

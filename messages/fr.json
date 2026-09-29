@@ -5,14 +5,18 @@
   },
   "Nav": {
     "home": "Accueil",
-    "product": "Produit",
-    "api": "API",
     "docs": "Documentation",
     "playground": "Essayer /people",
     "coverage": "Couverture",
     "github": "GitHub",
     "menu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu"
+  },
+  "Theme": {
+    "change": "Choisir le thème",
+    "system": "Système",
+    "light": "Clair",
+    "dark": "Sombre"
   },
   "Home": {
     "eyebrow": "Des personnes fictives pour de meilleurs produits",
@@ -39,23 +43,31 @@
     "portraitsTitle": "1 764 portraits validés",
     "portraitsDescription": "Des portraits réalistes, de qualité et contrôlés manuellement. Un profil peut ne pas avoir d’image."
   },
-  "Docs": {
-    "eyebrow": "Documentation développeur",
-    "title": "Développer avec Persona",
-    "description": "Commencez par une requête, puis explorez le contrat public v2.",
-    "overview": "Vue d’ensemble",
-    "quickstart": "Démarrage rapide",
-    "readQuickstart": "Lire le guide de démarrage"
-  },
-  "Quickstart": {
-    "title": "Démarrage rapide",
-    "description": "Effectuez votre première requête vers l’API Persona sans clé."
-  },
   "Playground": {
     "eyebrow": "Espace d’essai de l’API",
     "title": "Essayer /people",
-    "description": "Le formulaire de requête interactif arrive à la prochaine étape. Vous pouvez déjà utiliser le guide de l’API pour envoyer une requête.",
-    "guide": "Lire le guide de l’API"
+    "description": "Générez des personnes réalistes avec une simple requête API. Configurez les paramètres ci-dessous et voyez le résultat en direct.",
+    "aside": "Des données réalistes.\nPour un Internet plus ouvert\net plus créatif.",
+    "configuration": "Configuration",
+    "configurationHint": "Définissez les paramètres de la requête. Tous les champs sont facultatifs.",
+    "count": "Nombre", "countHint": "Nombre de personnes à générer (1–100)",
+    "gender": "Genre", "any": "Tous", "female": "Femme", "male": "Homme", "other": "Autre",
+    "ageGroup": "Tranche d’âge", "child": "Enfant", "teen": "Adolescent", "adult": "Adulte", "senior": "Senior",
+    "continent": "Continent", "allContinents": "Tous les continents", "continentHint": "Limite les nationalités proposées", "africa": "Afrique", "americas": "Amériques", "asia": "Asie", "europe": "Europe", "oceania": "Océanie",
+    "searchContinent": "Rechercher un continent...", "searchCountry": "Rechercher un pays...", "searchCity": "Rechercher une ville...", "noSearchResults": "Aucun résultat",
+    "nationality": "Nationalité", "anyNationality": "Toutes les nationalités", "nationalityHint": "Nationalité de la personne",
+    "residenceCountry": "Pays de résidence", "anyResidence": "Tous les pays de résidence", "residenceHint": "Pays où vit la personne",
+    "city": "Ville", "cityPlaceholder": "Choisir une ville", "cityHint": "Choisissez d’abord un pays", "cityHintSelected": "Rechercher dans les villes du pays choisi",
+    "emailDomain": "Domaine email", "seed": "Graine", "seedHint": "Même graine et même date, mêmes résultats", "asOf": "À la date du", "asOfHint": "Date de référence pour l’âge",
+    "fields": "Champs", "allFields": "Tous les champs", "selectedFields": "{count} sélectionnés",
+    "requestPreview": "Aperçu de la requête", "copyUrl": "Copier l’URL de la requête", "runRequest": "Envoyer la requête", "cancelRequest": "Annuler la requête",
+    "result": "Résultat", "resultHint": "La réponse de l’API apparaît ici", "resultCount": "{count, plural, one {# personne générée} other {# personnes générées}}",
+    "previousPerson": "Personne précédente", "nextPerson": "Personne suivante", "of": "sur", "selectPerson": "Afficher la personne {number}", "allPeople": "Les {count}",
+    "unnamed": "Personne sans nom", "ageUnit": "ans", "copyJson": "Copier le JSON", "copied": "Copié",
+    "loading": "Génération des personnes", "runToSeeResults": "Envoyez la requête pour voir un profil en direct.", "noResults": "Aucune personne renvoyée.",
+    "requestFailed": "Échec de la requête", "retry": "Réessayer", "unknownError": "Erreur de paramètre inconnue",
+    "errorOffline": "Vous êtes hors ligne. Reconnectez-vous et réessayez.", "errorUnavailable": "L’API Persona est temporairement indisponible. Réessayez plus tard.", "errorInvalidResponse": "L’API a renvoyé une réponse inattendue.", "errorBadRequest": "Vérifiez vos paramètres : {detail}", "errorRateLimit": "Trop de requêtes. Réessayez dans {seconds} secondes.", "errorTimeout": "La requête a expiré. Réessayez.", "errorGeneric": "La requête n’a pas abouti. Réessayez.",
+    "problemCount": "Saisissez un nombre entre 1 et 100.", "problemCity": "Choisissez une nationalité ou un pays de résidence avant de saisir une ville.", "problemNationality": "Cette nationalité est hors du continent choisi.", "problemEmailDomain": "Saisissez un domaine email valide.", "problemSeed": "La graine est trop longue.", "problemAsOf": "Saisissez une date de référence valide.", "problemUrl": "L’URL est trop longue. Sélectionnez moins de champs."
   },
   "Coverage": {
     "eyebrow": "Couverture des données",
@@ -65,6 +77,9 @@
     "searchPlaceholder": "Rechercher un pays...",
     "regionLabel": "Filtrer par région",
     "allRegions": "Toutes les régions",
+    "searchRegion": "Rechercher une région...",
+    "searchAvailability": "Rechercher une disponibilité...",
+    "noSearchResults": "Aucun résultat",
     "continents": "Continents",
     "subregions": "Sous-régions",
     "availabilityLabel": "Filtrer par disponibilité des profils",

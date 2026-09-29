@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Button } from "@/components/ui/button";
+import { Suspense } from "react";
+import { Playground } from "@/components/playground";
 import { requireLocale } from "@/lib/locale";
 import { localizedMetadata } from "@/lib/site";
 
@@ -17,11 +18,34 @@ export default async function PlaygroundPage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations("Playground");
   return (
-    <main className="mx-auto w-full max-w-7xl px-5 py-16 md:px-8">
-      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary">{t("eyebrow")}</p>
-      <h1 className="text-4xl font-bold tracking-tight">{t("title")}</h1>
-      <p className="mt-5 max-w-2xl leading-7 text-muted-foreground">{t("description")}</p>
-      <Button asChild className="mt-8"><a href="https://github.com/Osiris-Balonga/persona/blob/dev/docs/api.md" target="_blank" rel="noreferrer">{t("guide")}</a></Button>
+    <main
+      data-playground
+      className="mx-auto w-full max-w-7xl px-5 pb-14 pt-8 md:px-8 md:pt-10"
+    >
+      <div className="playground-enter mb-6 flex flex-wrap items-end justify-between gap-5">
+        <div>
+          <p className="mb-2 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--persona-strong-muted)]">
+            {t("eyebrow")}
+          </p>
+          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
+            {t("title")}
+          </h1>
+          <p className="mt-2 text-sm text-[var(--persona-copy)]">{t("description")}</p>
+        </div>
+        <p className="hidden border-l border-[var(--persona-line)] pl-5 text-xs leading-5 text-[var(--persona-copy)] xl:block">
+          {t("aside")}
+        </p>
+      </div>
+      <Suspense
+        fallback={
+          <div className="grid min-h-[36rem] gap-5 lg:grid-cols-2">
+            <div className="animate-pulse bg-[var(--persona-soft-surface)]" />
+            <div className="animate-pulse bg-[var(--persona-soft-surface)]" />
+          </div>
+        }
+      >
+        <Playground />
+      </Suspense>
     </main>
   );
 }
