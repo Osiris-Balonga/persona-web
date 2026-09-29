@@ -1,0 +1,57 @@
+{
+  "Metadata": {
+    "title": "Persona — documentation de l’API",
+    "description": "Découvrez Persona, l’API publique de profils fictifs cohérents."
+  },
+  "Nav": {
+    "home": "Accueil",
+    "docs": "Documentation",
+    "playground": "Essayer /people",
+    "coverage": "Couverture",
+    "github": "GitHub",
+    "menu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "language": "Langue"
+  },
+  "Home": {
+    "eyebrow": "Des personnes fictives pour de meilleurs produits",
+    "title": "Des profils fictifs pour vos produits et vos tests.",
+    "description": "Persona fournit des profils cohérents avec nom, âge, lieu, coordonnées et, lorsqu’il est disponible, un portrait validé. Reproduisez les résultats avec une graine.",
+    "readDocs": "Lire la documentation",
+    "tryApi": "Essayer /people",
+    "note": "Bêta publique. Aucune clé API requise."
+  },
+  "Docs": {
+    "eyebrow": "Documentation développeur",
+    "title": "Développer avec Persona",
+    "description": "Commencez par une requête, puis explorez le contrat public v2.",
+    "overview": "Vue d’ensemble",
+    "quickstart": "Démarrage rapide",
+    "readQuickstart": "Lire le guide de démarrage"
+  },
+  "Quickstart": {
+    "title": "Démarrage rapide",
+    "description": "Effectuez votre première requête vers l’API Persona sans clé."
+  },
+  "Playground": {
+    "eyebrow": "Espace d’essai de l’API",
+    "title": "Essayer /people",
+    "description": "Le formulaire de requête interactif arrive à la prochaine étape. Vous pouvez déjà utiliser le guide de l’API pour envoyer une requête.",
+    "guide": "Lire le guide de l’API"
+  },
+  "Coverage": {
+    "eyebrow": "Couverture des données",
+    "title": "Couverture par pays",
+    "description": "Le tableau de couverture consultable arrive à la prochaine étape. La liste actuelle de l’API est accessible ci-dessous.",
+    "source": "Voir la disponibilité actuelle"
+  },
+  "Footer": {
+    "tagline": "Des personnes fictives. Des données réalistes.",
+    "source": "Code source de l’API"
+  },
+  "NotFound": {
+    "title": "Page introuvable",
+    "description": "Cette page n’est pas disponible dans la documentation Persona.",
+    "home": "Retour à l’accueil"
+  }
+}
