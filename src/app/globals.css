@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "flag-icons/css/flag-icons.min.css";
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
@@ -128,4 +129,81 @@
   html {
     @apply font-sans;
   }
+}
+
+.persona-slider-backdrop::before,
+.persona-slider-backdrop::after {
+  content: "";
+  position: absolute;
+  background-image: linear-gradient(#dce4f1 1px, transparent 1px), linear-gradient(90deg, #dce4f1 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.persona-slider-backdrop::before {
+  left: 10%; top: 18%; width: 73%; height: 64%;
+  background-color: #eef2ff;
+  opacity: .72;
+}
+.persona-slider-backdrop::after {
+  right: 4%; top: 2%; width: 31%; height: 27%;
+  background-color: #e7fff6;
+  opacity: .72;
+}
+.persona-slot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 67%;
+  translate: -50% 0;
+  transition: transform 760ms cubic-bezier(.22, 1, .36, 1), opacity 760ms ease;
+  will-change: transform;
+}
+@media (min-width: 640px) {
+  .persona-slot { width: 57%; }
+}
+.persona-slot-center {
+  z-index: 3;
+  transform: translate(0, 0) scale(1) rotate(0);
+  opacity: 1;
+}
+.persona-slot-left {
+  z-index: 1;
+  transform: translate(-40%, 68px) scale(.73) rotate(-6deg);
+  opacity: .93;
+}
+.persona-slot-right {
+  z-index: 1;
+  transform: translate(40%, 68px) scale(.73) rotate(6deg);
+  opacity: .93;
+}
+@media (min-width: 640px) {
+  .persona-slot-left { transform: translate(-52%, 68px) scale(.73) rotate(-6deg); }
+  .persona-slot-right { transform: translate(52%, 68px) scale(.73) rotate(6deg); }
+}
+.persona-slot:not(.persona-slot-center) .persona-card-contact {
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+.persona-card-contact { transition: opacity 450ms ease, max-height 450ms ease; max-height: 24px; }
+.persona-reveal { animation: persona-rise 720ms cubic-bezier(.22, 1, .36, 1) both; }
+.persona-reveal-delay-1 { animation-delay: 90ms; }
+.persona-reveal-delay-2 { animation-delay: 180ms; }
+.persona-reveal-delay-3 { animation-delay: 270ms; }
+.persona-benefit-image,
+.persona-benefit-copy { transition: transform 420ms cubic-bezier(.22, 1, .36, 1); }
+.persona-benefit:hover .persona-benefit-image { transform: translateY(-6px) scale(1.055); }
+.persona-benefit:hover .persona-benefit-copy { transform: translateY(-2px); }
+@keyframes persona-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .persona-reveal { animation: none; }
+  .persona-slot,
+  .persona-card-contact,
+  .persona-benefit-image,
+  .persona-benefit-copy { transition: none; }
+  .persona-benefit:hover .persona-benefit-image,
+  .persona-benefit:hover .persona-benefit-copy { transform: none; }
 }
