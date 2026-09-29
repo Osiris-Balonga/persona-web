@@ -73,7 +73,7 @@
     "columnCountry": "Pays ou territoire",
     "columnRegion": "Région",
     "columnProfiles": "Profils",
-    "columnPostcodes": "Codes postaux¹",
+    "columnPostcodes": "Codes postaux",
     "columnPhone": "Téléphones",
     "columnAddresses": "Adresses",
     "columnNotes": "Notes",
@@ -94,32 +94,16 @@
     "next": "Page suivante",
     "pageNumber": "Page {page}",
     "showing": "Affichage de {first} à {last} sur {count} codes",
-    "empty": "Aucun pays ne correspond à ces filtres.",
     "emptyTitle": "Aucun pays trouvé",
     "emptyDescription": "Essayez un autre nom ou modifiez les filtres.",
     "clearFilters": "Effacer les filtres",
     "loading": "Chargement de la couverture…",
     "errorTitle": "Impossible de charger la couverture",
     "errorDescription": "Une erreur est survenue lors du chargement des données.",
-    "retry": "Réessayer",
-    "summary": "{available} codes permettent de générer des profils ; {pending} attendent une revue des noms locaux et {unavailable} n’ont pas de profil résident. {postcodes} des {cities} villes échantillonnées pour les codes disponibles ont un code postal lié à la ville.",
-    "caveat": "¹ Les codes postaux concernent les villes échantillonnées, pas toutes les adresses. Les adresses sont illustratives et peuvent ne pas être distribuables. Les numéros au format d’exemple ne sont pas réservés et peuvent appartenir à de vrais abonnés : ne les appelez pas.",
-    "snapshot": "Snapshot du {date} · version des données {version} ·",
-    "source": "Source API"
+    "retry": "Réessayer"
   },
   "Footer": {
-    "tagline": "Des personnes fictives. Des données réalistes.",
-    "source": "Code source de l’API",
-    "product": "Produit",
-    "overview": "Présentation",
-    "useCases": "Cas d’usage",
-    "documentation": "Documentation",
-    "coverage": "Couverture",
-    "resources": "Ressources",
-    "changelog": "Journal des changements",
-    "star": "Suivez-nous sur GitHub",
-    "starDescription": "Un projet ouvert pour un Internet plus créatif.",
-    "rights": "Tous droits réservés."
+    "tagline": "Des personnes fictives. Des données réalistes."
   },
   "NotFound": {
     "title": "Page introuvable",

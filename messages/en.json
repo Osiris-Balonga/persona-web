@@ -73,7 +73,7 @@
     "columnCountry": "Country or territory",
     "columnRegion": "Region",
     "columnProfiles": "Profiles",
-    "columnPostcodes": "Postcodes¹",
+    "columnPostcodes": "Postcodes",
     "columnPhone": "Phone numbers",
     "columnAddresses": "Addresses",
     "columnNotes": "Notes",
@@ -94,32 +94,16 @@
     "next": "Next page",
     "pageNumber": "Page {page}",
     "showing": "Showing {first}–{last} of {count} codes",
-    "empty": "No countries match these filters.",
     "emptyTitle": "No country found",
     "emptyDescription": "Try another name or adjust the filters.",
     "clearFilters": "Clear filters",
     "loading": "Loading coverage…",
     "errorTitle": "Unable to load coverage",
     "errorDescription": "Something went wrong while loading the country data.",
-    "retry": "Try again",
-    "summary": "{available} codes can generate profiles; {pending} await local name review and {unavailable} have no resident profile. {postcodes} of {cities} sampled cities in profile-ready codes have a city-linked postcode.",
-    "caveat": "¹ Postcode counts cover sampled cities only, not every address. Addresses are illustrative and may not be deliverable. Example-format phone numbers are not reserved and may belong to real subscribers; do not call them.",
-    "snapshot": "Snapshot {date} · data version {version} ·",
-    "source": "API source"
+    "retry": "Try again"
   },
   "Footer": {
-    "tagline": "Fictional people. Realistic data.",
-    "source": "API source",
-    "product": "Product",
-    "overview": "Overview",
-    "useCases": "Use cases",
-    "documentation": "Documentation",
-    "coverage": "Coverage",
-    "resources": "Resources",
-    "changelog": "Changelog",
-    "star": "Star us on GitHub",
-    "starDescription": "Open source for a more creative internet.",
-    "rights": "All rights reserved."
+    "tagline": "Fictional people. Realistic data."
   },
   "NotFound": {
     "title": "Page not found",

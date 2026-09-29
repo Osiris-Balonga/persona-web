@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CoverageExplorer } from "@/components/coverage-explorer";
-import { coverageSnapshot, coverageTotals } from "@/lib/coverage-data";
 import { requireLocale } from "@/lib/locale";
 import { localizedMetadata } from "@/lib/site";
 
@@ -30,33 +29,6 @@ export default async function CoveragePage({ params }: Props) {
           {t("description")}
         </p>
         <CoverageExplorer />
-        <div className="mt-10 space-y-2 border-t border-[#e7eaf0] pt-5 text-xs leading-5 text-[#667083]">
-          <p>
-            {t("summary", {
-              available: coverageTotals.available,
-              pending: coverageTotals.pending,
-              unavailable: coverageTotals.unavailable,
-              postcodes: coverageTotals.postcodeCities,
-              cities: coverageTotals.sampledCities,
-            })}
-          </p>
-          <p>{t("caveat")}</p>
-          <p>
-            {t("snapshot", {
-              date: coverageSnapshot.sourceDate,
-              version: coverageSnapshot.dataVersion,
-            })}{" "}
-            <a
-              className="font-medium text-primary underline-offset-2 hover:underline"
-              href={`https://github.com/Osiris-Balonga/persona/blob/${coverageSnapshot.sourceCommit}/${coverageSnapshot.sourcePath}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {t("source")}
-            </a>{" "}
-            · <code>{coverageSnapshot.sourceCommit.slice(0, 8)}</code>
-          </p>
-        </div>
       </div>
     </main>
   );
