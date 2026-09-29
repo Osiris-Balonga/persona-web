@@ -33,7 +33,7 @@ export default async function Home({ params }: Props) {
         <div className="max-w-[570px]">
           <p className="mb-5 text-[0.64rem] font-medium uppercase tracking-[0.28em] text-[#4d5675]">{t("eyebrow")}</p>
           <h1 className="max-w-[620px] text-[clamp(2.65rem,4.4vw,4rem)] font-bold leading-[1.08] tracking-[-0.035em] text-foreground">
-            {t("titleStart")} <span className="text-primary">{t("titleBlue")}</span> <span className="text-[#19c991]">{t("titleGreen")}</span>
+            {t("titleStart")}{" "}<span className="text-primary">{t("titleBlue")}</span>{" "}<span className="text-[#19c991]">{t("titleGreen")}</span>
           </h1>
           <p className="mt-4 max-w-[490px] text-[0.96rem] leading-[1.55] text-[#687082]">{t("description")}</p>
           <div className="mt-5 flex flex-wrap gap-3">
