@@ -17,15 +17,15 @@ export default async function CoveragePage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations("Coverage");
   return (
-    <main className="w-full bg-white">
+    <main className="w-full bg-[var(--persona-surface)] dark:bg-background">
       <div className="mx-auto w-full max-w-7xl px-5 pb-16 pt-9 md:px-8 md:pt-12">
-        <p className="mb-3 text-[0.66rem] font-medium uppercase tracking-[0.16em] text-[#7a8394]">
+        <p className="mb-3 text-[0.66rem] font-medium uppercase tracking-[0.16em] text-[var(--persona-quiet)]">
           {t("eyebrow")}
         </p>
         <h1 className="text-[clamp(2.35rem,4.7vw,3.6rem)] font-bold leading-[1.12] tracking-[-0.035em]">
           {t("title")}
         </h1>
-        <p className="mt-3 max-w-4xl text-[0.95rem] leading-6 text-[#687082]">
+        <p className="mt-3 max-w-4xl text-[0.95rem] leading-6 text-[var(--persona-copy)]">
           {t("description")}
         </p>
         <CoverageExplorer />

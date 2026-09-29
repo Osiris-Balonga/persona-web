@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import { Analytics } from "@vercel/analytics/next";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { ThemeProvider } from "@/components/theme-provider";
 import { routing } from "@/i18n/routing";
 import { requireLocale } from "@/lib/locale";
 import { siteOrigin } from "@/lib/site";
@@ -25,7 +27,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = requireLocale((await params).locale);
   const t = await getTranslations({ locale, namespace: "Metadata" });
-  return { metadataBase: new URL(siteOrigin), title: t("title"), description: t("description") };
+  return { metadataBase: new URL(siteOrigin), title: t("title"), description: t("description"), applicationName: "Persona" };
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
@@ -34,13 +36,16 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className={`${poppins.variable} ${poppins.className} antialiased`}>
+    <html lang={locale} suppressHydrationWarning className={`${poppins.variable} ${poppins.className} antialiased`}>
       <body className="flex min-h-screen flex-col">
-        <NextIntlClientProvider messages={messages}>
-          <SiteHeader />
-          <div className="flex-1">{children}</div>
-          <SiteFooter />
-        </NextIntlClientProvider>
+        <ThemeProvider>
+          <NextIntlClientProvider messages={messages}>
+            <SiteHeader />
+            <div className="flex-1">{children}</div>
+            <SiteFooter />
+            <Analytics />
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

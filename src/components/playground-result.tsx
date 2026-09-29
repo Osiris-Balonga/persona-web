@@ -50,7 +50,7 @@ function Portrait({
     .slice(0, 2)
     .join("");
   return (
-    <div className={`relative overflow-hidden bg-[#edf1f8] ${className}`}>
+    <div className={`relative overflow-hidden bg-[var(--persona-soft-surface)] ${className}`}>
       {photo && !failed ? (
         <Image
           src={photo}
@@ -93,7 +93,7 @@ function Profile({ person }: { person: PlaygroundPerson }) {
     : null;
 
   return (
-    <article className="grid min-h-48 bg-white sm:grid-cols-[minmax(150px,36%)_1fr]">
+    <article className="grid min-h-48 bg-[var(--persona-surface)] sm:grid-cols-[minmax(150px,36%)_1fr]">
       <Portrait
         person={person}
         eager
@@ -109,7 +109,7 @@ function Profile({ person }: { person: PlaygroundPerson }) {
           </h3>
           {person.id && (
             <span
-              className="max-w-28 truncate pt-1 text-[0.65rem] text-[#929aab]"
+              className="max-w-28 truncate pt-1 text-[0.65rem] text-[var(--persona-quiet)]"
               title={person.id}
             >
               ID {person.id}
@@ -117,7 +117,7 @@ function Profile({ person }: { person: PlaygroundPerson }) {
           )}
         </div>
         {(person.dob?.age !== undefined || person.gender) && (
-          <p className="mt-0.5 text-xs text-[#7a8294]">
+          <p className="mt-0.5 text-xs text-[var(--persona-quiet)]">
             {person.dob?.age !== undefined &&
               `${person.dob.age} ${t("ageUnit")}`}
             {person.dob?.age !== undefined && person.gender && " · "}
@@ -132,7 +132,7 @@ function Profile({ person }: { person: PlaygroundPerson }) {
           </p>
         )}
         {nationality && (
-          <p className="mt-4 flex items-center gap-2 text-xs text-[#404b6c]">
+          <p className="mt-4 flex items-center gap-2 text-xs text-[var(--persona-strong-muted)]">
             {person.nationality?.length === 2 && (
               <span
                 className={`fi fi-${person.nationality.toLowerCase()} text-base`}
@@ -143,7 +143,7 @@ function Profile({ person }: { person: PlaygroundPerson }) {
           </p>
         )}
         {residence && (
-          <p className="mt-3 flex items-start gap-2 text-xs text-[#404b6c]">
+          <p className="mt-3 flex items-start gap-2 text-xs text-[var(--persona-strong-muted)]">
             <MapPin
               className="mt-0.5 size-3.5 shrink-0 text-primary"
               aria-hidden="true"
@@ -152,7 +152,7 @@ function Profile({ person }: { person: PlaygroundPerson }) {
           </p>
         )}
         {person.email && (
-          <p className="mt-4 flex items-start gap-2 break-all text-xs text-[#404b6c]">
+          <p className="mt-4 flex items-start gap-2 break-all text-xs text-[var(--persona-strong-muted)]">
             <Mail
               className="mt-0.5 size-3.5 shrink-0 text-primary"
               aria-hidden="true"
@@ -161,7 +161,7 @@ function Profile({ person }: { person: PlaygroundPerson }) {
           </p>
         )}
         {formattedPhone && (
-          <p className="mt-2 flex items-start gap-2 text-xs text-[#404b6c]">
+          <p className="mt-2 flex items-start gap-2 text-xs text-[var(--persona-strong-muted)]">
             <Phone
               className="mt-0.5 size-3.5 shrink-0 text-primary"
               aria-hidden="true"
@@ -197,7 +197,7 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
 
   return (
     <section
-      className="min-w-0 border border-[#e4e8ef] bg-white p-4 sm:p-5"
+      className="min-w-0 border border-[var(--persona-line)] bg-[var(--persona-surface)] p-4 sm:p-5"
       aria-label={t("result")}
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -205,20 +205,20 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
           <h2 className="text-lg font-semibold tracking-tight">
             {t("result")}
           </h2>
-          <p className="mt-0.5 text-xs text-[#747c8e]">
+          <p className="mt-0.5 text-xs text-[var(--persona-copy)]">
             {response
               ? t("resultCount", { count: people.length })
               : t("resultHint")}
           </p>
         </div>
         {people.length > 0 && (
-          <div className="flex items-center gap-3 text-xs tabular-nums text-[#414b61]">
+          <div className="flex items-center gap-3 text-xs tabular-nums text-[var(--persona-ink)]">
             <button
               type="button"
               aria-label={t("previousPerson")}
               disabled={index === 0}
               onClick={() => setActive(index - 1)}
-              className="border border-[#e0e4eb] p-1.5 text-primary transition-[background-color,transform] duration-200 hover:-translate-x-0.5 hover:bg-[#f0f3fd] active:scale-[.96] disabled:opacity-35 disabled:hover:translate-x-0"
+              className="border border-[var(--persona-line)] p-1.5 text-primary transition-[background-color,transform] duration-200 hover:-translate-x-0.5 hover:bg-[var(--persona-hover)] active:scale-[.96] disabled:opacity-35 disabled:hover:translate-x-0"
             >
               <ChevronLeft className="size-4" />
             </button>
@@ -230,7 +230,7 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
               aria-label={t("nextPerson")}
               disabled={index === people.length - 1}
               onClick={() => setActive(index + 1)}
-              className="border border-[#e0e4eb] p-1.5 text-primary transition-[background-color,transform] duration-200 hover:translate-x-0.5 hover:bg-[#f0f3fd] active:scale-[.96] disabled:opacity-35 disabled:hover:translate-x-0"
+              className="border border-[var(--persona-line)] p-1.5 text-primary transition-[background-color,transform] duration-200 hover:translate-x-0.5 hover:bg-[var(--persona-hover)] active:scale-[.96] disabled:opacity-35 disabled:hover:translate-x-0"
             >
               <ChevronRight className="size-4" />
             </button>
@@ -246,44 +246,44 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
         >
           <div className="flex justify-end gap-2">
             {[1, 2, 3].map((item) => (
-              <div key={item} className="size-10 bg-[#ebedf4]" />
+              <div key={item} className="size-10 bg-[var(--persona-skeleton)]" />
             ))}
           </div>
-          <div className="grid min-h-48 border border-[#e6e9ef] sm:grid-cols-[36%_1fr]">
-            <div className="h-44 bg-[#e7eaf2] sm:h-auto" />
+          <div className="grid min-h-48 border border-[var(--persona-line)] sm:grid-cols-[36%_1fr]">
+            <div className="h-44 bg-[var(--persona-skeleton)] sm:h-auto" />
             <div className="space-y-4 p-5">
               {[70, 42, 55, 85, 60].map((width) => (
                 <div
                   key={width}
-                  className="h-3 bg-[#ebedf4]"
+                  className="h-3 bg-[var(--persona-skeleton)]"
                   style={{ width: `${width}%` }}
                 />
               ))}
             </div>
           </div>
-          <div className="h-52 bg-[#f4f6fa]" />
+          <div className="h-52 bg-[var(--persona-soft-surface)]" />
         </div>
       ) : error ? (
         <div
-          className="mt-5 border border-[#f0d1d1] bg-[#fff9f9] px-5 py-8 text-center"
+          className="mt-5 border border-[var(--persona-red-line)] bg-[var(--persona-red-bg)] px-5 py-8 text-center"
           role="alert"
         >
-          <p className="font-semibold text-[#a63131]">{t("requestFailed")}</p>
-          <p className="mt-2 text-sm text-[#674d4d]">{error}</p>
+          <p className="font-semibold text-[var(--persona-red-ink)]">{t("requestFailed")}</p>
+          <p className="mt-2 text-sm text-[var(--persona-copy)]">{error}</p>
           <button
             type="button"
             onClick={onRetry}
-            className="mt-4 border border-[#a63131] px-4 py-2 text-xs font-semibold text-[#a63131]"
+            className="mt-4 border border-[var(--persona-red-line)] px-4 py-2 text-xs font-semibold text-[var(--persona-red-ink)]"
           >
             {t("retry")}
           </button>
         </div>
       ) : !response ? (
-        <div className="mt-5 flex min-h-48 items-center justify-center border border-dashed border-[#d9dfe9] bg-[#fafbfe] px-5 text-center text-sm text-[#71798a]">
+        <div className="mt-5 flex min-h-48 items-center justify-center border border-dashed border-[var(--persona-line)] bg-[var(--persona-soft-surface)] px-5 text-center text-sm text-[var(--persona-copy)]">
           {t("runToSeeResults")}
         </div>
       ) : people.length === 0 ? (
-        <div className="mt-5 flex min-h-48 items-center justify-center border border-dashed border-[#d9dfe9] bg-[#fafbfe] px-5 text-center text-sm text-[#71798a]">
+        <div className="mt-5 flex min-h-48 items-center justify-center border border-dashed border-[var(--persona-line)] bg-[var(--persona-soft-surface)] px-5 text-center text-sm text-[var(--persona-copy)]">
           {t("noResults")}
         </div>
       ) : (
@@ -298,7 +298,7 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
                   onClick={() => setActive(personIndex)}
                   aria-label={t("selectPerson", { number: personIndex + 1 })}
                   aria-current={personIndex === index ? "true" : undefined}
-                  className={`size-10 border p-0.5 transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:scale-105 hover:shadow-sm active:scale-[.96] ${personIndex === index ? "border-primary" : "border-[#e1e5ec] hover:border-primary/60"}`}
+                  className={`size-10 border p-0.5 transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:scale-105 hover:shadow-sm active:scale-[.96] ${personIndex === index ? "border-primary" : "border-[var(--persona-line)] hover:border-primary/60"}`}
                 >
                   <Portrait person={person} className="h-full w-full" />
                 </button>
@@ -309,7 +309,7 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
                 type="button"
                 onClick={() => setPickerOpen(!pickerOpen)}
                 aria-expanded={pickerOpen}
-                className="h-10 border border-[#e1e5ec] px-2 text-xs text-primary transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-[#f0f3fd] active:scale-[.96]"
+                className="h-10 border border-[var(--persona-line)] px-2 text-xs text-primary transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-[var(--persona-hover)] active:scale-[.96]"
               >
                 {t("allPeople", { count: people.length })}
               </button>
@@ -332,7 +332,7 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
                     }}
                     aria-label={t("selectPerson", { number: personIndex + 1 })}
                     aria-current={personIndex === index ? "true" : undefined}
-                    className={`h-8 min-w-8 px-1 text-xs transition-[background-color,transform] duration-150 hover:-translate-y-0.5 active:scale-[.96] ${personIndex === index ? "bg-primary text-white" : "bg-[#f2f4f8] text-[#445071] hover:bg-[#e6ebfa]"}`}
+                    className={`h-8 min-w-8 px-1 text-xs transition-[background-color,transform] duration-150 hover:-translate-y-0.5 active:scale-[.96] ${personIndex === index ? "bg-primary text-primary-foreground" : "bg-[var(--persona-soft-surface)] text-[var(--persona-strong-muted)] hover:bg-[var(--persona-hover)]"}`}
                   >
                     {personIndex + 1}
                   </button>
@@ -350,7 +350,7 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
             <button
               type="button"
               onClick={copyJson}
-              className="flex items-center gap-1 pb-2 text-xs text-[#5d6681] transition-colors duration-200 hover:text-primary"
+              className="flex items-center gap-1 pb-2 text-xs text-[var(--persona-copy)] transition-colors duration-200 hover:text-primary"
             >
               {copied ? (
                 <Check className="size-3.5" />
@@ -360,7 +360,7 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
               {copied ? t("copied") : t("copyJson")}
             </button>
           </div>
-          <pre className="max-h-[440px] overflow-auto bg-[#fafbfe] p-4 text-[0.7rem] leading-5 text-[#354267]">
+          <pre className="max-h-[440px] overflow-auto bg-[var(--persona-soft-surface)] p-4 text-[0.7rem] leading-5 text-[var(--persona-strong-muted)]">
             {json}
           </pre>
         </>

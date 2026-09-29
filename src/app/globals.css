@@ -2,7 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "flag-icons/css/flag-icons.min.css";
-@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -83,40 +82,67 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --persona-surface: #ffffff;
+  --persona-soft-surface: #f6f8fc;
+  --persona-hover: #f0f3fd;
+  --persona-skeleton: #e6eaf3;
+  --persona-line: #e2e6ec;
+  --persona-ink: #20242d;
+  --persona-copy: #687082;
+  --persona-quiet: #7a8394;
+  --persona-strong-muted: #404b6c;
+  --persona-inline-bg: #f0f2f7;
+  --persona-red-bg: #fff9f9;
+  --persona-red-line: #f0d1d1;
+  --persona-red-ink: #a63131;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  color-scheme: dark;
+  --background: #101827;
+  --foreground: #eff4ff;
+  --card: #172338;
+  --card-foreground: #eff4ff;
+  --popover: #1a273b;
+  --popover-foreground: #eff4ff;
+  --primary: #aab7ff;
+  --primary-foreground: #101827;
+  --secondary: #26354d;
+  --secondary-foreground: #eff4ff;
+  --muted: #202e44;
+  --muted-foreground: #b7c3d6;
+  --accent: #42deb0;
+  --accent-foreground: #101827;
+  --destructive: #ff9da3;
+  --border: #34445c;
+  --input: #44536c;
+  --ring: #aab7ff;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar: #172338;
+  --sidebar-foreground: #eff4ff;
+  --sidebar-primary: #aab7ff;
+  --sidebar-primary-foreground: #101827;
+  --sidebar-accent: #26354d;
+  --sidebar-accent-foreground: #eff4ff;
+  --sidebar-border: #34445c;
+  --sidebar-ring: #aab7ff;
+  --persona-surface: #172338;
+  --persona-soft-surface: #202e44;
+  --persona-hover: #273954;
+  --persona-skeleton: #34445f;
+  --persona-line: #34445c;
+  --persona-ink: #eff4ff;
+  --persona-copy: #b7c3d6;
+  --persona-quiet: #9eaec4;
+  --persona-strong-muted: #cbd7eb;
+  --persona-inline-bg: #26354d;
+  --persona-red-bg: #39252f;
+  --persona-red-line: #8a4857;
+  --persona-red-ink: #ff9da3;
 }
 
 @layer base {
@@ -131,6 +157,22 @@
   }
 }
 
+@keyframes docs-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.docs-enter { animation: docs-enter 420ms cubic-bezier(.22, 1, .36, 1) both; }
+.docs-mobile-nav[open] > div { animation: docs-enter 220ms cubic-bezier(.22, 1, .36, 1) both; }
+.docs-code-scroll { scrollbar-width: none; }
+.docs-code-scroll::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-enter,
+  .docs-mobile-nav[open] > div { animation: none; }
+  .docs-shell * { transition-duration: 0.01ms !important; }
+}
+
 .persona-slider-backdrop::before,
 .persona-slider-backdrop::after {
   content: "";
@@ -143,6 +185,12 @@
 .persona-slider-backdrop::before {
   left: 8%; top: 18%; width: 78%; height: 64%;
   opacity: .9;
+}
+.dark .persona-slider-backdrop::before {
+  background-image: linear-gradient(#354878 1px, transparent 1px), linear-gradient(90deg, #354878 1px, transparent 1px), radial-gradient(ellipse at center, #1c2c53 10%, transparent 78%);
+}
+.dark .persona-slider-backdrop::after {
+  background-image: linear-gradient(#2b7469 1px, transparent 1px), linear-gradient(90deg, #2b7469 1px, transparent 1px), radial-gradient(ellipse at center, #153b3e 10%, transparent 78%);
 }
 .persona-slider-backdrop::after {
   right: 4%; top: 2%; width: 31%; height: 27%;
@@ -191,6 +239,8 @@
 .persona-reveal-delay-1 { animation-delay: 90ms; }
 .persona-reveal-delay-2 { animation-delay: 180ms; }
 .persona-reveal-delay-3 { animation-delay: 270ms; }
+.persona-benefit-image { background-image: url('/benefits-strip.webp'); }
+.dark .persona-benefit-image { background-image: url('/benefits-strip-dark.webp'); }
 .persona-benefit-image,
 .persona-benefit-copy { transition: transform 420ms cubic-bezier(.22, 1, .36, 1); }
 .persona-benefit:hover .persona-benefit-image { transform: translateY(-6px) scale(1.055); }
