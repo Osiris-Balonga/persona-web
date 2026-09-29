@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import { Analytics } from "@vercel/analytics/next";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -26,7 +27,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = requireLocale((await params).locale);
   const t = await getTranslations({ locale, namespace: "Metadata" });
-  return { metadataBase: new URL(siteOrigin), title: t("title"), description: t("description") };
+  return { metadataBase: new URL(siteOrigin), title: t("title"), description: t("description"), applicationName: "Persona" };
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
@@ -42,6 +43,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             <SiteHeader />
             <div className="flex-1">{children}</div>
             <SiteFooter />
+            <Analytics />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

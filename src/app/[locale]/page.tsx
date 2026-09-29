@@ -42,13 +42,13 @@ export default async function Home({ params }: Props) {
   return (
     <main className="bg-[var(--persona-surface)] dark:bg-background">
       <section className="mx-auto grid w-full max-w-7xl items-center gap-7 px-5 pb-9 pt-8 md:min-h-[min(760px,calc(100svh-76px))] md:grid-cols-[1fr_1fr] md:px-8 md:pb-7 md:pt-7 lg:gap-10">
-        <div className="max-w-[570px]">
+        <div className="order-2 mx-auto max-w-[570px] text-center md:order-1 md:mx-0 md:text-left">
           <p className="persona-reveal mb-5 text-[0.64rem] font-medium uppercase tracking-[0.28em] text-[var(--persona-strong-muted)]">{t("eyebrow")}</p>
           <h1 className="persona-reveal persona-reveal-delay-1 max-w-[620px] text-[clamp(2.65rem,4.4vw,4rem)] font-bold leading-[1.08] tracking-[-0.035em] text-foreground">
             {t("titleStart")}{" "}<span className="text-primary">{t("titleBlue")}</span>{" "}{t("titleAnd")}{" "}<span className="text-[#19c991]">{t("titleGreen")}</span>
           </h1>
-          <p className="persona-reveal persona-reveal-delay-2 mt-4 max-w-[490px] text-[0.96rem] leading-[1.55] text-[var(--persona-copy)]">{t("description")}</p>
-          <div className="persona-reveal persona-reveal-delay-3 mt-5 flex flex-wrap gap-3">
+          <p className="persona-reveal persona-reveal-delay-2 mx-auto mt-4 max-w-[490px] text-[0.96rem] leading-[1.55] text-[var(--persona-copy)] md:mx-0">{t("description")}</p>
+          <div className="persona-reveal persona-reveal-delay-3 mt-5 flex flex-wrap justify-center gap-3 md:justify-start">
             <Button asChild className="h-10 min-w-35 rounded-none px-5 text-xs">
               <Link href="/docs">{t("readDocs")} <ArrowRight aria-hidden="true" /></Link>
             </Button>
@@ -58,9 +58,11 @@ export default async function Home({ params }: Props) {
           </div>
           <p className="persona-reveal persona-reveal-delay-3 mt-3 text-[0.68rem] text-[var(--persona-quiet)]">{t("note")}</p>
         </div>
-        <Suspense fallback={<PersonaSliderSkeleton label={t("sliderLabel")} loading={t("sliderLoading")} />}>
-          <FeaturedSlider locale={locale} label={t("sliderLabel")} ageLabel={t("ageLabel")} error={t("sliderError")} />
-        </Suspense>
+        <div className="order-1 w-full min-w-0 md:order-2">
+          <Suspense fallback={<PersonaSliderSkeleton label={t("sliderLabel")} loading={t("sliderLoading")} />}>
+            <FeaturedSlider locale={locale} label={t("sliderLabel")} ageLabel={t("ageLabel")} error={t("sliderError")} />
+          </Suspense>
+        </div>
       </section>
 
       <section className="mx-auto w-full max-w-7xl px-5 pb-9 pt-5 md:px-8" aria-label={t("benefitsLabel")}>

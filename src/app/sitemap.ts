@@ -10,12 +10,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     routing.locales.map((locale) => ({
       url: `${siteOrigin}/${locale}${path}`,
       alternates: {
-        languages: Object.fromEntries(
-          routing.locales.map((language) => [
-            language,
-            `${siteOrigin}/${language}${path}`,
-          ]),
-        ),
+        languages: {
+          ...Object.fromEntries(
+            routing.locales.map((language) => [
+              language,
+              `${siteOrigin}/${language}${path}`,
+            ]),
+          ),
+          "x-default": `${siteOrigin}/en${path}`,
+        },
       },
     })),
   );
