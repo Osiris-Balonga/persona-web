@@ -1,9 +1,10 @@
 "use client";
 
-import { ChevronDown, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
+import { SearchableCombobox } from "@/components/searchable-combobox";
 import { countryDisplayName } from "@/lib/country-display-name";
 import {
   coverageRows,
@@ -320,6 +321,16 @@ export function CoverageExplorer() {
       ),
     [locale],
   );
+  const regionOptions = [
+    ...continents.map((code) => ({
+      value: `continent:${code}`,
+      label: regionName(code, locale, code),
+    })),
+    ...subregions.map((code) => ({
+      value: `subregion:${code}`,
+      label: regionName(code, locale, code),
+    })),
+  ];
   const filtered = useMemo(
     () =>
       coverageRows
@@ -378,59 +389,40 @@ export function CoverageExplorer() {
             className="h-10 w-full border border-[#d9dde5] bg-white pl-11 pr-3 text-sm text-foreground outline-none placeholder:text-[#70798a] focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </label>
-        <label className="relative block">
-          <span className="sr-only">{t("regionLabel")}</span>
-          <select
-            disabled={loading}
-            value={region}
-            onChange={(event) => {
-              setRegion(event.target.value);
-              setPage(1);
-            }}
-            className="h-10 w-full appearance-none border border-[#d9dde5] bg-white px-3 pr-9 text-sm text-[#323747] outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-          >
-            <option value="all">{t("allRegions")}</option>
-            <optgroup label={t("continents")}>
-              {continents.map((code) => (
-                <option key={code} value={`continent:${code}`}>
-                  {regionName(code, locale, code)}
-                </option>
-              ))}
-            </optgroup>
-            <optgroup label={t("subregions")}>
-              {subregions.map((code) => (
-                <option key={code} value={`subregion:${code}`}>
-                  {regionName(code, locale, code)}
-                </option>
-              ))}
-            </optgroup>
-          </select>
-          <ChevronDown
-            aria-hidden="true"
-            className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#687083]"
-          />
-        </label>
-        <label className="relative block">
-          <span className="sr-only">{t("availabilityLabel")}</span>
-          <select
-            disabled={loading}
-            value={status}
-            onChange={(event) => {
-              setStatus(event.target.value);
-              setPage(1);
-            }}
-            className="h-10 w-full appearance-none border border-[#d9dde5] bg-white px-3 pr-9 text-sm text-[#323747] outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-          >
-            <option value="all">{t("allAvailability")}</option>
-            <option value="available">{t("statusAvailable")}</option>
-            <option value="pending-name-review">{t("statusPending")}</option>
-            <option value="unavailable">{t("statusUnavailable")}</option>
-          </select>
-          <ChevronDown
-            aria-hidden="true"
-            className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#687083]"
-          />
-        </label>
+        <SearchableCombobox
+          label={t("regionLabel")}
+          visuallyHiddenLabel
+          triggerClassName="h-10 text-sm"
+          disabled={loading}
+          value={region === "all" ? "" : region}
+          options={regionOptions}
+          placeholder={t("allRegions")}
+          searchPlaceholder={t("searchRegion")}
+          emptyMessage={t("noSearchResults")}
+          onChange={(value) => {
+            setRegion(value || "all");
+            setPage(1);
+          }}
+        />
+        <SearchableCombobox
+          label={t("availabilityLabel")}
+          visuallyHiddenLabel
+          triggerClassName="h-10 text-sm"
+          disabled={loading}
+          value={status === "all" ? "" : status}
+          options={[
+            { value: "available", label: t("statusAvailable") },
+            { value: "pending-name-review", label: t("statusPending") },
+            { value: "unavailable", label: t("statusUnavailable") },
+          ]}
+          placeholder={t("allAvailability")}
+          searchPlaceholder={t("searchAvailability")}
+          emptyMessage={t("noSearchResults")}
+          onChange={(value) => {
+            setStatus(value || "all");
+            setPage(1);
+          }}
+        />
         <p
           role="status"
           aria-live="polite"

@@ -318,10 +318,10 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
           <div
             aria-hidden={!pickerOpen}
             inert={!pickerOpen}
-            className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${pickerOpen ? "max-h-36 opacity-100" : "max-h-0 opacity-0"}`}
+            className={`overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${pickerOpen ? "max-h-[7.5rem] opacity-100" : "max-h-0 opacity-0"}`}
           >
-            <div className="max-h-32 overflow-y-auto py-2">
-              <div className="flex flex-wrap gap-1">
+            <div className="max-h-[7.5rem] overflow-y-auto py-2 [scrollbar-gutter:stable]">
+              <div className="grid auto-rows-8 grid-cols-[repeat(auto-fill,minmax(2rem,1fr))] gap-1">
                 {people.map((person, personIndex) => (
                   <button
                     type="button"
@@ -332,7 +332,7 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
                     }}
                     aria-label={t("selectPerson", { number: personIndex + 1 })}
                     aria-current={personIndex === index ? "true" : undefined}
-                    className={`min-h-8 min-w-8 px-1 py-1 text-xs transition-[background-color,transform] duration-150 hover:-translate-y-0.5 active:scale-[.96] ${personIndex === index ? "bg-primary text-white" : "bg-[#f2f4f8] text-[#445071] hover:bg-[#e6ebfa]"}`}
+                    className={`h-8 min-w-8 px-1 text-xs transition-[background-color,transform] duration-150 hover:-translate-y-0.5 active:scale-[.96] ${personIndex === index ? "bg-primary text-white" : "bg-[#f2f4f8] text-[#445071] hover:bg-[#e6ebfa]"}`}
                   >
                     {personIndex + 1}
                   </button>

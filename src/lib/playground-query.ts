@@ -28,7 +28,7 @@ export const defaultPlaygroundOptions: PlaygroundOptions = {
 
 export type QueryProblem = "count" | "city" | "nationality" | "emailDomain" | "seed" | "asOf" | "url";
 
-const continentCodes: Record<string, string> = {
+export const continentCodes: Record<string, string> = {
   africa: "002",
   americas: "019",
   asia: "142",

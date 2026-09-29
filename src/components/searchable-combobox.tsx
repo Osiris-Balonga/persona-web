@@ -21,6 +21,8 @@ type Props = {
   onChange: (value: string) => void;
   disabled?: boolean;
   hint?: string;
+  visuallyHiddenLabel?: boolean;
+  triggerClassName?: string;
 };
 
 function normalize(value: string) {
@@ -40,6 +42,8 @@ export function SearchableCombobox({
   onChange,
   disabled,
   hint,
+  visuallyHiddenLabel = false,
+  triggerClassName = "",
 }: Props) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -62,7 +66,13 @@ export function SearchableCombobox({
 
   return (
     <div className="min-w-0">
-      <span className="mb-1.5 block text-xs font-semibold text-[#292e39]">
+      <span
+        className={
+          visuallyHiddenLabel
+            ? "sr-only"
+            : "mb-1.5 block text-xs font-semibold text-[#292e39]"
+        }
+      >
         {label}
       </span>
       <Popover
@@ -80,7 +90,7 @@ export function SearchableCombobox({
             aria-expanded={open}
             aria-controls={listId}
             disabled={disabled}
-            className="flex h-9 w-full min-w-0 items-center gap-2 border border-[#d9dde5] bg-white px-3 text-left text-xs text-[#303746] transition-[border-color,box-shadow] duration-200 hover:border-primary/60 focus-visible:border-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:bg-[#f6f7fa] disabled:text-[#9aa1b0]"
+            className={`flex h-9 w-full min-w-0 items-center gap-2 border border-[#d9dde5] bg-white px-3 text-left text-xs text-[#303746] transition-[border-color,box-shadow] duration-200 hover:border-primary/60 focus-visible:border-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:bg-[#f6f7fa] disabled:text-[#9aa1b0] ${triggerClassName}`}
           >
             {selected?.flag && (
               <span

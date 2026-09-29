@@ -7,7 +7,11 @@ import { SearchableCombobox } from "@/components/searchable-combobox";
 import cityData from "@/content/playground-cities.json";
 import { countryDisplayName } from "@/lib/country-display-name";
 import { coverageRows } from "@/lib/coverage-data";
-import type { PlaygroundOptions, QueryProblem } from "@/lib/playground-query";
+import {
+  continentCodes,
+  type PlaygroundOptions,
+  type QueryProblem,
+} from "@/lib/playground-query";
 
 const ageGroups = ["child", "teen", "adult", "senior"] as const;
 const continents = ["africa", "americas", "asia", "europe", "oceania"] as const;
@@ -67,6 +71,14 @@ export function PlaygroundForm({
     flag: row.code,
   }));
   const cityCountry = options.residenceCountry || options.nationality;
+  const nationalityOptions = countries
+    .filter(
+      (row) =>
+        row.status === "available" &&
+        (!options.continent ||
+          row.continent === continentCodes[options.continent]),
+    )
+    .map((row) => ({ value: row.code, label: row.label, flag: row.code }));
   const cityOptions = (
     (cityData.countries as Record<string, string[]>)[cityCountry] ?? []
   ).map((name) => ({ value: name, label: name }));
@@ -76,6 +88,32 @@ export function PlaygroundForm({
     value: PlaygroundOptions[Key],
   ) {
     onChange({ ...options, [key]: value });
+  }
+
+  function changeContinent(continent: string) {
+    const nationality = options.nationality;
+    const incompatible =
+      Boolean(continent && nationality) &&
+      countries.find((row) => row.code === nationality)?.continent !==
+        continentCodes[continent];
+    onChange({
+      ...options,
+      continent,
+      nationality: incompatible ? "" : nationality,
+      city: incompatible && !options.residenceCountry ? "" : options.city,
+    });
+  }
+
+  function changeCountry(
+    key: "nationality" | "residenceCountry",
+    value: string,
+  ) {
+    const next = { ...options, [key]: value };
+    const nextCityCountry = next.residenceCountry || next.nationality;
+    onChange({
+      ...next,
+      city: nextCityCountry === cityCountry ? options.city : "",
+    });
   }
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -174,23 +212,17 @@ export function PlaygroundForm({
           placeholder={t("allContinents")}
           searchPlaceholder={t("searchContinent")}
           emptyMessage={t("noSearchResults")}
-          onChange={(value) => update("continent", value)}
+          onChange={changeContinent}
           hint={t("continentHint")}
         />
         <SearchableCombobox
           label={t("nationality")}
           value={options.nationality}
-          options={countryOptions.filter(
-            (option) =>
-              countries.find((row) => row.code === option.value)?.status ===
-              "available",
-          )}
+          options={nationalityOptions}
           placeholder={t("anyNationality")}
           searchPlaceholder={t("searchCountry")}
           emptyMessage={t("noSearchResults")}
-          onChange={(value) =>
-            onChange({ ...options, nationality: value, city: "" })
-          }
+          onChange={(value) => changeCountry("nationality", value)}
           hint={t("nationalityHint")}
         />
 
@@ -201,9 +233,7 @@ export function PlaygroundForm({
           placeholder={t("anyResidence")}
           searchPlaceholder={t("searchCountry")}
           emptyMessage={t("noSearchResults")}
-          onChange={(value) =>
-            onChange({ ...options, residenceCountry: value, city: "" })
-          }
+          onChange={(value) => changeCountry("residenceCountry", value)}
           hint={t("residenceHint")}
         />
         <SearchableCombobox
