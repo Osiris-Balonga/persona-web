@@ -48,21 +48,21 @@ export const docs: Record<DocLocale, DocsDictionary> = {
         description: "Récupérez des personnes fictives cohérentes depuis l’API publique en une seule requête. Aucune clé API n’est nécessaire.",
         sections: [
           { id: "request", title: "Faire une requête", paragraphs: ["Envoyez une requête GET à l’endpoint public. Cet exemple fixe la graine et la date de référence pour pouvoir rejouer le résultat."], code: { language: "bash", value: "curl 'https://persona-dev.onrender.com/people?count=1&seed=guide-v2&asOf=2026-09-28'" } },
-          { id: "response", title: "Lire la réponse", paragraphs: ["La réponse contient un tableau `results` et un objet `meta`. Le nom, la date de naissance et le lieu de chaque personne sont structurés. L’extrait ci-dessous reprend l’exemple versionné du dépôt API."], code: { language: "json", label: "Extrait de la réponse v2", value: `{
+          { id: "response", title: "Lire la réponse", paragraphs: ["La réponse contient un tableau `results` et un objet `meta`. Le nom, la date de naissance et le lieu sont structurés. Cet extrait correspond à la requête ci-dessus avec les versions de données indiquées dans `meta` ; il peut évoluer après une mise à jour."], code: { language: "json", label: "Extrait de la réponse v2", value: `{
   "results": [
     {
-      "id": "per_7910eca659bd74e83726e75f",
+      "id": "per_b79c5a19b88f5f1ff40446c1",
       "gender": "male",
-      "name": { "first": "Christian", "last": "Arnaud", "full": "Christian Arnaud" },
-      "nationality": "FR",
-      "dob": { "date": "1993-02-02", "age": 33, "ageGroup": "adult" },
-      "location": { "city": "Brazzaville", "country": { "code": "CG", "name": "Congo" } },
-      "email": "c.arnaud.z2300@example.test",
-      "phone": "+242061242366",
-      "picture": { "thumbnail": "https://persona-portraits.osirisbalonga.workers.dev/portraits/v1/thumbnail/p_0233.webp" }
+      "name": { "first": "Edwin", "last": "Fernández", "full": "Edwin Fernández" },
+      "nationality": "PR",
+      "dob": { "date": "1992-12-29", "age": 33, "ageGroup": "adult" },
+      "location": { "city": "Caguas", "country": { "code": "PR", "name": "Puerto Rico" } },
+      "email": "e.fernandez.3yx00@example.test",
+      "phone": "+17875550116",
+      "picture": { "thumbnail": "https://persona-portraits.osirisbalonga.workers.dev/portraits/v1/thumbnail/p_1166.webp" }
     }
   ],
-  "meta": { "count": 1, "asOf": "2026-09-28", "seed": "guide-v2", "schemaVersion": "2" }
+  "meta": { "count": 1, "asOf": "2026-09-28", "seed": "guide-v2", "dataVersion": "geo-2026-09-26.1", "catalogVersion": "v1", "schemaVersion": "2" }
 }` } },
           { id: "replay", title: "Reproduire le résultat", paragraphs: ["Fournissez explicitement `seed` et `asOf`. Les mêmes filtres produisent alors les mêmes personnes tant que les versions des données, du catalogue et de l’algorithme ne changent pas."], bullets: ["`count` accepte de 1 à 100 profils et vaut 1 par défaut.", "`seed` est une chaîne non vide de 128 caractères maximum.", "`asOf` est une date au format YYYY-MM-DD ; sans ce paramètre, l’API utilise la date UTC du jour."] },
         ],
@@ -162,21 +162,21 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
     pages: {
       quickstart: { title: "First request", description: "Retrieve coherent fictional people from the public API with one request. No API key is required.", sections: [
         { id: "request", title: "Make a request", paragraphs: ["Send a GET request to the public endpoint. This example fixes the seed and reference date so the result can be replayed."], code: { language: "bash", value: "curl 'https://persona-dev.onrender.com/people?count=1&seed=guide-v2&asOf=2026-09-28'" } },
-        { id: "response", title: "Read the response", paragraphs: ["The response contains a `results` array and a `meta` object. Names, birth dates and locations are structured. This excerpt comes from the versioned example in the API repository."], code: { language: "json", label: "Excerpt from the v2 response", value: `{
+        { id: "response", title: "Read the response", paragraphs: ["The response contains a `results` array and a `meta` object. Names, birth dates and locations are structured. This excerpt matches the request above with the data versions shown in `meta`; it may change after an update."], code: { language: "json", label: "Excerpt from the v2 response", value: `{
   "results": [
     {
-      "id": "per_7910eca659bd74e83726e75f",
+      "id": "per_b79c5a19b88f5f1ff40446c1",
       "gender": "male",
-      "name": { "first": "Christian", "last": "Arnaud", "full": "Christian Arnaud" },
-      "nationality": "FR",
-      "dob": { "date": "1993-02-02", "age": 33, "ageGroup": "adult" },
-      "location": { "city": "Brazzaville", "country": { "code": "CG", "name": "Congo" } },
-      "email": "c.arnaud.z2300@example.test",
-      "phone": "+242061242366",
-      "picture": { "thumbnail": "https://persona-portraits.osirisbalonga.workers.dev/portraits/v1/thumbnail/p_0233.webp" }
+      "name": { "first": "Edwin", "last": "Fernández", "full": "Edwin Fernández" },
+      "nationality": "PR",
+      "dob": { "date": "1992-12-29", "age": 33, "ageGroup": "adult" },
+      "location": { "city": "Caguas", "country": { "code": "PR", "name": "Puerto Rico" } },
+      "email": "e.fernandez.3yx00@example.test",
+      "phone": "+17875550116",
+      "picture": { "thumbnail": "https://persona-portraits.osirisbalonga.workers.dev/portraits/v1/thumbnail/p_1166.webp" }
     }
   ],
-  "meta": { "count": 1, "asOf": "2026-09-28", "seed": "guide-v2", "schemaVersion": "2" }
+  "meta": { "count": 1, "asOf": "2026-09-28", "seed": "guide-v2", "dataVersion": "geo-2026-09-26.1", "catalogVersion": "v1", "schemaVersion": "2" }
 }` } },
         { id: "replay", title: "Replay the result", paragraphs: ["Provide both `seed` and `asOf` explicitly. The same filters then yield the same people while the data, catalog and algorithm versions remain unchanged."], bullets: ["`count` accepts 1 to 100 people and defaults to 1.", "`seed` is a nonblank string of up to 128 characters.", "`asOf` uses YYYY-MM-DD; without it, the API uses the current UTC date."] },
       ] },
