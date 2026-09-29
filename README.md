@@ -32,8 +32,8 @@ npm run typecheck
 npm run build
 ```
 
-CI runs these checks on pull requests to `main`. Add a focused test when a feature introduces logic worth testing; avoid broad suites for static pages.
+CI runs these checks on pull requests to `dev` and `main`. Add a focused test when a feature introduces logic worth testing; avoid broad suites for static pages.
 
 ## Sources and contributions
 
-The website must reflect the API's [public v2 contract](https://github.com/Osiris-Balonga/persona/blob/dev/docs/api.md) and [country availability](https://github.com/Osiris-Balonga/persona/blob/dev/docs/country-availability.md). Content is maintained in English and French. See [CONTRIBUTING.md](CONTRIBUTING.md) for the lightweight workflow and the [launch issue](https://github.com/Osiris-Balonga/persona-web/issues/1) for scope.
+The website must reflect the API's [public v2 contract](https://github.com/Osiris-Balonga/persona/blob/dev/docs/api.md) and [country availability](https://github.com/Osiris-Balonga/persona/blob/dev/docs/country-availability.md). Content is maintained in English and French. Development happens on `dev`; only `dev` is promoted to `main` through a pull request. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and the [launch issue](https://github.com/Osiris-Balonga/persona-web/issues/1) for scope.
