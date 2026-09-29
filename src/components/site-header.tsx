@@ -19,6 +19,7 @@ import {
 const links = [
   { href: "/docs", label: "docs" },
   { href: "/coverage", label: "coverage" },
+  { href: "/activity", label: "activity" },
 ] as const;
 
 export function SiteHeader() {
@@ -48,8 +49,9 @@ export function SiteHeader() {
         <div className="hidden items-center gap-3 md:flex">
           <ThemeToggle />
           <Button asChild variant="ghost" size="sm" className="h-9 rounded-none px-3.5 transition-colors duration-200 hover:bg-[var(--persona-hover)] dark:hover:bg-[#202f48]">
-            <a href="https://github.com/Osiris-Balonga/persona" target="_blank" rel="noreferrer">
-              <Image src="/github.svg" alt="" width={16} height={16} className="dark:invert" /> {t("github")}
+            <a href="https://github.com/Osiris-Balonga/persona" target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-1.5 leading-none">
+              <Image src="/github.svg" alt="" width={16} height={16} className="block shrink-0 dark:invert" />
+              <span className="block leading-none">{t("github")}</span>
             </a>
           </Button>
           <Button asChild size="sm" className="h-9 rounded-none px-4">

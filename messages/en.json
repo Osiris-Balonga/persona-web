@@ -8,6 +8,7 @@
     "docs": "Docs",
     "playground": "Try /people",
     "coverage": "Coverage",
+    "activity": "Activity",
     "github": "GitHub",
     "menu": "Open menu",
     "closeMenu": "Close menu"
@@ -116,6 +117,27 @@
     "errorTitle": "Unable to load coverage",
     "errorDescription": "Something went wrong while loading the country data.",
     "retry": "Try again"
+  },
+  "Activity": {
+    "metadataTitle": "Persona activity — generated profiles",
+    "metadataDescription": "See how many fictional people the Persona API generated over the last 30 days.",
+    "eyebrow": "Our beta, in motion",
+    "title": "The proof is in the profiles.",
+    "description": "Persona helps create coherent test data. Here is the beta’s activity, shared openly.",
+    "badge": "Public view · API beta",
+    "badgeProduction": "Public view · API",
+    "totalLabel": "fictional people generated",
+    "period": "Over the last 30 days",
+    "today": "today",
+    "activeDays": "active days",
+    "chartTitle": "The last 30 days",
+    "chartSubtitle": "People generated per day · UTC",
+    "chartLegend": "Profiles generated",
+    "chartAccessibility": "Profiles generated each day over the last 30 days",
+    "pointAccessibility": "{date}: {count} profiles generated",
+    "firstData": "First data point: {date}",
+    "errorTitle": "Activity is temporarily unavailable",
+    "errorDescription": "Please try again in a few minutes."
   },
   "Footer": {
     "tagline": "Fictional people. Realistic data."
