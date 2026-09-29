@@ -3,6 +3,7 @@ import createMDX from "@next/mdx";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
+  agentRules: false,
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
     remotePatterns: [
