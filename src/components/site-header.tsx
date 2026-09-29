@@ -19,6 +19,7 @@ import {
 const links = [
   { href: "/docs", label: "docs" },
   { href: "/coverage", label: "coverage" },
+  { href: "/activity", label: "activity" },
 ] as const;
 
 export function SiteHeader() {

@@ -1,0 +1,183 @@
+.page {
+  display: flex;
+  align-items: center;
+  min-height: calc(100dvh - 160px);
+  background: var(--persona-surface);
+  padding: clamp(13px, 2dvh, 30px) 20px;
+}
+
+.inner {
+  display: grid;
+  gap: clamp(12px, 1.7dvh, 22px);
+  width: 100%;
+  max-width: 1216px;
+  margin: 0 auto;
+}
+
+.intro { max-width: 760px; }
+.eyebrow {
+  color: #2c3ebf;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+.intro h1 {
+  margin-top: 8px;
+  color: var(--persona-ink);
+  font-size: clamp(2rem, 3.7vw, 3rem);
+  font-weight: 700;
+  line-height: 1.13;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+.description {
+  margin-top: 8px;
+  color: var(--persona-copy);
+  font-size: .88rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.panel {
+  display: grid;
+  grid-template-columns: 43% 57%;
+  min-height: clamp(255px, 45dvh, 420px);
+  color: #fff;
+  background: #1c2c8d;
+  box-shadow: 15px 17px 0 #e7faf3;
+}
+.summary {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #2b3eb5;
+  padding: clamp(17px, 2.4dvh, 35px) clamp(19px, 2.9vw, 45px);
+}
+.badge {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgb(255 255 255 / 13%);
+  padding: 7px 10px;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+.badge span, .chartBottom i {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: #2ee6a6;
+}
+.total {
+  margin-top: auto;
+  font-size: clamp(3.8rem, 9dvh, 6rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -.065em;
+  font-variant-numeric: tabular-nums;
+}
+.total span {
+  display: inline-block;
+  margin-left: 9px;
+  color: #2ee6a6;
+  font-size: .36em;
+  vertical-align: top;
+}
+.summary h2 {
+  max-width: 260px;
+  font-size: clamp(1rem, 2.4dvh, 1.4rem);
+  font-weight: 650;
+  line-height: 1.23;
+}
+.period { margin-top: 4px; color: #d1d9ff; font-size: .71rem; }
+.summaryBottom {
+  display: flex;
+  gap: clamp(20px, 4vw, 55px);
+  margin-top: auto;
+  border-top: 1px solid rgb(255 255 255 / 23%);
+  padding-top: clamp(10px, 1.6dvh, 22px);
+}
+.summaryBottom div { display: flex; flex-direction: column; }
+.summaryBottom strong { font-size: clamp(1.15rem, 2.6dvh, 1.5rem); font-variant-numeric: tabular-nums; }
+.summaryBottom span { color: #d1d9ff; font-size: .68rem; }
+
+.visual {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #1b2c8a;
+  padding: clamp(17px, 2.4dvh, 35px) clamp(20px, 3vw, 44px) clamp(16px, 2dvh, 30px);
+}
+.chartHeading { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.chartHeading h2 { font-size: clamp(.77rem, 1.8dvh, 1rem); font-weight: 700; line-height: 1.3; }
+.chartHeading p { margin-top: 4px; color: #cbd6ff; font-size: .68rem; }
+.chartHeading > span { flex: none; color: #cbd6ff; font-size: .66rem; }
+.chart { flex: 1; min-height: 130px; margin: 5px -7px 0; }
+.chart svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.gridLine { stroke: rgb(255 255 255 / 18%); stroke-width: 1; }
+.axisText { fill: #d0daff; font-size: 11px; font-weight: 500; }
+.seriesLine { fill: none; stroke: #2ee6a6; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.dataPoint { fill: #2ee6a6; stroke: #1b2c8a; stroke-width: 2; vector-effect: non-scaling-stroke; }
+.tooltip rect { fill: #edfef7; }
+.tooltipValue { fill: #182b68; font-size: 13px; font-weight: 700; }
+.tooltipDate { fill: #364879; font-size: 10px; }
+.chartBottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: #d1dcff; font-size: .67rem; }
+.chartBottom > span:first-child { display: inline-flex; align-items: center; gap: 7px; }
+.chartState { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 5px; }
+.chartState strong { font-size: .9rem; }
+.chartState p { color: #cbd6ff; font-size: .74rem; }
+
+.note { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; color: var(--persona-copy); font-size: .68rem; line-height: 1.5; }
+.note p:first-child { max-width: 650px; }
+.note p:last-child { flex: none; text-align: right; }
+
+:global(.dark) .page { background: var(--background); }
+:global(.dark) .eyebrow { color: #aab7ff; }
+:global(.dark) .panel { box-shadow: 15px 17px 0 #193a38; }
+
+@media (min-width: 1024px) and (max-height: 680px) {
+  .page { padding-top: 9px; padding-bottom: 9px; }
+  .inner { gap: 9px; }
+  .intro h1 { font-size: 2rem; margin-top: 3px; }
+  .description { margin-top: 3px; font-size: .78rem; }
+  .panel { min-height: 250px; }
+  .note { font-size: .63rem; }
+}
+
+@media (max-width: 767px) {
+  .page { min-height: auto; padding: 33px 20px 45px; }
+  .inner { gap: 22px; }
+  .intro h1 { font-size: clamp(2rem, 8vw, 2.65rem); }
+  .description { font-size: .84rem; }
+  .panel { display: flex; flex-direction: column; box-shadow: 9px 10px 0 #e7faf3; }
+  .summary { min-height: 290px; padding: 25px; }
+  .total { margin-top: 30px; font-size: 4.5rem; }
+  .summaryBottom { margin-top: 24px; }
+  .visual { min-height: 290px; padding: 24px 19px; }
+  .chartHeading { flex-wrap: wrap; }
+  .chartHeading > span { display: none; }
+  .chart { min-height: 183px; }
+  .axisText { font-size: 20px; }
+  .tooltipValue { font-size: 23px; }
+  .tooltipDate { font-size: 18px; }
+  .note { flex-direction: column; gap: 6px; }
+  .note p:last-child { text-align: left; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .intro { animation: activity-enter .45s cubic-bezier(.22, 1, .36, 1) both; }
+  .panel { animation: activity-enter .5s .08s cubic-bezier(.22, 1, .36, 1) both; }
+  .note { animation: activity-enter .5s .15s cubic-bezier(.22, 1, .36, 1) both; }
+  .dataPoint { transition: r .18s ease-out; }
+}
+
+@keyframes activity-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

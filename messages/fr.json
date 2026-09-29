@@ -8,6 +8,7 @@
     "docs": "Documentation",
     "playground": "Essayer /people",
     "coverage": "Couverture",
+    "activity": "Activité",
     "github": "GitHub",
     "menu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu"
@@ -116,6 +117,31 @@
     "errorTitle": "Impossible de charger la couverture",
     "errorDescription": "Une erreur est survenue lors du chargement des données.",
     "retry": "Réessayer"
+  },
+  "Activity": {
+    "metadataTitle": "Activité de Persona — profils générés",
+    "metadataDescription": "Suivez le nombre de personnes fictives générées par l’API Persona au cours des 30 derniers jours.",
+    "eyebrow": "Notre bêta, en direct",
+    "title": "La preuve par les profils.",
+    "description": "Persona sert à créer des données de test cohérentes. Voici le rythme de la bêta, en toute transparence.",
+    "badge": "Aperçu public · bêta API",
+    "badgeProduction": "Aperçu public · API",
+    "totalLabel": "personnes fictives générées",
+    "period": "Au cours des 30 derniers jours",
+    "today": "aujourd’hui",
+    "activeDays": "jours actifs",
+    "chartTitle": "Le rythme des 30 derniers jours",
+    "chartSubtitle": "Personnes générées par jour · UTC",
+    "chartLegend": "Profils générés",
+    "chartAccessibility": "Profils générés chaque jour sur les 30 derniers jours",
+    "pointAccessibility": "{date} : {count} profils générés",
+    "firstData": "Première donnée : {date}",
+    "emptyTitle": "La courbe démarre bientôt",
+    "emptyDescription": "Aucun profil généré n’a encore été enregistré pendant cette période.",
+    "errorTitle": "Les chiffres sont momentanément indisponibles",
+    "errorDescription": "Réessayez dans quelques minutes.",
+    "disclaimer": "Nous comptons les profils produits, pas les personnes qui visitent le site. Les essais internes de la bêta sont inclus.",
+    "refresh": "Données actualisées environ toutes les 5 minutes."
   },
   "Footer": {
     "tagline": "Des personnes fictives. Des données réalistes."
