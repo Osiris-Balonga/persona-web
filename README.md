@@ -26,7 +26,7 @@ The playground calls the public API from the browser. Set `NEXT_PUBLIC_PERSONA_A
 
 ## Deployment
 
-The [Vercel project](https://vercel.com/osiris-balongas-projects/persona-web) deploys `main` to [persona-web-tau.vercel.app](https://persona-web-tau.vercel.app). Pull requests get preview deployments. The [deployments page](https://vercel.com/osiris-balongas-projects/persona-web/deployments) shows build status, logs, and the previous production deployment, which can be restored with Instant Rollback if needed. The site currently calls the beta API on Render; change `NEXT_PUBLIC_PERSONA_API_URL` and redeploy when the production API is ready.
+The [Vercel project](https://vercel.com/osiris-balongas-projects/persona) deploys `main` to [persona-web-tau.vercel.app](https://persona-web-tau.vercel.app). Pull requests get preview deployments. The [deployments page](https://vercel.com/osiris-balongas-projects/persona/deployments) shows build status, logs, and the previous production deployment, which can be restored with Instant Rollback if needed. The site currently calls the beta API on Render; change `NEXT_PUBLIC_PERSONA_API_URL` and redeploy when the production API is ready.
 
 ## Checks
 
