@@ -70,7 +70,7 @@ export function SearchableCombobox({
         className={
           visuallyHiddenLabel
             ? "sr-only"
-            : "mb-1.5 block text-xs font-semibold text-[#292e39]"
+            : "mb-1.5 block text-xs font-semibold text-[var(--persona-ink)]"
         }
       >
         {label}
@@ -90,7 +90,7 @@ export function SearchableCombobox({
             aria-expanded={open}
             aria-controls={listId}
             disabled={disabled}
-            className={`flex h-9 w-full min-w-0 items-center gap-2 border border-[#d9dde5] bg-white px-3 text-left text-xs text-[#303746] transition-[border-color,box-shadow] duration-200 hover:border-primary/60 focus-visible:border-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:bg-[#f6f7fa] disabled:text-[#9aa1b0] ${triggerClassName}`}
+            className={`flex h-9 w-full min-w-0 items-center gap-2 border border-[var(--persona-line)] bg-[var(--persona-surface)] px-3 text-left text-xs text-[var(--persona-ink)] transition-[border-color,box-shadow] duration-200 hover:border-primary/60 focus-visible:border-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:bg-[var(--persona-soft-surface)] disabled:text-[var(--persona-quiet)] ${triggerClassName}`}
           >
             {selected?.flag && (
               <span
@@ -103,24 +103,24 @@ export function SearchableCombobox({
             </span>
             <ChevronDown
               aria-hidden="true"
-              className={`size-3.5 shrink-0 text-[#6b7280] transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+              className={`size-3.5 shrink-0 text-[var(--persona-copy)] transition-transform duration-200 ${open ? "rotate-180" : ""}`}
             />
           </button>
         </PopoverTrigger>
         <PopoverContent
           align="start"
           sideOffset={4}
-          className="w-[var(--radix-popover-trigger-width)] min-w-52 rounded-none border border-[#d9dde5] bg-white p-1 shadow-[0_14px_38px_rgba(34,48,105,0.14)]"
+          className="w-[var(--radix-popover-trigger-width)] min-w-52 rounded-none border border-[var(--persona-line)] bg-[var(--persona-surface)] p-1 shadow-[0_14px_38px_rgba(34,48,105,0.14)]"
         >
           <CommandPrimitive shouldFilter={false} className="flex flex-col">
-            <div className="flex h-9 items-center gap-2 border-b border-[#e5e8ee] px-2">
-              <Search aria-hidden="true" className="size-3.5 text-[#7a8294]" />
+            <div className="flex h-9 items-center gap-2 border-b border-[var(--persona-line)] px-2">
+              <Search aria-hidden="true" className="size-3.5 text-[var(--persona-quiet)]" />
               <CommandPrimitive.Input
                 value={search}
                 onValueChange={setSearch}
                 aria-label={searchPlaceholder}
                 placeholder={searchPlaceholder}
-                className="min-w-0 flex-1 bg-transparent text-xs outline-none placeholder:text-[#9aa1b0]"
+                className="min-w-0 flex-1 bg-transparent text-xs outline-none placeholder:text-[var(--persona-quiet)]"
               />
             </div>
             <CommandPrimitive.List
@@ -131,7 +131,7 @@ export function SearchableCombobox({
                 <CommandPrimitive.Item
                   value="clear-selection"
                   onSelect={() => choose("")}
-                  className="cursor-pointer px-2 py-2 text-xs text-[#788197] outline-none data-[selected=true]:bg-[#f0f3fd]"
+                  className="cursor-pointer px-2 py-2 text-xs text-[var(--persona-quiet)] outline-none data-[selected=true]:bg-[var(--persona-hover)]"
                 >
                   {placeholder}
                 </CommandPrimitive.Item>
@@ -141,7 +141,7 @@ export function SearchableCombobox({
                   key={option.value}
                   value={option.value}
                   onSelect={() => choose(option.value)}
-                  className="flex cursor-pointer items-center gap-2 px-2 py-2 text-xs text-[#303746] outline-none transition-colors duration-150 data-[selected=true]:bg-[#f0f3fd] data-[selected=true]:text-primary"
+                  className="flex cursor-pointer items-center gap-2 px-2 py-2 text-xs text-[var(--persona-ink)] outline-none transition-colors duration-150 data-[selected=true]:bg-[var(--persona-hover)] data-[selected=true]:text-primary"
                 >
                   {option.flag && (
                     <span
@@ -161,7 +161,7 @@ export function SearchableCombobox({
                 </CommandPrimitive.Item>
               ))}
               {!matches.length && (
-                <p className="px-2 py-5 text-center text-xs text-[#788197]">
+                <p className="px-2 py-5 text-center text-xs text-[var(--persona-quiet)]">
                   {emptyMessage}
                 </p>
               )}
@@ -170,7 +170,7 @@ export function SearchableCombobox({
         </PopoverContent>
       </Popover>
       {hint && (
-        <span className="mt-1 block text-[0.68rem] text-[#8a92a0]">{hint}</span>
+        <span className="mt-1 block text-[0.68rem] text-[var(--persona-quiet)]">{hint}</span>
       )}
     </div>
   );

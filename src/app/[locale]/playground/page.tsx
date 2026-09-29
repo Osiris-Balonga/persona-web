@@ -24,23 +24,23 @@ export default async function PlaygroundPage({ params }: Props) {
     >
       <div className="playground-enter mb-6 flex flex-wrap items-end justify-between gap-5">
         <div>
-          <p className="mb-2 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#4a588c]">
+          <p className="mb-2 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--persona-strong-muted)]">
             {t("eyebrow")}
           </p>
           <h1 className="text-4xl font-bold tracking-tight md:text-5xl">
             {t("title")}
           </h1>
-          <p className="mt-2 text-sm text-[#667087]">{t("description")}</p>
+          <p className="mt-2 text-sm text-[var(--persona-copy)]">{t("description")}</p>
         </div>
-        <p className="hidden border-l border-[#d7dbe4] pl-5 text-xs leading-5 text-[#6d7892] xl:block">
+        <p className="hidden border-l border-[var(--persona-line)] pl-5 text-xs leading-5 text-[var(--persona-copy)] xl:block">
           {t("aside")}
         </p>
       </div>
       <Suspense
         fallback={
           <div className="grid min-h-[36rem] gap-5 lg:grid-cols-2">
-            <div className="animate-pulse bg-[#f6f8fc]" />
-            <div className="animate-pulse bg-[#f6f8fc]" />
+            <div className="animate-pulse bg-[var(--persona-soft-surface)]" />
+            <div className="animate-pulse bg-[var(--persona-soft-surface)]" />
           </div>
         }
       >
