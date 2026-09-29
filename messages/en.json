@@ -9,6 +9,7 @@
     "playground": "Try /people",
     "coverage": "Coverage",
     "activity": "Activity",
+    "useCases": "Examples",
     "github": "GitHub",
     "menu": "Open menu",
     "closeMenu": "Close menu"
@@ -141,6 +142,10 @@
   },
   "Footer": {
     "tagline": "Fictional people. Realistic data."
+  },
+  "UseCases": {
+    "metadataTitle": "Use cases — Persona",
+    "metadataDescription": "Explore how Persona's fictional profiles can bring a landing page, testimonials, a team and a data table to life."
   },
   "NotFound": {
     "title": "Page not found",

@@ -9,6 +9,7 @@
     "playground": "Essayer /people",
     "coverage": "Couverture",
     "activity": "Activité",
+    "useCases": "Exemples",
     "github": "GitHub",
     "menu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu"
@@ -141,6 +142,10 @@
   },
   "Footer": {
     "tagline": "Des personnes fictives. Des données réalistes."
+  },
+  "UseCases": {
+    "metadataTitle": "Exemples d’utilisation — Persona",
+    "metadataDescription": "Explorez comment les profils fictifs Persona donnent vie à une page, des témoignages, une équipe et une table de données."
   },
   "NotFound": {
     "title": "Page introuvable",

@@ -20,6 +20,7 @@ const links = [
   { href: "/docs", label: "docs" },
   { href: "/coverage", label: "coverage" },
   { href: "/activity", label: "activity" },
+  { href: "/use-cases", label: "useCases" },
 ] as const;
 
 export function SiteHeader() {
