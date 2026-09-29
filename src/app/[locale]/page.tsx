@@ -67,7 +67,7 @@ export default async function Home({ params }: Props) {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
           {benefits.map(({ key, imagePosition }) => (
             <div key={key} className="persona-benefit persona-reveal persona-reveal-delay-3 flex min-w-0 items-center gap-3">
-              <div aria-hidden="true" className="persona-benefit-image h-28 w-[42%] shrink-0 bg-no-repeat sm:h-32 lg:h-28" style={{ backgroundImage: "url('/benefits-strip.png')", backgroundSize: "400% auto", backgroundPosition: `${imagePosition} center` }} />
+              <div aria-hidden="true" className="persona-benefit-image h-28 w-[42%] shrink-0 bg-no-repeat sm:h-32 lg:h-28" style={{ backgroundImage: "url('/benefits-strip.webp')", backgroundSize: "400% auto", backgroundPosition: `${imagePosition} center` }} />
               <div className="persona-benefit-copy min-w-0">
                 <h2 className="text-[0.79rem] font-semibold leading-5 text-[#1f222c]">{t(`${key}Title`)}</h2>
                 <p className="mt-1 text-[0.7rem] leading-[1.5] text-[#767e8e]">{t(`${key}Description`)}</p>
