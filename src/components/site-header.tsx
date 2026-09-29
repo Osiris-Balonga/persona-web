@@ -1,10 +1,11 @@
 "use client";
 
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
-import { LanguageSwitcher } from "@/components/language-switcher";
 import { Button } from "@/components/ui/button";
+import { Brand } from "@/components/brand";
 import {
   Sheet,
   SheetClose,
@@ -15,10 +16,10 @@ import {
 } from "@/components/ui/sheet";
 
 const links = [
-  { href: "/", label: "home" },
-  { href: "/docs", label: "docs" },
+  { href: "/", label: "product" },
+  { href: "/docs/quickstart", label: "api" },
   { href: "/coverage", label: "coverage" },
-  { href: "/playground", label: "playground" },
+  { href: "/docs", label: "docs" },
 ] as const;
 
 export function SiteHeader() {
@@ -26,20 +27,19 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="border-b border-border bg-background/95">
-      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-5 md:px-8">
-        <Link href="/" aria-label={`Persona — ${t("home")}`} className="flex items-center gap-2.5 text-base font-bold tracking-tight">
-          <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-sm bg-primary text-sm font-bold text-white shadow-[inset_7px_0_0_#2ee6a6]">P</span>
-          PERSONA
+    <header className="bg-white">
+      <div className="mx-auto flex h-[76px] w-full max-w-7xl items-center justify-between gap-4 px-5 md:px-8">
+        <Link href="/" aria-label={`Persona — ${t("home")}`} className="flex items-center">
+          <Brand />
         </Link>
 
-        <nav aria-label={t("menu")} className="hidden items-center gap-7 md:flex">
+        <nav aria-label={t("menu")} className="hidden items-center gap-9 md:flex">
           {links.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
-              aria-current={pathname === href || (href === "/docs" && pathname.startsWith("/docs/")) ? "page" : undefined}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary aria-[current=page]:text-primary"
+              aria-current={pathname === href || (href === "/docs" && pathname.startsWith("/docs/") && pathname !== "/docs/quickstart") ? "page" : undefined}
+              className="text-[0.82rem] font-medium text-[#303447] transition-colors hover:text-primary aria-[current=page]:text-primary"
             >
               {t(label)}
             </Link>
@@ -47,11 +47,13 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <LanguageSwitcher />
-          <Button asChild variant="outline" size="sm">
+          <Button asChild variant="outline" size="sm" className="h-9 rounded-none border-[#343744] px-3.5">
             <a href="https://github.com/Osiris-Balonga/persona" target="_blank" rel="noreferrer">
-              {t("github")} <ArrowUpRight aria-hidden="true" />
+              <Image src="/github.svg" alt="" width={16} height={16} /> {t("github")}
             </a>
+          </Button>
+          <Button asChild size="sm" className="h-9 rounded-none px-4">
+            <Link href="/playground">{t("playground")} <ArrowRight aria-hidden="true" /></Link>
           </Button>
         </div>
 
@@ -63,7 +65,7 @@ export function SiteHeader() {
           </SheetTrigger>
           <SheetContent showCloseButton={false} className="md:hidden">
             <SheetHeader className="flex-row items-center justify-between border-b border-border">
-              <SheetTitle>PERSONA</SheetTitle>
+              <SheetTitle><Brand /></SheetTitle>
               <SheetClose asChild>
                 <Button variant="ghost" size="icon-sm" aria-label={t("closeMenu")}><X aria-hidden="true" /></Button>
               </SheetClose>
@@ -75,8 +77,8 @@ export function SiteHeader() {
                 </SheetClose>
               ))}
             </nav>
-            <div className="mt-auto flex items-center justify-between border-t border-border p-4">
-              <LanguageSwitcher />
+            <SheetClose asChild><Link href="/playground" className="mx-4 mt-2 bg-primary px-3 py-2 text-center text-sm font-semibold text-white">{t("playground")}</Link></SheetClose>
+            <div className="mt-auto flex items-center justify-end border-t border-border p-4">
               <a className="text-sm font-medium text-primary" href="https://github.com/Osiris-Balonga/persona" target="_blank" rel="noreferrer">{t("github")}</a>
             </div>
           </SheetContent>

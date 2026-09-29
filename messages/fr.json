@@ -5,21 +5,39 @@
   },
   "Nav": {
     "home": "Accueil",
+    "product": "Produit",
+    "api": "API",
     "docs": "Documentation",
     "playground": "Essayer /people",
     "coverage": "Couverture",
     "github": "GitHub",
     "menu": "Ouvrir le menu",
-    "closeMenu": "Fermer le menu",
-    "language": "Langue"
+    "closeMenu": "Fermer le menu"
   },
   "Home": {
     "eyebrow": "Des personnes fictives pour de meilleurs produits",
-    "title": "Des profils fictifs pour vos produits et vos tests.",
-    "description": "Persona fournit des profils cohérents avec nom, âge, lieu, coordonnées et, lorsqu’il est disponible, un portrait validé. Reproduisez les résultats avec une graine.",
+    "title": "Générez des personnes fictives cohérentes pour vos produits et vos tests.",
+    "titleStart": "Générez des personnes fictives cohérentes pour",
+    "titleBlue": "vos produits",
+    "titleAnd": "et",
+    "titleGreen": "vos tests.",
+    "description": "Persona fournit un nom, un âge, une nationalité, un lieu, des coordonnées et, quand il est disponible, un portrait réaliste — avec des résultats reproductibles grâce à une graine.",
     "readDocs": "Lire la documentation",
     "tryApi": "Essayer /people",
-    "note": "Bêta publique. Aucune clé API requise."
+    "note": "Générez des profils réalistes en quelques secondes. Aucune clé API requise.",
+    "sliderLabel": "Profils Persona en direct",
+    "sliderLoading": "Chargement des profils",
+    "ageLabel": "ans",
+    "sliderError": "Les profils sont temporairement indisponibles. Rechargez cette page.",
+    "benefitsLabel": "Pourquoi utiliser Persona",
+    "keylessTitle": "Sans clé API",
+    "keylessDescription": "Commencez immédiatement. Un accès ouvert et gratuit pour tous.",
+    "seedTitle": "Résultats reproductibles",
+    "seedDescription": "Des profils réutilisables pour des tests fiables et cohérents.",
+    "coverageTitle": "249 codes de pays",
+    "coverageDescription": "Une couverture mondiale et variée. La génération de profils prend actuellement en charge 209 codes.",
+    "portraitsTitle": "1 764 portraits validés",
+    "portraitsDescription": "Des portraits réalistes, de qualité et contrôlés manuellement. Un profil peut ne pas avoir d’image."
   },
   "Docs": {
     "eyebrow": "Documentation développeur",
@@ -47,7 +65,17 @@
   },
   "Footer": {
     "tagline": "Des personnes fictives. Des données réalistes.",
-    "source": "Code source de l’API"
+    "source": "Code source de l’API",
+    "product": "Produit",
+    "overview": "Présentation",
+    "useCases": "Cas d’usage",
+    "documentation": "Documentation",
+    "coverage": "Couverture",
+    "resources": "Ressources",
+    "changelog": "Journal des changements",
+    "star": "Suivez-nous sur GitHub",
+    "starDescription": "Un projet ouvert pour un Internet plus créatif.",
+    "rights": "Tous droits réservés."
   },
   "NotFound": {
     "title": "Page introuvable",
