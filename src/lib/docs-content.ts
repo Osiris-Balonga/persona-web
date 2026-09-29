@@ -10,7 +10,7 @@ type Section = {
   id: string;
   title: string;
   paragraphs?: string[];
-  code?: { language: string; value: string; label?: string };
+  code?: { language: string; value: string };
   bullets?: string[];
   table?: Table;
   note?: string;
@@ -48,7 +48,7 @@ export const docs: Record<DocLocale, DocsDictionary> = {
         description: "Récupérez des personnes fictives cohérentes depuis l’API publique en une seule requête. Aucune clé API n’est nécessaire.",
         sections: [
           { id: "request", title: "Faire une requête", paragraphs: ["Envoyez une requête GET à l’endpoint public. Cet exemple fixe la graine et la date de référence pour pouvoir rejouer le résultat."], code: { language: "bash", value: "curl 'https://persona-dev.onrender.com/people?count=1&seed=guide-v2&asOf=2026-09-28'" } },
-          { id: "response", title: "Lire la réponse", paragraphs: ["La réponse contient un tableau `results` et un objet `meta`. Le nom, la date de naissance et le lieu sont structurés. Cet extrait correspond à la requête ci-dessus avec les versions de données indiquées dans `meta` ; il peut évoluer après une mise à jour."], code: { language: "json", label: "Extrait de la réponse v2", value: `{
+          { id: "response", title: "Lire la réponse", paragraphs: ["La réponse contient un tableau `results` et un objet `meta`. Le nom, la date de naissance et le lieu sont structurés. Cet extrait correspond à la requête ci-dessus avec les versions de données indiquées dans `meta` ; il peut évoluer après une mise à jour."], code: { language: "json", value: `{
   "results": [
     {
       "id": "per_b79c5a19b88f5f1ff40446c1",
@@ -162,7 +162,7 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
     pages: {
       quickstart: { title: "First request", description: "Retrieve coherent fictional people from the public API with one request. No API key is required.", sections: [
         { id: "request", title: "Make a request", paragraphs: ["Send a GET request to the public endpoint. This example fixes the seed and reference date so the result can be replayed."], code: { language: "bash", value: "curl 'https://persona-dev.onrender.com/people?count=1&seed=guide-v2&asOf=2026-09-28'" } },
-        { id: "response", title: "Read the response", paragraphs: ["The response contains a `results` array and a `meta` object. Names, birth dates and locations are structured. This excerpt matches the request above with the data versions shown in `meta`; it may change after an update."], code: { language: "json", label: "Excerpt from the v2 response", value: `{
+        { id: "response", title: "Read the response", paragraphs: ["The response contains a `results` array and a `meta` object. Names, birth dates and locations are structured. This excerpt matches the request above with the data versions shown in `meta`; it may change after an update."], code: { language: "json", value: `{
   "results": [
     {
       "id": "per_b79c5a19b88f5f1ff40446c1",

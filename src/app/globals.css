@@ -137,6 +137,8 @@
 
 .docs-enter { animation: docs-enter 420ms cubic-bezier(.22, 1, .36, 1) both; }
 .docs-mobile-nav[open] > div { animation: docs-enter 220ms cubic-bezier(.22, 1, .36, 1) both; }
+.docs-code-scroll { scrollbar-width: none; }
+.docs-code-scroll::-webkit-scrollbar { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .docs-enter,

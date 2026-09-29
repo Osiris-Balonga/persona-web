@@ -45,7 +45,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button asChild variant="outline" size="sm" className="h-9 rounded-none border-[#343744] px-3.5">
+          <Button asChild variant="ghost" size="sm" className="h-9 rounded-none px-3.5 transition-colors duration-200 hover:bg-[#f1f3f9]">
             <a href="https://github.com/Osiris-Balonga/persona" target="_blank" rel="noreferrer">
               <Image src="/github.svg" alt="" width={16} height={16} /> {t("github")}
             </a>

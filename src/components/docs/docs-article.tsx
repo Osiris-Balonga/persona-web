@@ -49,8 +49,9 @@ export function DocsArticle({ locale, slug }: { locale: DocLocale; slug: DocSlug
   );
 
   return (
-    <div className="docs-shell mx-auto grid w-full max-w-[1480px] grid-cols-1 gap-0 bg-white px-5 md:grid-cols-[216px_minmax(0,1fr)] md:px-8 xl:grid-cols-[232px_minmax(0,1fr)_204px] 2xl:px-12">
-      <aside className="hidden border-r border-[#eceef3] pb-20 pt-9 md:block">
+    <div className="w-full bg-white">
+    <div className="docs-shell mx-auto grid w-full max-w-7xl grid-cols-1 gap-0 px-5 md:grid-cols-[216px_minmax(0,1fr)] md:px-8 xl:grid-cols-[232px_minmax(0,1fr)_204px]">
+      <aside className="hidden pb-20 pt-9 md:block">
         <div className="sticky top-7 max-h-[calc(100vh-3.5rem)] overflow-y-auto pr-5 [scrollbar-width:thin]">{navigation}</div>
       </aside>
 
@@ -81,11 +82,10 @@ export function DocsArticle({ locale, slug }: { locale: DocLocale; slug: DocSlug
                 ))}
                 {section.code && (
                   <div className="mt-4 min-w-0 overflow-hidden rounded-md bg-[#1c2534] text-slate-100">
-                    <div className="flex h-10 items-center justify-between border-b border-white/10 px-4">
-                      <span className="text-[0.7rem] text-slate-400">{section.code.label ?? section.code.language}</span>
+                    <div className="flex h-10 items-center justify-end border-b border-white/10 px-4">
                       <CopyCode value={section.code.value} copyLabel={dictionary.copy} copiedLabel={dictionary.copied} announcement={dictionary.copiedDescription} />
                     </div>
-                    <pre className="overflow-x-auto px-4 py-4 text-[0.76rem] leading-[1.75] [scrollbar-width:thin] sm:text-[0.8rem]"><code><CodeText value={section.code.value} language={section.code.language} /></code></pre>
+                    <pre tabIndex={0} className="docs-code-scroll overflow-x-auto px-4 py-4 text-[0.76rem] leading-[1.75] sm:text-[0.8rem]"><code><CodeText value={section.code.value} language={section.code.language} /></code></pre>
                   </div>
                 )}
                 {section.bullets && (
@@ -120,7 +120,7 @@ export function DocsArticle({ locale, slug }: { locale: DocLocale; slug: DocSlug
         </article>
       </main>
 
-      <aside className="hidden border-l border-[#eceef3] pb-20 pt-12 xl:block">
+      <aside className="hidden pb-20 pt-12 xl:block">
         <nav aria-label={dictionary.onThisPage} className="sticky top-7 pl-6">
           <p className="text-[0.83rem] font-semibold text-[#171c2e]">{dictionary.onThisPage}</p>
           <ul className="mt-3 space-y-3">
@@ -128,6 +128,7 @@ export function DocsArticle({ locale, slug }: { locale: DocLocale; slug: DocSlug
           </ul>
         </nav>
       </aside>
+    </div>
     </div>
   );
 }
