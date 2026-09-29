@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { Button } from "@/components/ui/button";
+import { Brand } from "@/components/brand";
 import {
   Sheet,
   SheetClose,
@@ -29,8 +30,7 @@ export function SiteHeader() {
     <header className="border-b border-border bg-background/95">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-5 md:px-8">
         <Link href="/" aria-label={`Persona — ${t("home")}`} className="flex items-center gap-2.5 text-base font-bold tracking-tight">
-          <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-sm bg-primary text-sm font-bold text-white shadow-[inset_7px_0_0_#2ee6a6]">P</span>
-          PERSONA
+          <Brand />
         </Link>
 
         <nav aria-label={t("menu")} className="hidden items-center gap-7 md:flex">
@@ -53,6 +53,9 @@ export function SiteHeader() {
               {t("github")} <ArrowUpRight aria-hidden="true" />
             </a>
           </Button>
+          <Button asChild size="sm" className="hidden lg:inline-flex">
+            <Link href="/playground">{t("playground")} <ArrowUpRight aria-hidden="true" /></Link>
+          </Button>
         </div>
 
         <Sheet>
@@ -63,7 +66,7 @@ export function SiteHeader() {
           </SheetTrigger>
           <SheetContent showCloseButton={false} className="md:hidden">
             <SheetHeader className="flex-row items-center justify-between border-b border-border">
-              <SheetTitle>PERSONA</SheetTitle>
+              <SheetTitle><Brand /></SheetTitle>
               <SheetClose asChild>
                 <Button variant="ghost" size="icon-sm" aria-label={t("closeMenu")}><X aria-hidden="true" /></Button>
               </SheetClose>
