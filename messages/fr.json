@@ -61,8 +61,8 @@
     "city": "Ville", "cityPlaceholder": "Choisir une ville", "cityHint": "Choisissez d’abord un pays", "cityHintSelected": "Rechercher dans les villes du pays choisi",
     "PortraitTypes": {
       "label": "Types de portraits",
-      "pending": "Sélection en préparation, non appliquée aux requêtes. L’API doit prendre en charge plusieurs types.",
-      "empty": "Aucun type de portrait sélectionné. Standard ne sera pas réactivé automatiquement.",
+      "hint": "Décochez les types de portraits à exclure.",
+      "empty": "Aucun type sélectionné : les profils seront générés sans portrait.",
       "standard": "Standard", "doctor": "Médecin", "construction": "BTP", "business": "Business", "school-pupil": "Élève"
     },
     "emailDomain": "Domaine email", "seed": "Seed", "seedHint": "Optionnelle. Même seed et même date, mêmes résultats", "asOf": "À la date du", "asOfHint": "Date de référence pour l’âge",

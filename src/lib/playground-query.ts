@@ -10,7 +10,23 @@ export type PlaygroundOptions = {
   seed: string;
   asOf: string;
   fields: string[];
+  portraitContexts: PlaygroundPortraitContext[];
 };
+
+export const playgroundPortraitContexts = [
+  "standard", "doctor", "construction", "business", "school-pupil",
+] as const;
+export type PlaygroundPortraitContext = (typeof playgroundPortraitContexts)[number];
+
+export function togglePortraitContext(
+  selected: readonly PlaygroundPortraitContext[],
+  context: PlaygroundPortraitContext,
+): PlaygroundPortraitContext[] {
+  const next = new Set(selected);
+  if (next.has(context)) next.delete(context);
+  else next.add(context);
+  return playgroundPortraitContexts.filter((item) => next.has(item));
+}
 
 export const defaultPlaygroundOptions: PlaygroundOptions = {
   count: 3,
@@ -24,6 +40,7 @@ export const defaultPlaygroundOptions: PlaygroundOptions = {
   seed: "",
   asOf: "",
   fields: [],
+  portraitContexts: [...playgroundPortraitContexts],
 };
 
 export type QueryProblem =
@@ -74,6 +91,8 @@ const optionKeys = [
   "seed",
   "asOf",
   "fields",
+  "portraitContext",
+  "portraitContexts",
 ] as const;
 
 export function parsePlaygroundOptions(
@@ -94,6 +113,7 @@ export function parsePlaygroundOptions(
     .filter((field) =>
       playgroundFields.includes(field as (typeof playgroundFields)[number]),
     );
+  const portraitContexts = params.get("portraitContexts");
   return {
     count:
       params.get("count") !== null && Number.isFinite(count)
@@ -110,6 +130,9 @@ export function parsePlaygroundOptions(
     seed: params.get("seed") ?? defaultPlaygroundOptions.seed,
     asOf: params.get("asOf") ?? "",
     fields: [...new Set(fields)],
+    portraitContexts: portraitContexts === null
+      ? [...playgroundPortraitContexts]
+      : playgroundPortraitContexts.filter((context) => portraitContexts.split(",").includes(context)),
   };
 }
 
@@ -136,6 +159,8 @@ export function buildPlaygroundPageUrl(
     query.set("seed", options.seed);
   if (options.asOf) query.set("asOf", options.asOf);
   if (options.fields.length) query.set("fields", options.fields.join(","));
+  if (options.portraitContexts.length !== playgroundPortraitContexts.length)
+    query.set("portraitContexts", options.portraitContexts.join(","));
   return `${url.pathname}${url.search}${url.hash}`;
 }
 
@@ -172,6 +197,7 @@ export function validatePlaygroundOptions(
 export function buildPeopleUrl(
   apiOrigin: string,
   options: PlaygroundOptions,
+  portraitContextsEnabled = false,
 ): URL {
   const url = new URL("/people", apiOrigin);
   const query = url.searchParams;
@@ -189,5 +215,7 @@ export function buildPeopleUrl(
   if (options.seed.trim()) query.set("seed", options.seed.trim());
   if (options.asOf) query.set("asOf", options.asOf);
   if (options.fields.length) query.set("fields", options.fields.join(","));
+  if (portraitContextsEnabled)
+    query.set("portraitContexts", options.portraitContexts.join(","));
   return url;
 }

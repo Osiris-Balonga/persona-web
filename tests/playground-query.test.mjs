@@ -8,6 +8,34 @@ import {
   validatePlaygroundOptions,
 } from "../src/lib/playground-query.ts";
 
+test("portrait contexts are gated until the API deployment is confirmed", () => {
+  const options = { ...defaultPlaygroundOptions, portraitContexts: ["doctor", "business"] };
+  assert.equal(buildPeopleUrl("https://persona.test", options).searchParams.has("portraitContexts"), false);
+  const enabled = buildPeopleUrl("https://persona.test", options, true);
+  assert.equal(enabled.searchParams.get("portraitContexts"), "doctor,business");
+  assert.equal(enabled.searchParams.has("portraitContext"), false);
+});
+
+test("all five portrait types are explicit when enabled, while zero stays explicit and survives refresh", () => {
+  assert.equal(buildPeopleUrl("https://persona.test", defaultPlaygroundOptions, true).searchParams.get("portraitContexts"), "standard,doctor,construction,business,school-pupil");
+  const options = { ...defaultPlaygroundOptions, portraitContexts: [] };
+  const enabled = buildPeopleUrl("https://persona.test", options, true);
+  assert.equal(enabled.searchParams.has("portraitContexts"), true);
+  assert.equal(enabled.searchParams.get("portraitContexts"), "");
+  const page = new URL(buildPlaygroundPageUrl("https://persona.test/fr/playground", options), "https://persona.test");
+  assert.equal(page.searchParams.has("portraitContexts"), true);
+  assert.deepEqual(parsePlaygroundOptions(page.searchParams).portraitContexts, []);
+});
+
+test("portrait choices restore in canonical order, exclude unsupported types and default to all five", () => {
+  assert.deepEqual(parsePlaygroundOptions(new URLSearchParams()).portraitContexts, ["standard", "doctor", "construction", "business", "school-pupil"]);
+  const options = parsePlaygroundOptions(new URLSearchParams("portraitContexts=business,doctor,doctor,university-student,teacher"));
+  assert.deepEqual(options.portraitContexts, ["doctor", "business"]);
+  const page = new URL(buildPlaygroundPageUrl("https://persona.test/fr/playground?portraitContext=standard", options), "https://persona.test");
+  assert.equal(page.searchParams.has("portraitContext"), false);
+  assert.deepEqual(parsePlaygroundOptions(page.searchParams).portraitContexts, ["doctor", "business"]);
+});
+
 test("starts without a seed and keeps the example email domain", () => {
   const options = parsePlaygroundOptions(new URLSearchParams());
   assert.equal(options.seed, "");

@@ -3,7 +3,7 @@ import test from "node:test";
 import {
   playgroundPortraitContexts,
   togglePortraitContext,
-} from "../src/lib/playground-portraits.ts";
+} from "../src/lib/playground-query.ts";
 
 test("offers only the five approved Playground portrait types, all selected initially", () => {
   assert.deepEqual(playgroundPortraitContexts, [

@@ -61,8 +61,8 @@
     "city": "City", "cityPlaceholder": "Choose a city", "cityHint": "Select a country first", "cityHintSelected": "Search cities in the selected country",
     "PortraitTypes": {
       "label": "Portrait types",
-      "pending": "Selection in preparation, not applied to requests. The API must support multiple types.",
-      "empty": "No portrait type selected. Standard will not be reselected automatically.",
+      "hint": "Uncheck the portrait types to exclude.",
+      "empty": "No type selected: profiles will be generated without portraits.",
       "standard": "Standard", "doctor": "Doctor", "construction": "Construction", "business": "Business", "school-pupil": "School pupil"
     },
     "emailDomain": "Email domain", "seed": "Seed", "seedHint": "Optional. Same seed and date produce repeatable results", "asOf": "As of", "asOfHint": "Reference date for age",

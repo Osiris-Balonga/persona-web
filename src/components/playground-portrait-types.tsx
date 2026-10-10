@@ -1,21 +1,19 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId } from "react";
 import { useTranslations } from "next-intl";
 import {
   playgroundPortraitContexts,
   togglePortraitContext,
   type PlaygroundPortraitContext,
-} from "@/lib/playground-portraits";
+} from "@/lib/playground-query";
 
-// Preparation only: do not mount in PlaygroundForm until the public API
-// specifies multiple contexts and the meaning of an empty selection.
-export function PlaygroundPortraitTypes() {
+export function PlaygroundPortraitTypes({ selected, onChange }: {
+  selected: PlaygroundPortraitContext[];
+  onChange: (selected: PlaygroundPortraitContext[]) => void;
+}) {
   const t = useTranslations("Playground.PortraitTypes");
   const hintId = useId();
-  const [selected, setSelected] = useState<PlaygroundPortraitContext[]>(
-    () => [...playgroundPortraitContexts],
-  );
 
   return (
     <fieldset aria-describedby={hintId}>
@@ -23,7 +21,7 @@ export function PlaygroundPortraitTypes() {
         {t("label")}
       </legend>
       <p id={hintId} className="mb-2 text-xs text-[var(--persona-copy)]">
-        {t("pending")}
+        {t("hint")}
       </p>
       <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
         {playgroundPortraitContexts.map((context) => (
@@ -34,7 +32,7 @@ export function PlaygroundPortraitTypes() {
             <input
               type="checkbox"
               checked={selected.includes(context)}
-              onChange={() => setSelected((current) => togglePortraitContext(current, context))}
+              onChange={() => onChange(togglePortraitContext(selected, context))}
               className="accent-primary"
             />
             {t(context)}

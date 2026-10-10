@@ -29,6 +29,22 @@ The playground and documentation use the public API origin from `NEXT_PUBLIC_PER
 
 The [Vercel project](https://vercel.com/osiris-balongas-projects/persona) deploys `main` to [persona-web-tau.vercel.app](https://persona-web-tau.vercel.app). Pull requests get preview deployments. The [deployments page](https://vercel.com/osiris-balongas-projects/persona/deployments) shows build status, logs, and the previous production deployment, which can be restored with Instant Rollback if needed. The site currently calls the beta API on Render; change `NEXT_PUBLIC_PERSONA_API_URL` and redeploy when the production API is ready.
 
+### Portrait type selection
+
+The Playground portrait-type selector is disabled by default. Enable
+`NEXT_PUBLIC_PERSONA_PORTRAIT_CONTEXTS_ENABLED=true` only after the configured API
+deployment supports the plural `portraitContexts` CSV parameter, including an
+explicit empty value. Rebuild and redeploy the site after changing this public
+setting. Until deployment is confirmed, leave it unset or `false`; the selector
+stays hidden and requests omit the parameter, preserving the API's historical
+Standard default.
+
+When enabled, all five offered types start selected. Clearing every checkbox
+sends `portraitContexts=` and generates profiles with `picture: null`; it must
+never fall back to Standard. Selection is preserved in the Playground URL. The
+UI offers Standard, Doctor, Construction, Business and School pupil only, and
+never sends the singular `portraitContext` alongside the plural parameter.
+
 ## Checks
 
 ```sh
