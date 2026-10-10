@@ -59,7 +59,13 @@
     "nationality": "Nationality", "anyNationality": "Any nationality", "nationalityHint": "Person's nationality",
     "residenceCountry": "Residence country", "anyResidence": "Any residence country", "residenceHint": "Where the person lives",
     "city": "City", "cityPlaceholder": "Choose a city", "cityHint": "Select a country first", "cityHintSelected": "Search cities in the selected country",
-    "emailDomain": "Email domain", "seed": "Seed", "seedHint": "Same seed and date produce repeatable results", "asOf": "As of", "asOfHint": "Reference date for age",
+    "PortraitTypes": {
+      "label": "Portrait types",
+      "pending": "Selection in preparation, not applied to requests. The API must support multiple types.",
+      "empty": "No portrait type selected. Standard will not be reselected automatically.",
+      "standard": "Standard", "doctor": "Doctor", "construction": "Construction", "business": "Business", "school-pupil": "School pupil"
+    },
+    "emailDomain": "Email domain", "seed": "Seed", "seedHint": "Optional. Same seed and date produce repeatable results", "asOf": "As of", "asOfHint": "Reference date for age",
     "fields": "Fields", "allFields": "All fields", "selectedFields": "{count} selected",
     "requestPreview": "Request preview", "copyUrl": "Copy request URL", "runRequest": "Run request", "cancelRequest": "Cancel request",
     "result": "Result", "resultHint": "Live API response appears here", "resultCount": "{count, plural, one {# person generated} other {# people generated}}",

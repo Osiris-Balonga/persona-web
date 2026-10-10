@@ -21,7 +21,7 @@ export const defaultPlaygroundOptions: PlaygroundOptions = {
   residenceCountry: "",
   city: "",
   emailDomain: "example.test",
-  seed: "playground-demo",
+  seed: "",
   asOf: "",
   fields: [],
 };
@@ -132,7 +132,7 @@ export function buildPlaygroundPageUrl(
   if (options.city) query.set("city", options.city);
   if (options.emailDomain !== defaultPlaygroundOptions.emailDomain)
     query.set("emailDomain", options.emailDomain);
-  if (options.seed !== defaultPlaygroundOptions.seed)
+  if (options.seed.trim())
     query.set("seed", options.seed);
   if (options.asOf) query.set("asOf", options.asOf);
   if (options.fields.length) query.set("fields", options.fields.join(","));

@@ -8,6 +8,38 @@ import {
   validatePlaygroundOptions,
 } from "../src/lib/playground-query.ts";
 
+test("starts without a seed and keeps the example email domain", () => {
+  const options = parsePlaygroundOptions(new URLSearchParams());
+  assert.equal(options.seed, "");
+  assert.equal(options.emailDomain, "example.test");
+  const url = buildPeopleUrl("https://persona.test", options);
+  assert.equal(url.searchParams.has("seed"), false);
+  assert.equal(url.searchParams.get("emailDomain"), "example.test");
+});
+
+test("clearing a seed removes it from shared and API URLs, including whitespace", () => {
+  for (const seed of ["", "   "]) {
+    const options = { ...defaultPlaygroundOptions, seed };
+    const path = buildPlaygroundPageUrl(
+      "https://persona.test/fr/playground?seed=previous&utm_source=share",
+      options,
+    );
+    const page = new URL(path, "https://persona.test");
+    assert.equal(page.searchParams.has("seed"), false);
+    assert.equal(page.searchParams.get("utm_source"), "share");
+    assert.equal(parsePlaygroundOptions(page.searchParams).seed, "");
+    assert.equal(buildPeopleUrl("https://persona.test", options).searchParams.has("seed"), false);
+  }
+});
+
+test("an explicit seed survives sharing and is sent to the API", () => {
+  const options = { ...defaultPlaygroundOptions, seed: "repeatable-demo" };
+  const path = buildPlaygroundPageUrl("https://persona.test/fr/playground", options);
+  const restored = parsePlaygroundOptions(new URL(path, "https://persona.test").searchParams);
+  assert.equal(restored.seed, options.seed);
+  assert.equal(buildPeopleUrl("https://persona.test", restored).searchParams.get("seed"), options.seed);
+});
+
 test("serializes supported filters and a 100-person request", () => {
   const options = {
     ...defaultPlaygroundOptions,
