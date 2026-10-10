@@ -62,6 +62,7 @@
     "PortraitTypes": {
       "label": "Types de portraits",
       "hint": "Décochez les types de portraits à exclure.",
+      "schoolUnavailable": "Les portraits Élève ne sont pas encore disponibles.",
       "empty": "Aucun type sélectionné : les profils seront générés sans portrait.",
       "standard": "Standard", "doctor": "Médecin", "construction": "BTP", "business": "Business", "school-pupil": "Élève"
     },

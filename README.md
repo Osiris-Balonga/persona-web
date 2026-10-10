@@ -31,19 +31,20 @@ The [Vercel project](https://vercel.com/osiris-balongas-projects/persona) deploy
 
 ### Portrait type selection
 
-The Playground portrait-type selector is disabled by default. Enable
-`NEXT_PUBLIC_PERSONA_PORTRAIT_CONTEXTS_ENABLED=true` only after the configured API
-deployment supports the plural `portraitContexts` CSV parameter, including an
-explicit empty value. Rebuild and redeploy the site after changing this public
-setting. Until deployment is confirmed, leave it unset or `false`; the selector
-stays hidden and requests omit the parameter, preserving the API's historical
-Standard default.
+The Playground portrait-type selector is enabled by default for the beta API,
+which supports the plural `portraitContexts` CSV parameter and an explicit empty
+value. Set `NEXT_PUBLIC_PERSONA_PORTRAIT_CONTEXTS_ENABLED=false` when targeting an
+older API deployment. Rebuild and redeploy after changing this public setting.
+When disabled, the selector stays hidden and requests omit the parameter,
+preserving the API's historical Standard default.
 
 When enabled, all five offered types start selected. Clearing every checkbox
 sends `portraitContexts=` and generates profiles with `picture: null`; it must
 never fall back to Standard. Selection is preserved in the Playground URL. The
 UI offers Standard, Doctor, Construction, Business and School pupil only, and
 never sends the singular `portraitContext` alongside the plural parameter.
+School pupil is selectable, but no approved portraits in that context are
+published yet; eligible profiles currently return `picture: null` for that type.
 
 ## Checks
 

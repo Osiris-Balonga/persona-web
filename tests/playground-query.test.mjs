@@ -8,7 +8,7 @@ import {
   validatePlaygroundOptions,
 } from "../src/lib/playground-query.ts";
 
-test("portrait contexts are gated until the API deployment is confirmed", () => {
+test("the compatibility switch omits portrait contexts for older APIs", () => {
   const options = { ...defaultPlaygroundOptions, portraitContexts: ["doctor", "business"] };
   assert.equal(buildPeopleUrl("https://persona.test", options).searchParams.has("portraitContexts"), false);
   const enabled = buildPeopleUrl("https://persona.test", options, true);

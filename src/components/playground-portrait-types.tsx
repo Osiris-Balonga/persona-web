@@ -21,7 +21,7 @@ export function PlaygroundPortraitTypes({ selected, onChange }: {
         {t("label")}
       </legend>
       <p id={hintId} className="mb-2 text-xs text-[var(--persona-copy)]">
-        {t("hint")}
+        {t("hint")} {t("schoolUnavailable")}
       </p>
       <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
         {playgroundPortraitContexts.map((context) => (
