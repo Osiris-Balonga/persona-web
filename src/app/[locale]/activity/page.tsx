@@ -3,7 +3,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ActivityChart } from "@/components/activity/activity-chart";
 import styles from "@/components/activity/activity.module.css";
 import { requireLocale } from "@/lib/locale";
+import { activityBadgeKey } from "@/lib/activity-environment";
 import { localizedMetadata } from "@/lib/site";
+import { serverConfig } from "@/lib/server-config";
 import { getUsageStats } from "@/lib/usage-stats";
 import { fillUsageWindow } from "@/lib/usage-stats-core";
 
@@ -46,7 +48,7 @@ export default async function ActivityPage({ params }: Props) {
 
         <section className={styles.panel} aria-label={t("period")}>
           <div className={styles.summary}>
-            <div className={styles.badge}><span aria-hidden="true" />{t(stats?.environment === "production" ? "badgeProduction" : "badge")}</div>
+            <div className={styles.badge}><span aria-hidden="true" />{t(activityBadgeKey(serverConfig.analyticsEnvironment))}</div>
             <div className={styles.total}>{stats ? formatNumber.format(stats.total) : "—"}<span aria-hidden="true">✳</span></div>
             <h2>{t("totalLabel")}</h2>
             <p className={styles.period}>{t("period")}</p>
