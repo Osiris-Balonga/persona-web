@@ -2,7 +2,7 @@
 
 Public documentation and interactive playground for the [Persona API](https://github.com/Osiris-Balonga/persona). This repository contains the website only; the API and its portrait catalog are maintained separately.
 
-**Production target:** [persona.osirisbalonga.me](https://persona.osirisbalonga.me). DNS cutover is pending. Vercel deploys `main` to production and pull requests to preview environments.
+**Production destinations:** [persona.osirisbalonga.me](https://persona.osirisbalonga.me) for the site and [api-persona.osirisbalonga.me](https://api-persona.osirisbalonga.me) for the API. The site DNS cutover is pending. Vercel deploys `main` to production and pull requests to preview environments.
 
 ## Local development
 
@@ -23,11 +23,11 @@ Open `http://localhost:3000`. The English and French routes are `/en` and `/fr`;
 - `src/lib/config.ts` and `src/lib/server-config.ts`: public URLs and server-only environment settings.
 - `src/components/ui`: shadcn/ui primitives.
 
-The playground and documentation use the API origin from `NEXT_PUBLIC_PERSONA_API_URL`. Local development and preview deployments use the staging API, `https://persona-dev.onrender.com`; configure production with the API hostname after the provider confirms the accepted domain. Set the variable in `.env.local` to change the local origin; `.env.example` contains a reserved placeholder. This variable is intentionally public. Set `NEXT_PUBLIC_SITE_URL` to `https://persona.osirisbalonga.me` in production for canonical and Open Graph URLs. Vercel Web Analytics is included in the localized layout.
+The playground and documentation use the API origin from `NEXT_PUBLIC_PERSONA_API_URL`. Local development and Vercel previews use the staging API, `https://persona-dev.onrender.com`; production uses `https://api-persona.osirisbalonga.me` after the API release is approved. Set `NEXT_PUBLIC_PERSONA_API_URL` in `.env.local` to change the local origin; `.env.example` contains a reserved placeholder. This variable is intentionally public. Set `NEXT_PUBLIC_SITE_URL` to `https://persona.osirisbalonga.me` for production canonical and Open Graph URLs. Vercel Web Analytics is included in the localized layout.
 
 ## Deployment
 
-The [Vercel project](https://vercel.com/osiris-balongas-projects/persona) deploys `main` to [persona.osirisbalonga.me](https://persona.osirisbalonga.me). Pull requests get preview deployments that use the staging API. The production API hostname is pending provider validation; configure its origin after the accepted domain is confirmed. Keep `ANALYTICS_ENVIRONMENT=staging` in previews and set it to `production` in production; the Cloudflare analytics datasets remain separate, and switching environments does not reset either dataset. The planned one-time staging-history import will carry beta totals into production Activity, followed by production usage; staging is retained and will not be synced continuously. A failed analytics request must not change the environment label shown on Activity. The [deployments page](https://vercel.com/osiris-balongas-projects/persona/deployments) shows build status, logs, and the previous production deployment, which can be restored with Instant Rollback if needed.
+The [Vercel project](https://vercel.com/osiris-balongas-projects/persona) deploys `main` to [persona.osirisbalonga.me](https://persona.osirisbalonga.me). Pull requests get preview deployments that use the Render staging API. After the release is approved, configure the production API origin as `https://api-persona.osirisbalonga.me` and the canonical site origin as `https://persona.osirisbalonga.me` in Vercel's Production environment. Keep `ANALYTICS_ENVIRONMENT=staging` in previews and set it to `production` in production; the Cloudflare analytics datasets remain separate, and switching environments does not reset either dataset. The one-time analytics history import will carry the existing pre-production totals into production Activity, followed by production usage; pre-production data is retained and is not synced continuously. A failed analytics request must not change the environment label shown on Activity. The [deployments page](https://vercel.com/osiris-balongas-projects/persona/deployments) shows build status, logs, and the previous production deployment, which can be restored with Instant Rollback if needed.
 
 ### Portrait selection and tone
 
