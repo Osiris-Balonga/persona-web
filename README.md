@@ -53,10 +53,15 @@ target deployment's default behavior.
 
 The optional `skinTone` parameter accepts one or more distinct integers from 1 to 10, separated by commas, and filters
 portraits by an existing reviewed visual annotation. It describes the image,
-not ancestry. Portraits without an annotation do not match; if no annotated
+not ancestry. An explicit tone searches photos across all production collections,
+while retaining gender, reviewed age and portrait type compatibility. Names,
+nationality and residence keep their geographic constraints. Omitting the tone
+filter retains nationality-linked photo selection. Portraits without an annotation do not match; if no annotated
 portrait matches, the profile still returns and `picture` is `null`.
-The Playground starts with all ten tones checked. `All` resets the selection
-and omits the filter; checking individual swatches selects their union.
+The Playground starts with all ten tones checked. The global control toggles
+between all tones (omitted filter) and no tones (`skinTone=`, no portraits).
+Checking individual swatches selects their union. On mobile, the global
+control is a transparent square with a check when all tones are selected.
 
 The Coverage page reads `GET /coverage`, which reports the country availability
 and portrait delivery readiness of the deployed API manifest. Portrait totals
