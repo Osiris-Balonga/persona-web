@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { Playground } from "@/components/playground";
 import { requireLocale } from "@/lib/locale";
+import { getCoverageData } from "@/lib/coverage-loader";
 import { localizedMetadata } from "@/lib/site";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -17,6 +18,13 @@ export default async function PlaygroundPage({ params }: Props) {
   const locale = requireLocale((await params).locale);
   setRequestLocale(locale);
   const t = await getTranslations("Playground");
+  const coverageT = await getTranslations("Coverage");
+  const coverage = await getCoverageData();
+  const coverageSourceLabel = coverage.source.kind === "live"
+    ? coverageT("sourceLive", { version: coverage.source.version })
+    : coverage.source.kind === "snapshot"
+      ? coverageT("sourceSnapshot", { date: coverage.source.date })
+      : coverageT("sourceUnavailable");
   return (
     <main
       data-playground
@@ -31,6 +39,7 @@ export default async function PlaygroundPage({ params }: Props) {
             {t("title")}
           </h1>
           <p className="mt-2 text-sm text-[var(--persona-copy)]">{t("description")}</p>
+          <p className="mt-1 text-xs text-[var(--persona-quiet)]" role="note">{coverageSourceLabel}</p>
         </div>
         <p className="hidden border-l border-[var(--persona-line)] pl-5 text-xs leading-5 text-[var(--persona-copy)] xl:block">
           {t("aside")}
@@ -44,7 +53,7 @@ export default async function PlaygroundPage({ params }: Props) {
           </div>
         }
       >
-        <Playground />
+        <Playground coverageRows={coverage.rows} />
       </Suspense>
     </main>
   );
