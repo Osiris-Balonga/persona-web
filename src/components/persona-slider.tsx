@@ -5,17 +5,19 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import type { FeaturedPerson } from "@/lib/featured-personas";
 import { countryDisplayName } from "@/lib/country-display-name";
+import { portraitImageForSize } from "@/lib/portrait-image";
 
 function ProfileCard({ person, locale, ageLabel }: { person: FeaturedPerson; locale: string; ageLabel: string }) {
   const [imageFailed, setImageFailed] = useState(false);
   const nationality = useMemo(() => countryDisplayName(person.nationality, locale), [locale, person.nationality]);
   const residence = useMemo(() => countryDisplayName(person.location.country.code, locale, person.location.country.name), [locale, person.location.country.code, person.location.country.name]);
+  const image = portraitImageForSize(person.picture, "card");
 
   return (
     <article className="persona-profile overflow-hidden border border-[var(--persona-line)] bg-[var(--persona-surface)] shadow-[0_18px_48px_rgba(44,62,191,0.13)]">
       <div className="relative aspect-[1.2] bg-[var(--persona-soft-surface)]">
-        {person.picture?.medium && !imageFailed ? (
-          <Image src={person.picture.medium} alt="" fill sizes="(max-width: 640px) 62vw, 280px" className="object-cover object-top" onError={() => setImageFailed(true)} />
+        {image && !imageFailed ? (
+          <Image src={image} alt="" fill sizes="(max-width: 640px) 62vw, 280px" className="object-cover object-top" onError={() => setImageFailed(true)} />
         ) : (
           <div className="flex h-full items-center justify-center text-5xl font-semibold text-primary/45" aria-hidden="true">{person.name.first[0]}{person.name.last[0]}</div>
         )}

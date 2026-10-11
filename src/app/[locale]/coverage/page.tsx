@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CoverageExplorer } from "@/components/coverage-explorer";
+import { getCoverageData } from "@/lib/coverage-loader";
 import { requireLocale } from "@/lib/locale";
 import { localizedMetadata } from "@/lib/site";
 
@@ -16,6 +17,7 @@ export default async function CoveragePage({ params }: Props) {
   const locale = requireLocale((await params).locale);
   setRequestLocale(locale);
   const t = await getTranslations("Coverage");
+  const coverage = await getCoverageData();
   return (
     <main className="w-full bg-[var(--persona-surface)] dark:bg-background">
       <div className="mx-auto w-full max-w-7xl px-5 pb-16 pt-9 md:px-8 md:pt-12">
@@ -28,7 +30,7 @@ export default async function CoveragePage({ params }: Props) {
         <p className="mt-3 max-w-4xl text-[0.95rem] leading-6 text-[var(--persona-copy)]">
           {t("description")}
         </p>
-        <CoverageExplorer />
+        <CoverageExplorer data={coverage} />
       </div>
     </main>
   );

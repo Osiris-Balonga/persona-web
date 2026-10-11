@@ -2,10 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useTranslations } from "next-intl";
 import { PlaygroundForm } from "@/components/playground-form";
 import { PlaygroundResult } from "@/components/playground-result";
-import { coverageRows } from "@/lib/coverage-data";
+import type { CoverageRow } from "@/lib/coverage-data";
 import { config } from "@/lib/config";
 import {
   buildPeopleUrl,
@@ -17,20 +16,20 @@ import {
 } from "@/lib/playground-query";
 import {
   isPlaygroundResponse,
-  type ApiError,
+  mapPlaygroundFailure,
+  type PlaygroundFailure,
   type PlaygroundResponse,
 } from "@/lib/playground-response";
 
 const requestTimeoutMs = 20000;
 
-export function Playground() {
-  const t = useTranslations("Playground");
+export function Playground({ coverageRows }: { coverageRows: CoverageRow[] }) {
   const searchParams = useSearchParams();
   const options = parsePlaygroundOptions(searchParams);
   const initialOptions = useRef(options);
   const [problem, setProblem] = useState<QueryProblem | null>(null);
   const [response, setResponse] = useState<PlaygroundResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<PlaygroundFailure | null>(null);
   const [loading, setLoading] = useState(false);
   const controller = useRef<AbortController | null>(null);
   const requestUrl = buildPeopleUrl(config.apiOrigin, options, config.portraitContextsEnabled).toString();
@@ -48,9 +47,13 @@ export function Playground() {
       const nationalityContinent = coverageRows.find(
         (row) => row.code === currentOptions.nationality,
       )?.continent;
+      const residenceNeedsNationality = coverageRows.some(
+        (row) => row.code === currentOptions.residenceCountry && row.status === "pending-name-review",
+      );
       const validation = validatePlaygroundOptions(
         currentOptions,
         nationalityContinent,
+        residenceNeedsNationality,
       );
       const url = buildPeopleUrl(config.apiOrigin, currentOptions, config.portraitContextsEnabled);
       if (validation || url.toString().length > 2048) {
@@ -75,18 +78,16 @@ export function Playground() {
           cache: "no-store",
         });
         if (!result.ok) {
-          const body = (await result
+          const body: unknown = await result
             .json()
-            .catch(() => null)) as ApiError | null;
-          const message = body?.error?.message;
-          if (result.status === 429)
-            throw new Error(
-              `rateLimit:${result.headers.get("Retry-After") || ""}`,
-            );
-          if (result.status === 400)
-            throw new Error(`badRequest:${message || ""}`);
-          if (result.status === 503) throw new Error("unavailable");
-          throw new Error(`http:${result.status}`);
+            .catch(() => null);
+          throw Object.assign(new Error("http"), {
+            playgroundFailure: mapPlaygroundFailure(
+              result.status,
+              body,
+              result.headers.get("Retry-After") || "",
+            ),
+          });
         }
         const body: unknown = await result.json();
         if (!isPlaygroundResponse(body)) throw new Error("invalidResponse");
@@ -99,23 +100,15 @@ export function Playground() {
           abortController.signal.reason !== "timeout"
         )
           return;
-        const errorText =
-          message === "offline"
-            ? t("errorOffline")
-            : message === "unavailable"
-              ? t("errorUnavailable")
-              : message === "invalidResponse"
-                ? t("errorInvalidResponse")
-                : message.startsWith("badRequest:")
-                  ? t("errorBadRequest", {
-                      detail: message.slice(11) || t("unknownError"),
-                    })
-                  : message.startsWith("rateLimit:")
-                    ? t("errorRateLimit", { seconds: message.slice(10) || "?" })
-                    : abortController.signal.reason === "timeout"
-                      ? t("errorTimeout")
-                      : t("errorGeneric");
-        setError(errorText);
+        const suppliedFailure = cause instanceof Error
+          ? (cause as Error & { playgroundFailure?: PlaygroundFailure }).playgroundFailure
+          : undefined;
+        setError(suppliedFailure ?? mapPlaygroundFailure(
+          null,
+          null,
+          "",
+          message === "offline" ? "offline" : message === "invalidResponse" ? "invalidResponse" : abortController.signal.reason === "timeout" ? "timeout" : undefined,
+        ));
       } finally {
         window.clearTimeout(timer);
         if (controller.current === abortController) {
@@ -124,7 +117,7 @@ export function Playground() {
         }
       }
     },
-    [t, setProblem, setError, setResponse, setLoading],
+    [coverageRows, setProblem, setError, setResponse, setLoading],
   );
 
   useEffect(() => {
@@ -153,6 +146,7 @@ export function Playground() {
           loading={loading}
           onRun={() => void run(options)}
           onCancel={cancel}
+          coverageRows={coverageRows}
         />
       </div>
       <div className="min-w-0 playground-enter playground-enter-delay-2">

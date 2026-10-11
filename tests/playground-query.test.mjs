@@ -128,3 +128,91 @@ test("restores a shared playground URL without losing unrelated parameters", () 
     "/fr/playground?utm_source=share#result",
   );
 });
+
+test("age groups start selected and context eligibility is the union of selected portrait types", async () => {
+  const { eligiblePlaygroundAgeGroups, trimPlaygroundAgeGroups } = await import("../src/lib/playground-query.ts");
+  assert.deepEqual(defaultPlaygroundOptions.ageGroups, ["child", "teen", "adult", "senior"]);
+  assert.deepEqual(eligiblePlaygroundAgeGroups(["school-pupil"]), ["child", "teen"]);
+  assert.deepEqual(eligiblePlaygroundAgeGroups(["school-pupil", "business"]), ["child", "teen", "adult"]);
+  assert.deepEqual(trimPlaygroundAgeGroups(["child", "adult", "senior"], ["school-pupil"]), {
+    ageGroups: ["child"], removed: ["adult", "senior"],
+  });
+  assert.deepEqual(eligiblePlaygroundAgeGroups([]), ["child", "teen", "adult", "senior"]);
+});
+
+test("age selections, portrait contexts, and skin tone restore and serialize explicitly", () => {
+  const options = {
+    ...defaultPlaygroundOptions,
+    ageGroups: ["child", "teen"],
+    portraitContexts: ["school-pupil"],
+    skinTone: 5,
+  };
+  const api = buildPeopleUrl("https://persona.test", options, true);
+  assert.equal(api.searchParams.get("ageGroup"), "child,teen");
+  assert.equal(api.searchParams.get("portraitContexts"), "school-pupil");
+  assert.equal(api.searchParams.get("skinTone"), "5");
+  const shared = new URL(buildPlaygroundPageUrl("https://persona.test/en/playground", options), "https://persona.test");
+  assert.deepEqual(parsePlaygroundOptions(shared.searchParams), options);
+  const noPortraits = { ...options, ageGroups: ["adult"], portraitContexts: [], skinTone: 5 };
+  const noPortraitsUrl = buildPeopleUrl("https://persona.test", noPortraits, true);
+  assert.equal(noPortraitsUrl.searchParams.get("ageGroup"), "adult");
+  assert.equal(noPortraitsUrl.searchParams.get("portraitContexts"), "");
+  assert.equal(noPortraitsUrl.searchParams.has("skinTone"), false);
+  assert.equal(buildPeopleUrl("https://persona.test", options, false).searchParams.has("skinTone"), false);
+});
+
+test("invalid age and skin tone query values normalize safely", () => {
+  const restored = parsePlaygroundOptions(new URLSearchParams("ageGroup=wat&skinTone=11"));
+  assert.deepEqual(restored.ageGroups, ["child", "teen", "adult", "senior"]);
+  assert.equal(restored.skinTone, null);
+});
+
+test("restored pupil-only links trim incompatible ages and expose the adjustment state", () => {
+  const restored = parsePlaygroundOptions(new URLSearchParams("portraitContexts=school-pupil&ageGroup=adult"));
+  assert.deepEqual(restored.ageGroups, ["child", "teen"]);
+  assert.equal(restored.ageGroupsAdjustedByEligibility, true);
+});
+
+test("date validation checks real calendar days and the supported year range", () => {
+  for (const asOf of ["2026-02-29", "2026-04-31", "0001-01-01", "10000-01-01"]) {
+    assert.equal(validatePlaygroundOptions({ ...defaultPlaygroundOptions, asOf }), "asOf", asOf);
+  }
+  assert.equal(validatePlaygroundOptions({ ...defaultPlaygroundOptions, asOf: "2024-02-29" }), null);
+  assert.equal(validatePlaygroundOptions({ ...defaultPlaygroundOptions, asOf: "0102-01-01" }), null);
+});
+
+test("skin tone must be an integer from one through ten", () => {
+  for (const skinTone of [0, 11, 2.5]) {
+    assert.equal(validatePlaygroundOptions({ ...defaultPlaygroundOptions, skinTone }), "skinTone");
+  }
+  assert.equal(validatePlaygroundOptions({ ...defaultPlaygroundOptions, skinTone: 10 }), null);
+});
+
+test("multiple tones restore canonically and preserve their union in API and shared URLs", () => {
+  const restored = parsePlaygroundOptions(new URLSearchParams("skinTone=8,6"));
+  assert.deepEqual(restored.skinTone, [6,8]);
+  assert.equal(validatePlaygroundOptions(restored), null);
+  assert.equal(buildPeopleUrl("https://persona.test", restored, true).searchParams.get("skinTone"), "6,8");
+  const shared = new URL(buildPlaygroundPageUrl("https://persona.test/fr/playground", restored), "https://persona.test");
+  assert.deepEqual(parsePlaygroundOptions(shared.searchParams), restored);
+  for (const skinTone of [[], [6,6], [6,11]]) {
+    assert.equal(validatePlaygroundOptions({ ...defaultPlaygroundOptions, skinTone }), "skinTone");
+  }
+});
+
+test("rejects an age band that has no overlap with the explicitly selected portrait types", () => {
+  const incompatible = {
+    ...defaultPlaygroundOptions,
+    ageGroups: ["adult"],
+    portraitContexts: ["school-pupil"],
+  };
+  assert.equal(validatePlaygroundOptions(incompatible), "ageGroup");
+  assert.equal(validatePlaygroundOptions({ ...incompatible, ageGroups: ["teen"] }), null);
+});
+
+test("pending residence coverage requires an explicit nationality or continent", () => {
+  const pendingResidence = { ...defaultPlaygroundOptions, residenceCountry: "CG" };
+  assert.equal(validatePlaygroundOptions(pendingResidence, null, true), "residenceNationality");
+  assert.equal(validatePlaygroundOptions({ ...pendingResidence, nationality: "FR" }, null, true), null);
+  assert.equal(validatePlaygroundOptions({ ...pendingResidence, continent: "africa" }, null, true), null);
+});

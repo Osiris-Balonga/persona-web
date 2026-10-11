@@ -1,7 +1,7 @@
 export type PlaygroundOptions = {
   count: number;
   gender: "" | "female" | "male";
-  ageGroups: string[];
+  ageGroups: (typeof playgroundAgeGroups)[number][];
   continent: string;
   nationality: string;
   residenceCountry: string;
@@ -11,6 +11,8 @@ export type PlaygroundOptions = {
   asOf: string;
   fields: string[];
   portraitContexts: PlaygroundPortraitContext[];
+  skinTone: number | readonly number[] | null;
+  ageGroupsAdjustedByEligibility: boolean;
 };
 
 export const playgroundPortraitContexts = [
@@ -31,7 +33,7 @@ export function togglePortraitContext(
 export const defaultPlaygroundOptions: PlaygroundOptions = {
   count: 3,
   gender: "",
-  ageGroups: [],
+  ageGroups: ["child", "teen", "adult", "senior"],
   continent: "",
   nationality: "",
   residenceCountry: "",
@@ -41,15 +43,20 @@ export const defaultPlaygroundOptions: PlaygroundOptions = {
   asOf: "",
   fields: [],
   portraitContexts: [...playgroundPortraitContexts],
+  skinTone: null,
+  ageGroupsAdjustedByEligibility: false,
 };
 
 export type QueryProblem =
   | "count"
+  | "ageGroup"
+  | "residenceNationality"
   | "city"
   | "nationality"
   | "emailDomain"
   | "seed"
   | "asOf"
+  | "skinTone"
   | "url";
 
 export const continentCodes: Record<string, string> = {
@@ -66,6 +73,34 @@ export const playgroundAgeGroups = [
   "adult",
   "senior",
 ] as const;
+
+const portraitAgeEligibility: Record<PlaygroundPortraitContext, readonly string[]> = {
+  standard: playgroundAgeGroups,
+  doctor: ["adult"],
+  construction: ["adult"],
+  business: ["adult"],
+  "school-pupil": ["child", "teen"],
+};
+
+export function eligiblePlaygroundAgeGroups(
+  contexts: readonly PlaygroundPortraitContext[],
+): (typeof playgroundAgeGroups)[number][] {
+  if (contexts.length === 0) return [...playgroundAgeGroups];
+  const eligible = new Set(contexts.flatMap((context) => portraitAgeEligibility[context]));
+  return playgroundAgeGroups.filter((group) => eligible.has(group));
+}
+
+export function trimPlaygroundAgeGroups(
+  selected: readonly (typeof playgroundAgeGroups)[number][],
+  contexts: readonly PlaygroundPortraitContext[],
+) {
+  const eligible = eligiblePlaygroundAgeGroups(contexts);
+  const compatible = selected.filter((group) => eligible.includes(group));
+  return {
+    ageGroups: compatible.length ? compatible : [...eligible],
+    removed: selected.filter((group) => !eligible.includes(group)),
+  };
+}
 export const playgroundFields = [
   "id",
   "gender",
@@ -93,6 +128,7 @@ const optionKeys = [
   "fields",
   "portraitContext",
   "portraitContexts",
+  "skinTone",
 ] as const;
 
 export function parsePlaygroundOptions(
@@ -101,26 +137,40 @@ export function parsePlaygroundOptions(
   const count = Number(params.get("count"));
   const gender = params.get("gender");
   const continent = params.get("continent") ?? "";
-  const ageGroups = (params.get("ageGroup") ?? "")
+  const ageGroupValue = params.get("ageGroup");
+  const parsedAgeGroups = (ageGroupValue ?? "")
     .split(",")
     .filter((group) =>
       playgroundAgeGroups.includes(
         group as (typeof playgroundAgeGroups)[number],
       ),
-    );
+    ) as (typeof playgroundAgeGroups)[number][];
+  const parsedAgeSelection: PlaygroundOptions["ageGroups"] = parsedAgeGroups.length
+    ? [...new Set(parsedAgeGroups)]
+    : [...defaultPlaygroundOptions.ageGroups];
+  const portraitContexts = params.get("portraitContexts");
+  const selectedPortraitContexts = portraitContexts === null
+    ? [...playgroundPortraitContexts]
+    : playgroundPortraitContexts.filter((context) => portraitContexts.split(",").includes(context));
+  const trimmedAgeSelection = trimPlaygroundAgeGroups(parsedAgeSelection, selectedPortraitContexts);
+  const ageGroups = trimmedAgeSelection.ageGroups;
+  const skinToneParam = params.get("skinTone");
+  const skinToneValues = skinToneParam?.split(",").map(Number).toSorted((a, b) => a - b) ?? [];
+  const validSkinTones = skinToneValues.length > 0 && skinToneValues.length <= 10
+    && skinToneValues.every(tone => Number.isInteger(tone) && tone >= 1 && tone <= 10)
+    && new Set(skinToneValues).size === skinToneValues.length;
   const fields = (params.get("fields") ?? "")
     .split(",")
     .filter((field) =>
       playgroundFields.includes(field as (typeof playgroundFields)[number]),
     );
-  const portraitContexts = params.get("portraitContexts");
   return {
     count:
       params.get("count") !== null && Number.isFinite(count)
         ? count
         : defaultPlaygroundOptions.count,
     gender: gender === "female" || gender === "male" ? gender : "",
-    ageGroups: [...new Set(ageGroups)],
+    ageGroups,
     continent: continent in continentCodes ? continent : "",
     nationality: (params.get("nationality") ?? "").toUpperCase(),
     residenceCountry: (params.get("residenceCountry") ?? "").toUpperCase(),
@@ -130,9 +180,9 @@ export function parsePlaygroundOptions(
     seed: params.get("seed") ?? defaultPlaygroundOptions.seed,
     asOf: params.get("asOf") ?? "",
     fields: [...new Set(fields)],
-    portraitContexts: portraitContexts === null
-      ? [...playgroundPortraitContexts]
-      : playgroundPortraitContexts.filter((context) => portraitContexts.split(",").includes(context)),
+    portraitContexts: selectedPortraitContexts,
+    skinTone: validSkinTones ? skinToneValues.length === 1 ? skinToneValues[0] : skinToneValues : null,
+    ageGroupsAdjustedByEligibility: trimmedAgeSelection.removed.length > 0,
   };
 }
 
@@ -146,7 +196,7 @@ export function buildPlaygroundPageUrl(
   if (options.count !== defaultPlaygroundOptions.count)
     query.set("count", String(options.count));
   if (options.gender) query.set("gender", options.gender);
-  if (options.ageGroups.length)
+  if (options.ageGroups.length > 0 && options.ageGroups.length < playgroundAgeGroups.length)
     query.set("ageGroup", options.ageGroups.join(","));
   if (options.continent) query.set("continent", options.continent);
   if (options.nationality) query.set("nationality", options.nationality);
@@ -161,12 +211,14 @@ export function buildPlaygroundPageUrl(
   if (options.fields.length) query.set("fields", options.fields.join(","));
   if (options.portraitContexts.length !== playgroundPortraitContexts.length)
     query.set("portraitContexts", options.portraitContexts.join(","));
+  if (options.skinTone !== null) query.set("skinTone", String(options.skinTone));
   return `${url.pathname}${url.search}${url.hash}`;
 }
 
 export function validatePlaygroundOptions(
   options: PlaygroundOptions,
   nationalityContinent?: string | null,
+  residenceNeedsNationality = false,
 ): QueryProblem | null {
   if (
     !Number.isInteger(options.count) ||
@@ -174,6 +226,12 @@ export function validatePlaygroundOptions(
     options.count > 100
   )
     return "count";
+  if (options.portraitContexts.length > 0 && options.ageGroups.length === 0)
+    return "ageGroup";
+  const eligibleAges = eligiblePlaygroundAgeGroups(options.portraitContexts);
+  if (options.ageGroups.some((group) => !eligibleAges.includes(group))) return "ageGroup";
+  if (residenceNeedsNationality && options.residenceCountry && !options.nationality && !options.continent)
+    return "residenceNationality";
   if (options.city.trim() && !options.residenceCountry && !options.nationality)
     return "city";
   if (
@@ -182,16 +240,35 @@ export function validatePlaygroundOptions(
     nationalityContinent !== continentCodes[options.continent]
   )
     return "nationality";
-  if (
-    options.emailDomain.trim() &&
-    !/^(?=.{4,253}$)[a-z0-9-]+(?:\.[a-z0-9-]+)+$/i.test(
-      options.emailDomain.trim(),
-    )
-  )
+  const emailDomain = options.emailDomain.trim().toLowerCase();
+  if (emailDomain && (!/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(emailDomain)
+    || emailDomain.length > 253
+    || emailDomain.split(".").some((part) => part.length > 63 || part.startsWith("-") || part.endsWith("-"))
+    || !/^[a-z]{2,63}$/.test(emailDomain.slice(emailDomain.lastIndexOf(".") + 1))))
     return "emailDomain";
+  if (options.city.trim().length > 100) return "city";
   if (options.seed.trim().length > 128) return "seed";
-  if (options.asOf && !/^\d{4}-\d{2}-\d{2}$/.test(options.asOf)) return "asOf";
+  if (options.asOf && !isValidAsOfDate(options.asOf)) return "asOf";
+  if (options.skinTone !== null) {
+    const tones = typeof options.skinTone === "number" ? [options.skinTone] : options.skinTone;
+    if (tones.length === 0 || tones.length > 10 || new Set(tones).size !== tones.length
+      || tones.some(tone => !Number.isInteger(tone) || tone < 1 || tone > 10)) return "skinTone";
+  }
   return null;
+}
+
+export function isValidAsOfDate(value: string): boolean {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return false;
+  const [, yearText, monthText, dayText] = match;
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const day = Number(dayText);
+  if (year < 102 || year > 9999 || month < 1 || month > 12) return false;
+  const date = new Date(0);
+  date.setUTCHours(0, 0, 0, 0);
+  date.setUTCFullYear(year, month - 1, day);
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
 }
 
 export function buildPeopleUrl(
@@ -203,7 +280,7 @@ export function buildPeopleUrl(
   const query = url.searchParams;
   query.set("count", String(options.count));
   if (options.gender) query.set("gender", options.gender);
-  if (options.ageGroups.length)
+  if (options.ageGroups.length < playgroundAgeGroups.length)
     query.set("ageGroup", options.ageGroups.join(","));
   if (options.continent) query.set("continent", options.continent);
   if (options.nationality) query.set("nationality", options.nationality);
@@ -217,5 +294,7 @@ export function buildPeopleUrl(
   if (options.fields.length) query.set("fields", options.fields.join(","));
   if (portraitContextsEnabled)
     query.set("portraitContexts", options.portraitContexts.join(","));
+  if (portraitContextsEnabled && options.portraitContexts.length > 0 && options.skinTone !== null)
+    query.set("skinTone", String(options.skinTone));
   return url;
 }
