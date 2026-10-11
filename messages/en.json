@@ -149,6 +149,7 @@
     "eyebrow": "Persona in numbers",
     "title": "The proof is in the profiles.",
     "description": "See how many fictional people Persona has generated over the last 30 days.",
+    "historyDisclosure": "Public totals include the migrated beta history and ongoing production usage.",
     "badgeStaging": "Preview · staging data",
     "badgeProduction": "Public view · API",
     "totalLabel": "fictional people generated",

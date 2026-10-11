@@ -149,6 +149,7 @@
     "eyebrow": "Persona en chiffres",
     "title": "La preuve par les profils.",
     "description": "Découvrez combien de personnes fictives Persona a générées au cours des 30 derniers jours.",
+    "historyDisclosure": "Les chiffres publics reprennent l’historique de la bêta, puis les usages en production.",
     "badgeStaging": "Aperçu · données de staging",
     "badgeProduction": "Aperçu public · API",
     "totalLabel": "personnes fictives générées",
