@@ -35,6 +35,12 @@
   line-height: 1.55;
   text-wrap: pretty;
 }
+.historyDisclosure {
+  margin-top: 8px;
+  color: var(--persona-copy);
+  font-size: .78rem;
+  line-height: 1.5;
+}
 
 .panel {
   display: grid;
