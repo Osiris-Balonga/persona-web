@@ -59,7 +59,13 @@
     "nationality": "Nationalité", "anyNationality": "Toutes les nationalités", "nationalityHint": "Nationalité de la personne",
     "residenceCountry": "Pays de résidence", "anyResidence": "Tous les pays de résidence", "residenceHint": "Pays où vit la personne",
     "city": "Ville", "cityPlaceholder": "Choisir une ville", "cityHint": "Choisissez d’abord un pays", "cityHintSelected": "Rechercher dans les villes du pays choisi",
-    "emailDomain": "Domaine email", "seed": "Graine", "seedHint": "Même graine et même date, mêmes résultats", "asOf": "À la date du", "asOfHint": "Date de référence pour l’âge",
+    "PortraitTypes": {
+      "label": "Types de portraits",
+      "hint": "Décochez les types de portraits à exclure.",
+      "empty": "Aucun type sélectionné : les profils seront générés sans portrait.",
+      "standard": "Standard", "doctor": "Médecin", "construction": "BTP", "business": "Business", "school-pupil": "Élève"
+    },
+    "emailDomain": "Domaine email", "seed": "Seed", "seedHint": "Optionnelle. Même seed et même date, mêmes résultats", "asOf": "À la date du", "asOfHint": "Date de référence pour l’âge",
     "fields": "Champs", "allFields": "Tous les champs", "selectedFields": "{count} sélectionnés",
     "requestPreview": "Aperçu de la requête", "copyUrl": "Copier l’URL de la requête", "runRequest": "Envoyer la requête", "cancelRequest": "Annuler la requête",
     "result": "Résultat", "resultHint": "La réponse de l’API apparaît ici", "resultCount": "{count, plural, one {# personne générée} other {# personnes générées}}",
@@ -68,7 +74,7 @@
     "loading": "Génération des personnes", "runToSeeResults": "Envoyez la requête pour voir un profil en direct.", "noResults": "Aucune personne renvoyée.",
     "requestFailed": "Échec de la requête", "retry": "Réessayer", "unknownError": "Erreur de paramètre inconnue",
     "errorOffline": "Vous êtes hors ligne. Reconnectez-vous et réessayez.", "errorUnavailable": "L’API Persona est temporairement indisponible. Réessayez plus tard.", "errorInvalidResponse": "L’API a renvoyé une réponse inattendue.", "errorBadRequest": "Vérifiez vos paramètres : {detail}", "errorRateLimit": "Trop de requêtes. Réessayez dans {seconds} secondes.", "errorTimeout": "La requête a expiré. Réessayez.", "errorGeneric": "La requête n’a pas abouti. Réessayez.",
-    "problemCount": "Saisissez un nombre entre 1 et 100.", "problemCity": "Choisissez une nationalité ou un pays de résidence avant de saisir une ville.", "problemNationality": "Cette nationalité est hors du continent choisi.", "problemEmailDomain": "Saisissez un domaine email valide.", "problemSeed": "La graine est trop longue.", "problemAsOf": "Saisissez une date de référence valide.", "problemUrl": "L’URL est trop longue. Sélectionnez moins de champs."
+    "problemCount": "Saisissez un nombre entre 1 et 100.", "problemCity": "Choisissez une nationalité ou un pays de résidence avant de saisir une ville.", "problemNationality": "Cette nationalité est hors du continent choisi.", "problemEmailDomain": "Saisissez un domaine email valide.", "problemSeed": "La seed est trop longue.", "problemAsOf": "Saisissez une date de référence valide.", "problemUrl": "L’URL est trop longue. Sélectionnez moins de champs."
   },
   "Coverage": {
     "eyebrow": "Couverture des données",

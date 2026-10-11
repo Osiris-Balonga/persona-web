@@ -33,7 +33,7 @@ export function Playground() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const controller = useRef<AbortController | null>(null);
-  const requestUrl = buildPeopleUrl(config.apiOrigin, options).toString();
+  const requestUrl = buildPeopleUrl(config.apiOrigin, options, config.portraitContextsEnabled).toString();
 
   function changeOptions(nextOptions: PlaygroundOptions) {
     window.history.replaceState(
@@ -52,7 +52,7 @@ export function Playground() {
         currentOptions,
         nationalityContinent,
       );
-      const url = buildPeopleUrl(config.apiOrigin, currentOptions);
+      const url = buildPeopleUrl(config.apiOrigin, currentOptions, config.portraitContextsEnabled);
       if (validation || url.toString().length > 2048) {
         setProblem(validation || "url");
         return;
