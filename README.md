@@ -2,7 +2,7 @@
 
 Public documentation and interactive playground for the [Persona API](https://github.com/Osiris-Balonga/persona). This repository contains the website only; the API and its portrait catalog are maintained separately.
 
-**Live site:** [persona-web-tau.vercel.app](https://persona-web-tau.vercel.app). Vercel deploys `main` to production and pull requests to preview environments. The beta site uses `https://persona-dev.onrender.com` as its public API origin.
+**Production target:** [persona.osirisbalonga.me](https://persona.osirisbalonga.me). DNS cutover is pending. Vercel deploys `main` to production and pull requests to preview environments.
 
 ## Local development
 
@@ -23,22 +23,22 @@ Open `http://localhost:3000`. The English and French routes are `/en` and `/fr`;
 - `src/lib/config.ts` and `src/lib/server-config.ts`: public URLs and server-only environment settings.
 - `src/components/ui`: shadcn/ui primitives.
 
-The playground and documentation use the public API origin from `NEXT_PUBLIC_PERSONA_API_URL`. Set it in `.env.local` to change the origin; `.env.example` contains a reserved placeholder. Vercel has the same variable configured for Development, Preview, and Production. This variable is intentionally public. `NEXT_PUBLIC_SITE_URL` controls canonical and Open Graph URLs when set. Vercel Web Analytics is included in the localized layout.
+The playground and documentation use the API origin from `NEXT_PUBLIC_PERSONA_API_URL`. Local development and preview deployments use the staging API, `https://persona-dev.onrender.com`; configure production with the API hostname after the provider confirms the accepted domain. Set the variable in `.env.local` to change the local origin; `.env.example` contains a reserved placeholder. This variable is intentionally public. Set `NEXT_PUBLIC_SITE_URL` to `https://persona.osirisbalonga.me` in production for canonical and Open Graph URLs. Vercel Web Analytics is included in the localized layout.
 
 ## Deployment
 
-The [Vercel project](https://vercel.com/osiris-balongas-projects/persona) deploys `main` to [persona-web-tau.vercel.app](https://persona-web-tau.vercel.app). Pull requests get preview deployments. The [deployments page](https://vercel.com/osiris-balongas-projects/persona/deployments) shows build status, logs, and the previous production deployment, which can be restored with Instant Rollback if needed. The site currently calls the beta API on Render; change `NEXT_PUBLIC_PERSONA_API_URL` and redeploy when the production API is ready.
+The [Vercel project](https://vercel.com/osiris-balongas-projects/persona) deploys `main` to [persona.osirisbalonga.me](https://persona.osirisbalonga.me). Pull requests get preview deployments that use the staging API. The production API hostname is pending provider validation; configure its origin after the accepted domain is confirmed. Keep `ANALYTICS_ENVIRONMENT=staging` in previews and set it to `production` in production; the Cloudflare analytics datasets remain separate, and switching environments does not reset either dataset. The planned one-time staging-history import will carry beta totals into production Activity, followed by production usage; staging is retained and will not be synced continuously. A failed analytics request must not change the environment label shown on Activity. The [deployments page](https://vercel.com/osiris-balongas-projects/persona/deployments) shows build status, logs, and the previous production deployment, which can be restored with Instant Rollback if needed.
 
 ### Portrait selection and tone
 
-The beta API supports the plural `portraitContexts` CSV parameter and an
+The staging API supports the plural `portraitContexts` CSV parameter and an
 explicit empty value. The Playground starts with all five types selected;
 unchecking a type removes it from the request. Clearing every checkbox sends
 `portraitContexts=` and returns profiles with `picture: null`. It never restores
 Standard automatically, and the selection remains in the Playground URL. The
 Playground does not send the singular `portraitContext` parameter.
 
-Omitting `portraitContexts` on the beta API selects all five released types.
+Omitting `portraitContexts` on the staging API selects all five released types.
 Their relative weights are Standard 50, Business 25, School pupil 15, Doctor 5
 and Construction 5, renormalized over types available for the generated age,
 gender and portrait collection. These are weights, not guaranteed response
