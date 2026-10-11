@@ -24,8 +24,11 @@ export function selectedSkinTones(selected: SkinToneSelection): readonly number[
 
 export function toggleSkinTone(selected: SkinToneSelection, value: number): SkinToneSelection {
   const tones = selectedSkinTones(selected);
-  if (tones.length === 1 && tones.includes(value)) return selected;
   const next = tones.includes(value) ? tones.filter(tone => tone !== value) : [...tones, value];
   const ordered = next.toSorted((a, b) => a - b);
   return ordered.length === 10 ? null : ordered.length === 1 ? ordered[0] : ordered;
+}
+
+export function toggleAllSkinTones(selected: SkinToneSelection): SkinToneSelection {
+  return selectedSkinTones(selected).length === skinToneSwatches.length ? [] : null;
 }

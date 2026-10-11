@@ -2,7 +2,7 @@
 
 import { Check } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { selectedSkinTones, skinToneSwatches, toggleSkinTone, type SkinToneSelection } from "@/lib/skin-tone-swatches";
+import { selectedSkinTones, skinToneSwatches, toggleAllSkinTones, toggleSkinTone, type SkinToneSelection } from "@/lib/skin-tone-swatches";
 
 export function PlaygroundSkinTone({
   selected,
@@ -21,15 +21,17 @@ export function PlaygroundSkinTone({
       <legend className="mb-1.5 text-xs font-semibold text-[var(--persona-ink)]">
         {t("skinToneLabel")}
       </legend>
-      <div className="grid grid-cols-[auto_repeat(10,minmax(0,2.25rem))] items-center gap-0.5 sm:gap-1.5">
+      <div className="grid grid-cols-[repeat(11,minmax(0,2.25rem))] items-center gap-0.5 sm:grid-cols-[auto_repeat(10,minmax(0,2.25rem))] sm:gap-1.5">
         <button
           type="button"
-          aria-pressed={selected === null}
+          aria-label={t("skinToneAll")}
+          aria-pressed={tones.length === 10}
           disabled={disabled}
-          onClick={() => onChange(null)}
-          className={`h-9 border px-1 text-[0.68rem] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-45 ${selected === null ? "border-primary bg-primary/5 text-primary" : "border-[var(--persona-line)] text-[var(--persona-copy)] hover:border-primary/60"}`}
+          onClick={() => onChange(toggleAllSkinTones(selected))}
+          className={`grid aspect-square w-full min-w-0 place-items-center border bg-transparent px-0 text-[0.68rem] font-semibold sm:aspect-auto sm:h-9 sm:w-auto sm:px-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-45 ${tones.length === 10 ? "border-primary text-primary" : "border-[var(--persona-line)] text-[var(--persona-copy)] hover:border-primary/60"}`}
         >
-          {t("skinToneAll")}
+          <span className="hidden sm:inline">{t("skinToneAll")}</span>
+          {tones.length === 10 && <Check className="size-4 sm:hidden" aria-hidden="true" strokeWidth={2.5} />}
         </button>
         {skinToneSwatches.map(({ value, color }) => {
           const checked = tones.includes(value);
@@ -43,7 +45,7 @@ export function PlaygroundSkinTone({
                 type="checkbox"
                 aria-label={t("skinToneOption", { number: value })}
                 checked={checked}
-                disabled={disabled || (checked && tones.length === 1)}
+                disabled={disabled}
                 onChange={() => onChange(toggleSkinTone(selected, value))}
                 className="sr-only"
               />
