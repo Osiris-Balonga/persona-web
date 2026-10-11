@@ -23,36 +23,47 @@ Open `http://localhost:3000`. The English and French routes are `/en` and `/fr`;
 - `src/lib/config.ts` and `src/lib/server-config.ts`: public URLs and server-only environment settings.
 - `src/components/ui`: shadcn/ui primitives.
 
-The playground and documentation use the public API origin from `NEXT_PUBLIC_PERSONA_API_URL`. Set it in `.env.local` to change the origin; `.env.example` contains the beta value. Vercel has the same variable configured for Development, Preview, and Production. This variable is intentionally public. `NEXT_PUBLIC_SITE_URL` controls canonical and Open Graph URLs when set. Vercel Web Analytics is included in the localized layout.
+The playground and documentation use the public API origin from `NEXT_PUBLIC_PERSONA_API_URL`. Set it in `.env.local` to change the origin; `.env.example` contains a reserved placeholder. Vercel has the same variable configured for Development, Preview, and Production. This variable is intentionally public. `NEXT_PUBLIC_SITE_URL` controls canonical and Open Graph URLs when set. Vercel Web Analytics is included in the localized layout.
 
 ## Deployment
 
 The [Vercel project](https://vercel.com/osiris-balongas-projects/persona) deploys `main` to [persona-web-tau.vercel.app](https://persona-web-tau.vercel.app). Pull requests get preview deployments. The [deployments page](https://vercel.com/osiris-balongas-projects/persona/deployments) shows build status, logs, and the previous production deployment, which can be restored with Instant Rollback if needed. The site currently calls the beta API on Render; change `NEXT_PUBLIC_PERSONA_API_URL` and redeploy when the production API is ready.
 
-### Portrait type selection
+### Portrait selection and tone
 
-The Playground portrait-type selector is enabled by default for the beta API,
-which supports the plural `portraitContexts` CSV parameter and an explicit empty
-value. Set `NEXT_PUBLIC_PERSONA_PORTRAIT_CONTEXTS_ENABLED=false` when targeting an
+The beta API supports the plural `portraitContexts` CSV parameter and an
+explicit empty value. The Playground starts with all five types selected;
+unchecking a type removes it from the request. Clearing every checkbox sends
+`portraitContexts=` and returns profiles with `picture: null`. It never restores
+Standard automatically, and the selection remains in the Playground URL. The
+Playground does not send the singular `portraitContext` parameter.
+
+Omitting `portraitContexts` on the beta API selects all five released types.
+Their relative weights are Standard 50, Business 25, School pupil 15, Doctor 5
+and Construction 5, renormalized over types available for the generated age,
+gender and portrait collection. These are weights, not guaranteed response
+percentages. Eligibility is Standard 6–100, Doctor 25–64, Construction and
+Business 18–64, and School pupil 6–17. Selecting several types combines their
+eligible ages. The UI exposes only these five released types.
+
+Set `NEXT_PUBLIC_PERSONA_PORTRAIT_CONTEXTS_ENABLED=false` when targeting an
 older API deployment. Rebuild and redeploy after changing this public setting.
-When disabled, the selector stays hidden and requests omit the parameter, so
-portrait selection follows the target API deployment's default behavior.
+The selector is hidden and requests omit `portraitContexts`, following the
+target deployment's default behavior.
 
-When enabled, all five offered types start selected. Clearing every checkbox
-sends `portraitContexts=` and generates profiles with `picture: null`; it must
-never fall back to Standard. Selection is preserved in the Playground URL. The
-UI offers Standard, Doctor, Construction, Business and School pupil only, and
-never sends the singular `portraitContext` alongside the plural parameter.
+The optional `skinTone` parameter accepts an integer from 1 to 10 and filters
+portraits by an existing reviewed visual annotation. It describes the image,
+not ancestry. Portraits without an annotation do not match; if no annotated
+portrait matches, the profile still returns and `picture` is `null`.
 
-The beta API makes omission equivalent to selecting all
-five released contexts. Its relative weights are Standard 50, Business 25,
-School pupil 15, Doctor 5 and Construction 5, renormalized over the contexts
-available for the generated age, gender and portrait collection. These weights
-are not guaranteed percentages in an individual response. An explicit
-`portraitContext=standard` still restricts portraits to Standard. Older API
-deployments can retain the historical Standard-only omission default. See the
-API's [portrait context contract](https://github.com/Osiris-Balonga/persona/blob/dev/docs/portrait-contexts.md)
-for context eligibility and seeded replay behavior.
+The Coverage page reads `GET /coverage`, which reports the country availability
+and portrait delivery readiness of the deployed API manifest. Portrait totals
+count entries whose public delivery variants are configured; the endpoint does
+not probe object storage on each request. Responses are cached for five minutes.
+If the feed is unavailable, the website labels its dated country snapshot; it
+does not present snapshot counts as current API totals. See the API's
+[v2 contract](https://github.com/Osiris-Balonga/persona/blob/dev/docs/api.md)
+for request parameters and the current release behavior.
 
 ## Checks
 

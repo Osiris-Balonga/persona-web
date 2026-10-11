@@ -6,13 +6,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import { SearchableCombobox } from "@/components/searchable-combobox";
 import { countryDisplayName } from "@/lib/country-display-name";
-import {
-  coverageRows,
-  coverageTotals,
-  type CoverageRow,
-  type CoverageStatus,
-  type PhoneStatus,
-} from "@/lib/coverage-data";
+import type { CoverageRow, CoverageStatus, PhoneStatus } from "@/lib/coverage-data";
+import type { CoverageData } from "@/lib/coverage-loader";
 
 const pageSize = 12;
 const continents = ["002", "019", "142", "150", "009"];
@@ -285,7 +280,7 @@ function EmptyCoverage({ onReset }: { onReset: () => void }) {
   );
 }
 
-export function CoverageExplorer() {
+export function CoverageExplorer({ data }: { data: CoverageData }) {
   const t = useTranslations("Coverage");
   const locale = useLocale();
   const [search, setSearch] = useState("");
@@ -293,6 +288,7 @@ export function CoverageExplorer() {
   const [status, setStatus] = useState("all");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const totalCountries = data.rows.length;
 
   useEffect(() => {
     const timer = window.setTimeout(() => setLoading(false), 220);
@@ -310,7 +306,7 @@ export function CoverageExplorer() {
     () =>
       [
         ...new Set(
-          coverageRows
+          data.rows
             .map((row) => row.subregion)
             .filter((value): value is string => Boolean(value)),
         ),
@@ -320,7 +316,7 @@ export function CoverageExplorer() {
           locale,
         ),
       ),
-    [locale],
+    [data.rows, locale],
   );
   const regionOptions = [
     ...continents.map((code) => ({
@@ -334,7 +330,7 @@ export function CoverageExplorer() {
   ];
   const filtered = useMemo(
     () =>
-      coverageRows
+      data.rows
         .filter((row) => {
           const name = countryDisplayName(row.code, locale, row.name);
           const query = normalize(search.trim());
@@ -358,7 +354,7 @@ export function CoverageExplorer() {
             locale,
           ),
         ),
-    [locale, region, search, status],
+    [data.rows, locale, region, search, status],
   );
   const pages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const currentPage = Math.min(page, pages);
@@ -368,9 +364,15 @@ export function CoverageExplorer() {
   );
   const first = filtered.length ? (currentPage - 1) * pageSize + 1 : 0;
   const last = Math.min(currentPage * pageSize, filtered.length);
+  const sourceLabel = data.source.kind === "live"
+    ? t("sourceLive", { version: data.source.version })
+    : data.source.kind === "snapshot"
+      ? t("sourceSnapshot", { date: data.source.date })
+      : t("sourceUnavailable");
 
   return (
     <>
+      <p className="mt-3 text-xs text-[var(--persona-quiet)]" role="note">{sourceLabel}</p>
       <div className="mt-8 grid gap-3 sm:grid-cols-[minmax(230px,1fr)_repeat(2,minmax(150px,190px))] lg:grid-cols-[minmax(280px,1fr)_170px_170px_auto] lg:items-center">
         <label className="relative block">
           <span className="sr-only">{t("searchLabel")}</span>
@@ -433,7 +435,7 @@ export function CoverageExplorer() {
             ? t("loading")
             : t("filteredCount", {
                 count: filtered.length,
-                total: coverageTotals.all,
+                total: totalCountries,
               })}
         </p>
       </div>
@@ -586,7 +588,7 @@ export function CoverageExplorer() {
         <div className="mt-7 flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--persona-copy)]">
           <p>
             {filtered.length === 0
-              ? t("filteredCount", { count: 0, total: coverageTotals.all })
+              ? t("filteredCount", { count: 0, total: totalCountries })
               : t("showing", { first, last, count: filtered.length })}
           </p>
           {filtered.length > pageSize && (

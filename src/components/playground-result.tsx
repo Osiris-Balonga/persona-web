@@ -12,8 +12,10 @@ import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { countryDisplayName } from "@/lib/country-display-name";
+import { portraitImageForSize } from "@/lib/portrait-image";
 import { CodeBlock } from "@/components/docs/code-block";
 import type {
+  PlaygroundFailure,
   PlaygroundPerson,
   PlaygroundResponse,
 } from "@/lib/playground-response";
@@ -21,7 +23,7 @@ import type {
 type Props = {
   response: PlaygroundResponse | null;
   loading: boolean;
-  error: string | null;
+  error: PlaygroundFailure | null;
   onRetry: () => void;
 };
 
@@ -29,16 +31,15 @@ function Portrait({
   person,
   className,
   eager = false,
+  size = "card",
 }: {
   person: PlaygroundPerson;
   className: string;
   eager?: boolean;
+  size?: "card" | "thumbnail";
 }) {
   const [failed, setFailed] = useState(false);
-  const photo =
-    person.picture?.medium ??
-    person.picture?.large ??
-    person.picture?.thumbnail;
+  const photo = portraitImageForSize(person.picture, size);
   const initials = (
     person.name?.full ??
     `${person.name?.first ?? ""} ${person.name?.last ?? ""}`
@@ -55,7 +56,7 @@ function Portrait({
           src={photo}
           alt=""
           fill
-          sizes="(max-width: 640px) 100vw, 320px"
+          sizes={size === "thumbnail" ? "34px" : "(max-width: 640px) calc(100vw - 64px), (max-width: 1024px) 36vw, 240px"}
           loading={eager ? "eager" : "lazy"}
           className="object-cover object-top"
           onError={() => setFailed(true)}
@@ -260,8 +261,22 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
           className="mt-5 border border-[var(--persona-red-line)] bg-[var(--persona-red-bg)] px-5 py-8 text-center"
           role="alert"
         >
-          <p className="font-semibold text-[var(--persona-red-ink)]">{t("requestFailed")}</p>
-          <p className="mt-2 text-sm text-[var(--persona-copy)]">{error}</p>
+          <p className="font-semibold text-[var(--persona-red-ink)]">{t(error.titleKey)}</p>
+          <p className="mt-2 text-sm text-[var(--persona-copy)]">
+            {error.guidanceKey === "errorRateLimitGuidance"
+              ? t(error.guidanceKey, { seconds: error.retryAfter || "?" })
+              : t(error.guidanceKey)}
+          </p>
+          {error.rawPayload !== null && error.rawPayload !== undefined && (
+            <details className="mt-4 text-left">
+              <summary className="cursor-pointer text-xs font-medium text-[var(--persona-strong-muted)]">
+                {t("developerDetails")}
+              </summary>
+              <pre className="mt-2 max-h-56 overflow-auto border border-[var(--persona-red-line)] bg-[var(--persona-surface)] p-3 text-left text-[0.68rem] text-[var(--persona-strong-muted)]">
+                {JSON.stringify(error.rawPayload, null, 2)}
+              </pre>
+            </details>
+          )}
           <button
             type="button"
             onClick={onRetry}
@@ -292,7 +307,7 @@ export function PlaygroundResult({ response, loading, error, onRetry }: Props) {
                   aria-current={personIndex === index ? "true" : undefined}
                   className={`size-10 border p-0.5 transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:scale-105 hover:shadow-sm active:scale-[.96] ${personIndex === index ? "border-primary" : "border-[var(--persona-line)] hover:border-primary/60"}`}
                 >
-                  <Portrait person={person} className="h-full w-full" />
+                  <Portrait person={person} size="thumbnail" className="h-full w-full" />
                 </button>
               );
             })}

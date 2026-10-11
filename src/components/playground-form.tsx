@@ -5,16 +5,19 @@ import { useLocale, useTranslations } from "next-intl";
 import { useId, useState, useSyncExternalStore, type FormEvent } from "react";
 import { SearchableCombobox } from "@/components/searchable-combobox";
 import { PlaygroundPortraitTypes } from "@/components/playground-portrait-types";
+import { PlaygroundSkinTone } from "@/components/playground-skin-tone";
 import { config } from "@/lib/config";
 import cityData from "@/content/playground-cities.json";
 import { countryDisplayName } from "@/lib/country-display-name";
-import { coverageRows } from "@/lib/coverage-data";
+import type { CoverageRow } from "@/lib/coverage-data";
 import {
   continentCodes,
+  eligiblePlaygroundAgeGroups,
   playgroundAgeGroups,
   playgroundFields,
   type PlaygroundOptions,
   type QueryProblem,
+  trimPlaygroundAgeGroups,
 } from "@/lib/playground-query";
 
 const continents = ["africa", "americas", "asia", "europe", "oceania"] as const;
@@ -28,6 +31,7 @@ type Props = {
   loading: boolean;
   onRun: () => void;
   onCancel: () => void;
+  coverageRows: CoverageRow[];
 };
 
 export function PlaygroundForm({
@@ -38,11 +42,14 @@ export function PlaygroundForm({
   loading,
   onRun,
   onCancel,
+  coverageRows,
 }: Props) {
   const t = useTranslations("Playground");
   const locale = useLocale();
   const [copied, setCopied] = useState(false);
   const [fieldsOpen, setFieldsOpen] = useState(false);
+  const [ageTrimmed, setAgeTrimmed] = useState(options.ageGroupsAdjustedByEligibility);
+  const [ageLastSelected, setAgeLastSelected] = useState(false);
   const fieldsId = useId();
   const hydrated = useSyncExternalStore(
     noSubscription,
@@ -64,6 +71,9 @@ export function PlaygroundForm({
     flag: row.code,
   }));
   const cityCountry = options.residenceCountry || options.nationality;
+  const pendingResidence = coverageRows.some(
+    (row) => row.code === options.residenceCountry && row.status === "pending-name-review",
+  );
   const nationalityOptions = countries
     .filter(
       (row) =>
@@ -75,6 +85,7 @@ export function PlaygroundForm({
   const cityOptions = (
     (cityData.countries as Record<string, string[]>)[cityCountry] ?? []
   ).map((name) => ({ value: name, label: name }));
+  const eligibleAgeGroups = eligiblePlaygroundAgeGroups(options.portraitContexts);
 
   function update<Key extends keyof PlaygroundOptions>(
     key: Key,
@@ -109,6 +120,35 @@ export function PlaygroundForm({
     });
   }
 
+  function changeAgeGroup(group: (typeof playgroundAgeGroups)[number]) {
+    if (!eligibleAgeGroups.includes(group)) return;
+    const checked = options.ageGroups.includes(group);
+    if (checked && options.ageGroups.length === 1) {
+      setAgeLastSelected(true);
+      return;
+    }
+    setAgeLastSelected(false);
+    onChange({
+      ...options,
+      ageGroupsAdjustedByEligibility: false,
+      ageGroups: checked
+        ? options.ageGroups.filter((item) => item !== group)
+        : [...options.ageGroups, group],
+    });
+  }
+
+  function changePortraitContexts(selected: PlaygroundOptions["portraitContexts"]) {
+    const trimmed = trimPlaygroundAgeGroups(options.ageGroups, selected);
+    setAgeTrimmed(trimmed.removed.length > 0);
+    setAgeLastSelected(false);
+    onChange({
+      ...options,
+      portraitContexts: selected,
+      ageGroups: trimmed.ageGroups,
+      ageGroupsAdjustedByEligibility: trimmed.removed.length > 0,
+    });
+  }
+
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (loading) onCancel();
@@ -127,6 +167,7 @@ export function PlaygroundForm({
 
   return (
     <form
+      noValidate
       onSubmit={submit}
       className="border border-[var(--persona-line)] bg-[var(--persona-surface)] p-4 sm:p-5"
     >
@@ -174,33 +215,39 @@ export function PlaygroundForm({
             {playgroundAgeGroups.map((group) => (
               <label
                 key={group}
-                className={`flex cursor-pointer items-center justify-center gap-1.5 border px-2 py-2 text-xs ${options.ageGroups.includes(group) ? "border-primary bg-primary/5 text-primary" : "border-[var(--persona-line)] text-[var(--persona-copy)]"}`}
+                className={`flex cursor-pointer items-center gap-2 border px-3 py-2 text-xs ${!eligibleAgeGroups.includes(group) ? "cursor-not-allowed border-[var(--persona-line)] text-[var(--persona-quiet)] opacity-55" : options.ageGroups.includes(group) ? "border-primary bg-primary/5 text-primary" : "border-[var(--persona-line)] text-[var(--persona-copy)]"}`}
               >
                 <input
                   type="checkbox"
                   checked={options.ageGroups.includes(group)}
-                  onChange={() =>
-                    update(
-                      "ageGroups",
-                      options.ageGroups.includes(group)
-                        ? options.ageGroups.filter((item) => item !== group)
-                        : [...options.ageGroups, group],
-                    )
-                  }
+                  disabled={!eligibleAgeGroups.includes(group)}
+                  onChange={() => changeAgeGroup(group)}
                   className="accent-primary"
                 />
                 {t(group)}
               </label>
             ))}
           </div>
+          {(ageTrimmed || ageLastSelected || options.portraitContexts.length === 0) && (
+            <p role="status" className="mt-2 text-xs text-[var(--persona-copy)]">
+              {ageLastSelected ? t("ageLastSelected") : options.portraitContexts.length === 0 ? t("ageNoPortraits") : t("ageTrimmed")}
+            </p>
+          )}
         </fieldset>
 
         {config.portraitContextsEnabled && (
           <div className="sm:col-span-2">
             <PlaygroundPortraitTypes
               selected={options.portraitContexts}
-              onChange={(selected) => update("portraitContexts", selected)}
+              onChange={changePortraitContexts}
             />
+            <div className="mt-4">
+              <PlaygroundSkinTone
+                selected={options.skinTone}
+                onChange={(selected) => update("skinTone", selected)}
+                disabled={options.portraitContexts.length === 0}
+              />
+            </div>
           </div>
         )}
 
@@ -236,7 +283,7 @@ export function PlaygroundForm({
           searchPlaceholder={t("searchCountry")}
           emptyMessage={t("noSearchResults")}
           onChange={(value) => changeCountry("residenceCountry", value)}
-          hint={t("residenceHint")}
+          hint={t(pendingResidence && !options.nationality && !options.continent ? "residenceHintPending" : "residenceHint")}
         />
         <SearchableCombobox
           label={t("city")}
@@ -277,6 +324,8 @@ export function PlaygroundForm({
           <input
             className={inputClass}
             type="date"
+            min="0102-01-01"
+            max="9999-12-31"
             value={options.asOf}
             onChange={(event) => update("asOf", event.target.value)}
           />
