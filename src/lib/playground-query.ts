@@ -11,7 +11,7 @@ export type PlaygroundOptions = {
   asOf: string;
   fields: string[];
   portraitContexts: PlaygroundPortraitContext[];
-  skinTone: number | null;
+  skinTone: number | readonly number[] | null;
   ageGroupsAdjustedByEligibility: boolean;
 };
 
@@ -155,7 +155,10 @@ export function parsePlaygroundOptions(
   const trimmedAgeSelection = trimPlaygroundAgeGroups(parsedAgeSelection, selectedPortraitContexts);
   const ageGroups = trimmedAgeSelection.ageGroups;
   const skinToneParam = params.get("skinTone");
-  const skinToneValue = skinToneParam === null ? NaN : Number(skinToneParam);
+  const skinToneValues = skinToneParam?.split(",").map(Number).toSorted((a, b) => a - b) ?? [];
+  const validSkinTones = skinToneValues.length > 0 && skinToneValues.length <= 10
+    && skinToneValues.every(tone => Number.isInteger(tone) && tone >= 1 && tone <= 10)
+    && new Set(skinToneValues).size === skinToneValues.length;
   const fields = (params.get("fields") ?? "")
     .split(",")
     .filter((field) =>
@@ -178,7 +181,7 @@ export function parsePlaygroundOptions(
     asOf: params.get("asOf") ?? "",
     fields: [...new Set(fields)],
     portraitContexts: selectedPortraitContexts,
-    skinTone: Number.isInteger(skinToneValue) && skinToneValue >= 1 && skinToneValue <= 10 ? skinToneValue : null,
+    skinTone: validSkinTones ? skinToneValues.length === 1 ? skinToneValues[0] : skinToneValues : null,
     ageGroupsAdjustedByEligibility: trimmedAgeSelection.removed.length > 0,
   };
 }
@@ -246,7 +249,11 @@ export function validatePlaygroundOptions(
   if (options.city.trim().length > 100) return "city";
   if (options.seed.trim().length > 128) return "seed";
   if (options.asOf && !isValidAsOfDate(options.asOf)) return "asOf";
-  if (options.skinTone !== null && (!Number.isInteger(options.skinTone) || options.skinTone < 1 || options.skinTone > 10)) return "skinTone";
+  if (options.skinTone !== null) {
+    const tones = typeof options.skinTone === "number" ? [options.skinTone] : options.skinTone;
+    if (tones.length === 0 || tones.length > 10 || new Set(tones).size !== tones.length
+      || tones.some(tone => !Number.isInteger(tone) || tone < 1 || tone > 10)) return "skinTone";
+  }
   return null;
 }
 

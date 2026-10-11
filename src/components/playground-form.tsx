@@ -48,7 +48,6 @@ export function PlaygroundForm({
   const locale = useLocale();
   const [copied, setCopied] = useState(false);
   const [fieldsOpen, setFieldsOpen] = useState(false);
-  const [ageTrimmed, setAgeTrimmed] = useState(options.ageGroupsAdjustedByEligibility);
   const [ageLastSelected, setAgeLastSelected] = useState(false);
   const fieldsId = useId();
   const hydrated = useSyncExternalStore(
@@ -139,7 +138,6 @@ export function PlaygroundForm({
 
   function changePortraitContexts(selected: PlaygroundOptions["portraitContexts"]) {
     const trimmed = trimPlaygroundAgeGroups(options.ageGroups, selected);
-    setAgeTrimmed(trimmed.removed.length > 0);
     setAgeLastSelected(false);
     onChange({
       ...options,
@@ -209,6 +207,15 @@ export function PlaygroundForm({
           </select>
         </label>
 
+        {config.portraitContextsEnabled && (
+          <div className="sm:col-span-2">
+            <PlaygroundPortraitTypes
+              selected={options.portraitContexts}
+              onChange={changePortraitContexts}
+            />
+          </div>
+        )}
+
         <fieldset className="sm:col-span-2">
           <legend className={labelClass}>{t("ageGroup")}</legend>
           <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
@@ -228,26 +235,20 @@ export function PlaygroundForm({
               </label>
             ))}
           </div>
-          {(ageTrimmed || ageLastSelected || options.portraitContexts.length === 0) && (
-            <p role="status" className="mt-2 text-xs text-[var(--persona-copy)]">
-              {ageLastSelected ? t("ageLastSelected") : options.portraitContexts.length === 0 ? t("ageNoPortraits") : t("ageTrimmed")}
+          {ageLastSelected && (
+            <p role="status" className="mt-2 text-xs text-amber-700 dark:text-amber-400">
+              {t("ageLastSelected")}
             </p>
           )}
         </fieldset>
 
         {config.portraitContextsEnabled && (
           <div className="sm:col-span-2">
-            <PlaygroundPortraitTypes
-              selected={options.portraitContexts}
-              onChange={changePortraitContexts}
+            <PlaygroundSkinTone
+              selected={options.skinTone}
+              onChange={(selected) => update("skinTone", selected)}
+              disabled={options.portraitContexts.length === 0}
             />
-            <div className="mt-4">
-              <PlaygroundSkinTone
-                selected={options.skinTone}
-                onChange={(selected) => update("skinTone", selected)}
-                disabled={options.portraitContexts.length === 0}
-              />
-            </div>
           </div>
         )}
 

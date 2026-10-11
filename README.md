@@ -51,10 +51,12 @@ older API deployment. Rebuild and redeploy after changing this public setting.
 The selector is hidden and requests omit `portraitContexts`, following the
 target deployment's default behavior.
 
-The optional `skinTone` parameter accepts an integer from 1 to 10 and filters
+The optional `skinTone` parameter accepts one or more distinct integers from 1 to 10, separated by commas, and filters
 portraits by an existing reviewed visual annotation. It describes the image,
 not ancestry. Portraits without an annotation do not match; if no annotated
 portrait matches, the profile still returns and `picture` is `null`.
+The Playground starts with all ten tones checked. `All` resets the selection
+and omits the filter; checking individual swatches selects their union.
 
 The Coverage page reads `GET /coverage`, which reports the country availability
 and portrait delivery readiness of the deployed API manifest. Portrait totals

@@ -1,64 +1,57 @@
 "use client";
 
-import { useId } from "react";
+import { Check } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { skinToneSwatches } from "@/lib/skin-tone-swatches";
+import { selectedSkinTones, skinToneSwatches, toggleSkinTone, type SkinToneSelection } from "@/lib/skin-tone-swatches";
 
 export function PlaygroundSkinTone({
   selected,
   onChange,
   disabled = false,
 }: {
-  selected: number | null;
-  onChange: (selected: number | null) => void;
+  selected: SkinToneSelection;
+  onChange: (selected: SkinToneSelection) => void;
   disabled?: boolean;
 }) {
   const t = useTranslations("Playground.PortraitTypes");
-  const hintId = useId();
-  const groupName = useId();
+  const tones = selectedSkinTones(selected);
 
   return (
-    <fieldset aria-describedby={hintId} disabled={disabled}>
+    <fieldset disabled={disabled}>
       <legend className="mb-1.5 text-xs font-semibold text-[var(--persona-ink)]">
         {t("skinToneLabel")}
       </legend>
-      <div className="flex flex-wrap gap-1.5">
-        <label
-          className={`flex h-9 min-w-12 cursor-pointer items-center justify-center border px-2 text-[0.68rem] font-semibold transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary ${selected === null ? "border-primary bg-primary/5 text-primary" : "border-[var(--persona-line)] text-[var(--persona-copy)] hover:border-primary/60"} ${disabled ? "cursor-not-allowed opacity-45" : ""}`}
+      <div className="grid grid-cols-[auto_repeat(10,minmax(0,2.25rem))] items-center gap-0.5 sm:gap-1.5">
+        <button
+          type="button"
+          aria-pressed={selected === null}
+          disabled={disabled}
+          onClick={() => onChange(null)}
+          className={`h-9 border px-1 text-[0.68rem] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-45 ${selected === null ? "border-primary bg-primary/5 text-primary" : "border-[var(--persona-line)] text-[var(--persona-copy)] hover:border-primary/60"}`}
         >
-          <input
-            type="radio"
-            name={groupName}
-            checked={selected === null}
-            disabled={disabled}
-            onChange={() => onChange(null)}
-            className="sr-only"
-          />
           {t("skinToneAll")}
-        </label>
-        {skinToneSwatches.map(({ value, color }) => (
-          <label
-            key={value}
-            className={`grid size-9 cursor-pointer place-items-center border text-xs font-semibold transition-[outline-color,transform] hover:-translate-y-0.5 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary ${selected === value ? "border-primary outline-2 outline-offset-2 outline-primary" : "border-[var(--persona-line)]"} ${disabled ? "cursor-not-allowed opacity-45" : ""}`}
-            style={{ backgroundColor: color, color: value >= 7 ? "white" : "#111111" }}
-          >
-            <input
-              type="radio"
-              name={groupName}
-              value={value}
-              aria-label={t("skinToneOption", { number: value })}
-              checked={selected === value}
-              disabled={disabled}
-              onChange={() => onChange(value)}
-              className="sr-only"
-            />
-            {value}
-          </label>
-        ))}
+        </button>
+        {skinToneSwatches.map(({ value, color }) => {
+          const checked = tones.includes(value);
+          return (
+            <label
+              key={value}
+              className={`grid aspect-square w-full min-w-0 cursor-pointer place-items-center border text-xs font-semibold has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary ${checked ? "border-primary outline-1 outline-primary" : "border-[var(--persona-line)]"} ${disabled ? "cursor-not-allowed opacity-45" : ""}`}
+              style={{ backgroundColor: color, color: value >= 7 ? "white" : "#111111" }}
+            >
+              <input
+                type="checkbox"
+                aria-label={t("skinToneOption", { number: value })}
+                checked={checked}
+                disabled={disabled || (checked && tones.length === 1)}
+                onChange={() => onChange(toggleSkinTone(selected, value))}
+                className="sr-only"
+              />
+              {checked ? <Check className="size-4" aria-hidden="true" strokeWidth={2.5} /> : value}
+            </label>
+          );
+        })}
       </div>
-      <p id={hintId} className="mt-2 text-xs text-[var(--persona-copy)]">
-        {disabled ? t("skinToneNoPortraits") : t("skinToneHint")}
-      </p>
     </fieldset>
   );
 }

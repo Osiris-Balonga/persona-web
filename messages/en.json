@@ -56,7 +56,7 @@
     "count": "Count", "countHint": "Number of people to generate (1–100)",
     "gender": "Gender", "any": "Any", "female": "Female", "male": "Male", "other": "Other",
     "ageGroup": "Age group", "child": "Child", "teen": "Teen", "adult": "Adult", "senior": "Senior",
-    "ageTrimmed": "Some age groups were removed because they are not eligible for the selected portrait types.", "ageLastSelected": "At least one age group must stay selected.", "ageNoPortraits": "Age filters still apply, but profiles will have no portraits while all portrait types are cleared.",
+    "ageLastSelected": "Keep at least one age group.",
     "continent": "Continent", "allContinents": "All continents", "continentHint": "Restricts the nationality entries", "africa": "Africa", "americas": "Americas", "asia": "Asia", "europe": "Europe", "oceania": "Oceania",
     "searchContinent": "Search a continent...", "searchCountry": "Search a country...", "searchCity": "Search a city...", "noSearchResults": "No match found",
     "nationality": "Nationality", "anyNationality": "Any nationality", "nationalityHint": "Person's nationality",
@@ -67,10 +67,8 @@
       "hint": "Uncheck the portrait types to exclude.",
       "empty": "No type selected: profiles will be generated without portraits.",
       "skinToneLabel": "Portrait tone",
-      "skinToneAll": "All tones",
+      "skinToneAll": "All",
       "skinToneOption": "Tone {number}",
-      "skinToneHint": "Optional filter for portraits with a reviewed visual tone. This editorial label describes the image; it does not imply ancestry. Only annotated portraits can match; a profile may therefore have no picture.",
-      "skinToneNoPortraits": "Tone is ignored while no portrait types are selected.",
       "standard": "Standard", "doctor": "Doctor", "construction": "Construction", "business": "Business", "school-pupil": "School pupil"
     },
     "emailDomain": "Email domain", "seed": "Seed", "seedHint": "Optional. Same seed and date produce repeatable results", "asOf": "As of", "asOfHint": "Reference date for age",
@@ -91,8 +89,8 @@
     "errorRateLimitTitle": "Too many requests", "errorRateLimitGuidance": "Wait {seconds} seconds, then retry.",
     "errorTimeoutTitle": "The request timed out", "errorTimeoutGuidance": "Check your connection and try again.",
     "errorGenericTitle": "The request could not be completed", "errorGenericGuidance": "Try again. If it keeps failing, inspect the response JSON for technical details.",
-    "errorParamCount": "Set a count from 1 to 100.", "errorParamGender": "Choose a supported gender or leave it set to Any.", "errorParamAgeGroup": "Choose one or more supported age groups.", "errorParamContinent": "Choose one of the five supported continents.", "errorParamNationality": "Choose a nationality available in the selected continent.", "errorParamResidenceCountry": "Choose a country with resident profile data.", "errorParamCity": "Choose a city in the selected residence country.", "errorParamEmailDomain": "Enter an ASCII domain with at least two labels and a valid alphabetic ending.", "errorParamSeed": "Use a nonblank seed of at most 128 characters, or leave it empty.", "errorParamAsOf": "Enter a real calendar date from 0102-01-01 through 9999-12-31.", "errorParamFields": "Choose supported response fields and remove duplicates.", "errorParamPortraitContext": "Choose one supported portrait type.", "errorParamPortraitContexts": "Choose supported portrait types and remove duplicates.", "errorParamSkinTone": "Choose one tone from 1 to 10, or select All tones.", "errorParamQuery": "Shorten the request URL and remove repeated parameters.",
-    "problemCount": "Enter a count between 1 and 100.", "problemAgeGroup": "Select an age group that overlaps the selected portrait types.", "problemResidenceNationality": "This residence country has no reviewed name pool. Choose a nationality or continent before sending the request.", "problemCity": "Select a nationality or residence country before entering a city.", "problemNationality": "The nationality is outside the selected continent.", "problemEmailDomain": "Enter a valid email domain.", "problemSeed": "The seed is too long.", "problemAsOf": "Enter a valid reference date.", "problemSkinTone": "Choose a tone from 1 to 10.", "problemUrl": "The request URL is too long. Select fewer fields."
+    "errorParamCount": "Set a count from 1 to 100.", "errorParamGender": "Choose a supported gender or leave it set to Any.", "errorParamAgeGroup": "Choose one or more supported age groups.", "errorParamContinent": "Choose one of the five supported continents.", "errorParamNationality": "Choose a nationality available in the selected continent.", "errorParamResidenceCountry": "Choose a country with resident profile data.", "errorParamCity": "Choose a city in the selected residence country.", "errorParamEmailDomain": "Enter an ASCII domain with at least two labels and a valid alphabetic ending.", "errorParamSeed": "Use a nonblank seed of at most 128 characters, or leave it empty.", "errorParamAsOf": "Enter a real calendar date from 0102-01-01 through 9999-12-31.", "errorParamFields": "Choose supported response fields and remove duplicates.", "errorParamPortraitContext": "Choose one supported portrait type.", "errorParamPortraitContexts": "Choose supported portrait types and remove duplicates.", "errorParamSkinTone": "Choose tones from 1 to 10, or All.", "errorParamQuery": "Shorten the request URL and remove repeated parameters.",
+    "problemCount": "Enter a count between 1 and 100.", "problemAgeGroup": "Select an age group that overlaps the selected portrait types.", "problemResidenceNationality": "This residence country has no reviewed name pool. Choose a nationality or continent before sending the request.", "problemCity": "Select a nationality or residence country before entering a city.", "problemNationality": "The nationality is outside the selected continent.", "problemEmailDomain": "Enter a valid email domain.", "problemSeed": "The seed is too long.", "problemAsOf": "Enter a valid reference date.", "problemSkinTone": "Choose at least one tone from 1 to 10.", "problemUrl": "The request URL is too long. Select fewer fields."
   },
   "Coverage": {
     "eyebrow": "Data coverage",

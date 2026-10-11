@@ -188,6 +188,18 @@ test("skin tone must be an integer from one through ten", () => {
   assert.equal(validatePlaygroundOptions({ ...defaultPlaygroundOptions, skinTone: 10 }), null);
 });
 
+test("multiple tones restore canonically and preserve their union in API and shared URLs", () => {
+  const restored = parsePlaygroundOptions(new URLSearchParams("skinTone=8,6"));
+  assert.deepEqual(restored.skinTone, [6,8]);
+  assert.equal(validatePlaygroundOptions(restored), null);
+  assert.equal(buildPeopleUrl("https://persona.test", restored, true).searchParams.get("skinTone"), "6,8");
+  const shared = new URL(buildPlaygroundPageUrl("https://persona.test/fr/playground", restored), "https://persona.test");
+  assert.deepEqual(parsePlaygroundOptions(shared.searchParams), restored);
+  for (const skinTone of [[], [6,6], [6,11]]) {
+    assert.equal(validatePlaygroundOptions({ ...defaultPlaygroundOptions, skinTone }), "skinTone");
+  }
+});
+
 test("rejects an age band that has no overlap with the explicitly selected portrait types", () => {
   const incompatible = {
     ...defaultPlaygroundOptions,

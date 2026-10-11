@@ -14,3 +14,18 @@ export const skinToneSwatches = [
 export function getSkinToneSwatch(value: number) {
   return skinToneSwatches.find((swatch) => swatch.value === value);
 }
+
+export type SkinToneSelection = number | readonly number[] | null;
+
+export function selectedSkinTones(selected: SkinToneSelection): readonly number[] {
+  return selected === null ? skinToneSwatches.map(({ value }) => value)
+    : typeof selected === "number" ? [selected] : selected;
+}
+
+export function toggleSkinTone(selected: SkinToneSelection, value: number): SkinToneSelection {
+  const tones = selectedSkinTones(selected);
+  if (tones.length === 1 && tones.includes(value)) return selected;
+  const next = tones.includes(value) ? tones.filter(tone => tone !== value) : [...tones, value];
+  const ordered = next.toSorted((a, b) => a - b);
+  return ordered.length === 10 ? null : ordered.length === 1 ? ordered[0] : ordered;
+}
