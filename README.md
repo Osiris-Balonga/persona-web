@@ -44,14 +44,15 @@ never fall back to Standard. Selection is preserved in the Playground URL. The
 UI offers Standard, Doctor, Construction, Business and School pupil only, and
 never sends the singular `portraitContext` alongside the plural parameter.
 
-The weighted-default API release makes omission equivalent to selecting all
+The beta API makes omission equivalent to selecting all
 five released contexts. Its relative weights are Standard 50, Business 25,
 School pupil 15, Doctor 5 and Construction 5, renormalized over the contexts
 available for the generated age, gender and portrait collection. These weights
 are not guaranteed percentages in an individual response. An explicit
-`portraitContext=standard` still restricts portraits to Standard. Deploy this
-documentation update with that backend release; older deployments can retain
-the historical Standard-only omission default.
+`portraitContext=standard` still restricts portraits to Standard. Older API
+deployments can retain the historical Standard-only omission default. See the
+API's [portrait context contract](https://github.com/Osiris-Balonga/persona/blob/dev/docs/portrait-contexts.md)
+for context eligibility and seeded replay behavior.
 
 ## Checks
 
