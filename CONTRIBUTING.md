@@ -4,6 +4,10 @@
 
 Create a short-lived branch from `dev` using `feature/`, `fix/`, `chore/`, `docs/`, `refactor/`, or `test/`, then open a focused pull request to `dev`. Only `dev` may target `main`, through a pull request when the site is ready to release. Do not push directly to either protected branch. Link the issue and report the checks actually run.
 
+Squash feature pull requests into `dev`, which requires linear history. Promote `dev` to `main` with a **merge commit**. The active `Preserve release ancestry` ruleset allows only this merge method on `main`; required pull requests, CI checks and conversation resolution still apply, including for administrators.
+
+Do not squash or rebase release promotions. Those methods discard the relationship between the published release and `dev`, making later promotions compare against an outdated common ancestor and potentially conflict despite matching file contents. Merge commits retain that relationship, so subsequent releases can follow the same protected workflow without temporarily relaxing branch protection or force-pushing.
+
 For parallel work, give each contributor or agent its own worktree and branch. From a local clone, for example:
 
 ```sh
