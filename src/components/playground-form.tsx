@@ -4,6 +4,8 @@ import { Check, ChevronDown, Copy, Play, Square } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useId, useState, useSyncExternalStore, type FormEvent } from "react";
 import { SearchableCombobox } from "@/components/searchable-combobox";
+import { PlaygroundPortraitTypes } from "@/components/playground-portrait-types";
+import { config } from "@/lib/config";
 import cityData from "@/content/playground-cities.json";
 import { countryDisplayName } from "@/lib/country-display-name";
 import { coverageRows } from "@/lib/coverage-data";
@@ -192,6 +194,15 @@ export function PlaygroundForm({
             ))}
           </div>
         </fieldset>
+
+        {config.portraitContextsEnabled && (
+          <div className="sm:col-span-2">
+            <PlaygroundPortraitTypes
+              selected={options.portraitContexts}
+              onChange={(selected) => update("portraitContexts", selected)}
+            />
+          </div>
+        )}
 
         <SearchableCombobox
           label={t("continent")}

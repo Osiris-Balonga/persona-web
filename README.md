@@ -29,6 +29,31 @@ The playground and documentation use the public API origin from `NEXT_PUBLIC_PER
 
 The [Vercel project](https://vercel.com/osiris-balongas-projects/persona) deploys `main` to [persona-web-tau.vercel.app](https://persona-web-tau.vercel.app). Pull requests get preview deployments. The [deployments page](https://vercel.com/osiris-balongas-projects/persona/deployments) shows build status, logs, and the previous production deployment, which can be restored with Instant Rollback if needed. The site currently calls the beta API on Render; change `NEXT_PUBLIC_PERSONA_API_URL` and redeploy when the production API is ready.
 
+### Portrait type selection
+
+The Playground portrait-type selector is enabled by default for the beta API,
+which supports the plural `portraitContexts` CSV parameter and an explicit empty
+value. Set `NEXT_PUBLIC_PERSONA_PORTRAIT_CONTEXTS_ENABLED=false` when targeting an
+older API deployment. Rebuild and redeploy after changing this public setting.
+When disabled, the selector stays hidden and requests omit the parameter, so
+portrait selection follows the target API deployment's default behavior.
+
+When enabled, all five offered types start selected. Clearing every checkbox
+sends `portraitContexts=` and generates profiles with `picture: null`; it must
+never fall back to Standard. Selection is preserved in the Playground URL. The
+UI offers Standard, Doctor, Construction, Business and School pupil only, and
+never sends the singular `portraitContext` alongside the plural parameter.
+
+The beta API makes omission equivalent to selecting all
+five released contexts. Its relative weights are Standard 50, Business 25,
+School pupil 15, Doctor 5 and Construction 5, renormalized over the contexts
+available for the generated age, gender and portrait collection. These weights
+are not guaranteed percentages in an individual response. An explicit
+`portraitContext=standard` still restricts portraits to Standard. Older API
+deployments can retain the historical Standard-only omission default. See the
+API's [portrait context contract](https://github.com/Osiris-Balonga/persona/blob/dev/docs/portrait-contexts.md)
+for context eligibility and seeded replay behavior.
+
 ## Checks
 
 ```sh
