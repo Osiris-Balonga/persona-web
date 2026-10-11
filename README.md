@@ -43,8 +43,6 @@ sends `portraitContexts=` and generates profiles with `picture: null`; it must
 never fall back to Standard. Selection is preserved in the Playground URL. The
 UI offers Standard, Doctor, Construction, Business and School pupil only, and
 never sends the singular `portraitContext` alongside the plural parameter.
-School pupil is selectable, but no approved portraits in that context are
-published yet; eligible profiles currently return `picture: null` for that type.
 
 ## Checks
 
