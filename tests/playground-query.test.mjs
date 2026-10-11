@@ -195,7 +195,7 @@ test("multiple tones restore canonically and preserve their union in API and sha
   assert.equal(buildPeopleUrl("https://persona.test", restored, true).searchParams.get("skinTone"), "6,8");
   const shared = new URL(buildPlaygroundPageUrl("https://persona.test/fr/playground", restored), "https://persona.test");
   assert.deepEqual(parsePlaygroundOptions(shared.searchParams), restored);
-  for (const skinTone of [[], [6,6], [6,11]]) {
+  for (const skinTone of [[6,6], [6,11]]) {
     assert.equal(validatePlaygroundOptions({ ...defaultPlaygroundOptions, skinTone }), "skinTone");
   }
 });
@@ -215,4 +215,11 @@ test("pending residence coverage requires an explicit nationality or continent",
   assert.equal(validatePlaygroundOptions(pendingResidence, null, true), "residenceNationality");
   assert.equal(validatePlaygroundOptions({ ...pendingResidence, nationality: "FR" }, null, true), null);
   assert.equal(validatePlaygroundOptions({ ...pendingResidence, continent: "africa" }, null, true), null);
+});
+
+test('empty tone selection survives sharing and requests', () => {
+ const options = { ...defaultPlaygroundOptions, skinTone: [] };
+ assert.equal(validatePlaygroundOptions(options), null);
+ assert.deepEqual(parsePlaygroundOptions(new URLSearchParams('skinTone=')).skinTone, []);
+ assert.equal(buildPeopleUrl('https://persona.test', options, true).searchParams.get('skinTone'), '');
 });

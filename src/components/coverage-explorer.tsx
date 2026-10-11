@@ -117,12 +117,12 @@ function PhoneSource({ status }: { status: PhoneStatus }) {
 function CountryCell({ row, locale }: { row: CoverageRow; locale: string }) {
   const name = countryDisplayName(row.code, locale, row.name);
   return (
-    <span className="inline-flex min-w-0 items-center gap-2.5">
+    <span className="flex w-full min-w-0 items-center gap-2.5">
       <span
         className={`fi fi-${row.code.toLowerCase()} inline-block shrink-0 text-[1.35rem] leading-none`}
         aria-hidden="true"
       />
-      <span className="min-w-0 truncate" title={name}>
+      <span className="min-w-0 flex-1 break-words whitespace-normal" title={name}>
         {name}
       </span>
     </span>

@@ -181,7 +181,7 @@ export function parsePlaygroundOptions(
     asOf: params.get("asOf") ?? "",
     fields: [...new Set(fields)],
     portraitContexts: selectedPortraitContexts,
-    skinTone: validSkinTones ? skinToneValues.length === 1 ? skinToneValues[0] : skinToneValues : null,
+    skinTone: skinToneParam === "" ? [] : validSkinTones ? skinToneValues.length === 1 ? skinToneValues[0] : skinToneValues : null,
     ageGroupsAdjustedByEligibility: trimmedAgeSelection.removed.length > 0,
   };
 }
@@ -251,7 +251,7 @@ export function validatePlaygroundOptions(
   if (options.asOf && !isValidAsOfDate(options.asOf)) return "asOf";
   if (options.skinTone !== null) {
     const tones = typeof options.skinTone === "number" ? [options.skinTone] : options.skinTone;
-    if (tones.length === 0 || tones.length > 10 || new Set(tones).size !== tones.length
+    if (tones.length > 10 || new Set(tones).size !== tones.length
       || tones.some(tone => !Number.isInteger(tone) || tone < 1 || tone > 10)) return "skinTone";
   }
   return null;
