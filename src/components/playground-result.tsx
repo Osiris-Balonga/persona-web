@@ -58,6 +58,7 @@ function Portrait({
           fill
           sizes={size === "thumbnail" ? "34px" : "(max-width: 640px) calc(100vw - 64px), (max-width: 1024px) 36vw, 240px"}
           loading={eager ? "eager" : "lazy"}
+          unoptimized
           className="object-cover object-top"
           onError={() => setFailed(true)}
         />
