@@ -1,8 +1,8 @@
 import { parsePhoneNumberFromString } from "libphonenumber-js/min";
 import { featuredCountries } from "@/lib/featured-geography";
 import { config } from "@/lib/config";
+import { featuredPersonWithPortrait } from "@/lib/featured-person-selection";
 import type { PortraitImageVariants } from "@/lib/portrait-image";
-import { portraitImageForSize } from "@/lib/portrait-image";
 
 export type FeaturedPerson = {
   id: string;
@@ -40,7 +40,8 @@ async function fetchPerson(code: string): Promise<FeaturedPerson> {
   const data: unknown = await response.json();
   const results = (data as { results?: unknown }).results;
   if (!Array.isArray(results) || !results.every(isPerson) || results.length === 0) throw new Error(`Invalid Persona API response for ${code}`);
-  const person = results.find((result) => portraitImageForSize(result.picture, "card")) ?? results[0];
+  const person = featuredPersonWithPortrait(results);
+  if (!person) throw new Error(`No portrait in Persona API response for ${code}`);
   let phoneDisplay = person.phone;
   if (person.phone) {
     try { phoneDisplay = parsePhoneNumberFromString(person.phone)?.formatInternational() ?? person.phone; }

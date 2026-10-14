@@ -17,7 +17,7 @@ function ProfileCard({ person, locale, ageLabel }: { person: FeaturedPerson; loc
     <article className="persona-profile overflow-hidden border border-[var(--persona-line)] bg-[var(--persona-surface)] shadow-[0_18px_48px_rgba(44,62,191,0.13)]">
       <div className="relative aspect-[1.2] bg-[var(--persona-soft-surface)]">
         {image && !imageFailed ? (
-          <Image src={image} alt="" fill sizes="(max-width: 640px) 62vw, 280px" className="object-cover object-top" onError={() => setImageFailed(true)} />
+          <Image src={image} alt="" fill sizes="(max-width: 640px) 62vw, 280px" unoptimized className="object-cover object-top" onError={() => setImageFailed(true)} />
         ) : (
           <div className="flex h-full items-center justify-center text-5xl font-semibold text-primary/45" aria-hidden="true">{person.name.first[0]}{person.name.last[0]}</div>
         )}
