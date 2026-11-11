@@ -53,7 +53,7 @@
     "aside": "Des données réalistes.\nPour un Internet plus ouvert\net plus créatif.",
     "configuration": "Configuration",
     "configurationHint": "Définissez les paramètres de la requête. Tous les champs sont facultatifs.",
-    "count": "Nombre", "countHint": "Nombre de personnes à générer (1–100)",
+    "count": "Nombre", "countHint": "Aperçu de 1 à 100 personnes. Pour un lot plus grand, utilisez la pagination de l’API.",
     "gender": "Genre", "any": "Tous", "female": "Femme", "male": "Homme", "other": "Autre",
     "ageGroup": "Tranche d’âge", "child": "Enfant", "teen": "Adolescent", "adult": "Adulte", "senior": "Senior",
     "ageLastSelected": "Gardez au moins une tranche d’âge.",
