@@ -53,7 +53,7 @@
     "aside": "Realistic data.\nFor a more open\nand creative internet.",
     "configuration": "Configuration",
     "configurationHint": "Set the parameters for your request. All fields are optional.",
-    "count": "Count", "countHint": "Number of people to generate (1–100)",
+    "count": "Count", "countHint": "Preview 1 to 100 people. For larger collections, use API pagination.",
     "gender": "Gender", "any": "Any", "female": "Female", "male": "Male", "other": "Other",
     "ageGroup": "Age group", "child": "Child", "teen": "Teen", "adult": "Adult", "senior": "Senior",
     "ageLastSelected": "Keep at least one age group.",
