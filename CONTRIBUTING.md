@@ -24,3 +24,13 @@ Run `npm run lint`, `npm run typecheck`, and `npm run build` before merging. Add
 Keep repository docs and identifiers in English; translate user-facing content into both English and French. Use the public Persona API v2 contract as the source of truth. Do not add undocumented filters or copy raw geographic datasets and portrait files into this repository.
 
 Keep secrets, generated builds, and local drafts out of Git. `NEXT_PUBLIC_*` values are exposed to browsers and must contain only public configuration.
+
+## Security dependency overrides
+
+The override for `@typescript-eslint/typescript-estree@8.71.0` selects patched
+Minimatch 11 only for that parser. Its project-service allowlist uses the named
+`minimatch()` function with `dot: true`, which remains supported. ESLint 9 and
+its plugins retain their separate Minimatch 3 dependencies. When updating the
+parser or removing this override, verify typed-file allowlists, conditional
+React Hook rejection, syntax errors, ignored build output, and the full lint
+file coverage so linting is not weakened.
