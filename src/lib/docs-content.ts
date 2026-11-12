@@ -1,8 +1,9 @@
 import { config } from "@/lib/config";
 import { paginationDocs } from "@/lib/pagination-docs";
+import { cliDocs } from "@/lib/cli-docs";
 
 export const docSlugs = [
-  "overview", "people", "parameters", "pagination", "response", "errors", "coverage", "replay", "limits", "ai-usage",
+  "overview", "people", "parameters", "pagination", "cli", "response", "errors", "coverage", "replay", "limits", "ai-usage",
 ] as const;
 
 export type DocSlug = "quickstart" | (typeof docSlugs)[number];
@@ -42,13 +43,14 @@ export const docs: Record<DocLocale, DocsDictionary> = {
     copiedDescription: "Code copié dans le presse-papiers",
     openPlayground: "Essayer /people",
     navigation: [
-      { title: "Démarrer", items: [{ slug: "overview", label: "Vue d’ensemble" }, { slug: "quickstart", label: "Première requête" }] },
+      { title: "Démarrer", items: [{ slug: "overview", label: "Vue d’ensemble" }, { slug: "quickstart", label: "Première requête" }, { slug: "cli", label: "Installer le CLI" }] },
       { title: "Utiliser avec l’IA", items: [{ slug: "ai-usage", label: "Prompts à copier" }] },
       { title: "Référence", items: [{ slug: "people", label: "GET /people" }, { slug: "parameters", label: "Paramètres" }, { slug: "pagination", label: "Pagination" }, { slug: "response", label: "Réponse" }, { slug: "errors", label: "Erreurs" }] },
       { title: "Pour aller plus loin", items: [{ slug: "coverage", label: "Pays et couverture" }, { slug: "replay", label: "Résultats reproductibles" }, { slug: "limits", label: "Limites et sécurité" }] },
     ],
     pages: {
       pagination: paginationDocs.fr,
+      cli: cliDocs.fr,
       quickstart: {
         title: "Première requête",
         description: "Récupérez des personnes fictives cohérentes depuis l’API publique en une seule requête. Aucune clé API n’est nécessaire.",
@@ -170,13 +172,14 @@ console.log(results[0].name.full, results[0].location.city, meta.schemaVersion);
   en: {
     label: "Documentation", onThisPage: "On this page", copy: "Copy", copied: "Copied", copiedDescription: "Code copied to clipboard", openPlayground: "Try /people",
     navigation: [
-      { title: "Start here", items: [{ slug: "overview", label: "Overview" }, { slug: "quickstart", label: "First request" }] },
+      { title: "Start here", items: [{ slug: "overview", label: "Overview" }, { slug: "quickstart", label: "First request" }, { slug: "cli", label: "Install the CLI" }] },
       { title: "Use with AI", items: [{ slug: "ai-usage", label: "Copyable prompts" }] },
       { title: "Reference", items: [{ slug: "people", label: "GET /people" }, { slug: "parameters", label: "Parameters" }, { slug: "pagination", label: "Pagination" }, { slug: "response", label: "Response" }, { slug: "errors", label: "Errors" }] },
       { title: "Go further", items: [{ slug: "coverage", label: "Countries and coverage" }, { slug: "replay", label: "Repeatable results" }, { slug: "limits", label: "Limits and safety" }] },
     ],
     pages: {
       pagination: paginationDocs.en,
+      cli: cliDocs.en,
       quickstart: { title: "First request", description: "Retrieve coherent fictional people from the public API with one request. No API key is required.", sections: [
         { id: "request", title: "Make a request", paragraphs: ["Send a GET request to the public endpoint. This example fixes the seed and reference date so the result can be replayed."], code: { language: "bash", value: `curl '${config.peopleUrl}?count=1&seed=guide-v2&asOf=2026-09-28'` } },
         { id: "response", title: "Read the response", paragraphs: ["The response contains a `results` array and a `meta` object. Names, birth dates and locations are structured. This excerpt matches the request above with the data versions shown in `meta`; it may change after an update."], code: { language: "json", value: `{
